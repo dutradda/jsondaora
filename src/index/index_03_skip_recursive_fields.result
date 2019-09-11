@@ -1,0 +1,7 @@
+Person(
+    'John',
+    age=40,
+    music=Music(name='Imagine')
+)
+
+'{"name":"John","age":40}'

@@ -1,0 +1,40 @@
+[build-system]
+requires = ['flit']
+build-backend = 'flit.buildapi'
+
+[tool.flit.metadata]
+module = 'dataclassjson'
+author = 'Diogo Dutra'
+author-email = 'diogodutradamata@gmail.com'
+home-page = 'https://github.com/dutradda/dataclassjson'
+classifiers = [
+    'License :: OSI Approved :: MIT License',
+    'Development Status :: 1 - Planning',
+    'Intended Audience :: Developers',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Topic :: Software Development :: Libraries',
+]
+requires = []
+description-file = 'README.md'
+requires-python = '>=3.7'
+
+[tool.flit.metadata.urls]
+Documentation = 'https://dutradda.github.io/dataclassjson/'
+
+[tool.flit.metadata.requires-extra]
+test = [
+    'black',
+    'isort',
+    'ipython',
+    'mypy',
+    'pytest-cov',
+    'pytest-mock',
+    'pytest>=5.1.1',
+    'tox'
+]
+doc = [
+    'mkdocs',
+    'mkdocs-material',
+    'markdown-include'
+]

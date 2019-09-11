@@ -1,0 +1,47 @@
+site_name: dataclassjson
+site_description: Interoperates @dataclass with json objects
+
+
+theme:
+    name: 'material'
+    palette:
+      primary: 'black'
+      accent: 'grey'
+    logo: 'dataclassjson-white.svg'
+    favicon: 'favicon.png'
+
+repo_name: dutradda/dataclassjson
+repo_url: https://github.com/dutradda/dataclassjson
+edit_uri: ''
+google_analytics:
+    - ''
+    - 'auto'
+
+nav:
+    - dataclassjson: 'index.md'
+    - Features: 'features.md'
+    - Python dataclass intro: 'python-dataclass.md'
+    - Json intro: 'json.md'
+    - Tutorial - User Guide:
+        - Introduciton: 'tutorial/intro.md'
+        - First Steps: 'tutorial/first-steps.md'
+        - Choose Fields to Parse: 'tutorial/custom-data-types.md'
+        - Custom Data Types: 'tutorial/custom-data-types.md'
+        - Custom Json Serializer: 'tutorial/custom-json-serializer.md'
+        - Disable Input Parsing: 'tutorial/disable-input-parsing.md'
+    - Alternatives, Inspiration and Comparisons: 'alternatives.md'
+    - History, Design and Future: 'history-design-future.md'
+    - External Links and Articles: 'external-links.md'
+    - Benchmarks: 'benchmarks.md'
+    - Help dataclassjson - Get Help: 'help.md'
+    - Development - Contributing: 'contributing.md'
+    - Changelog: changelog.md
+
+markdown_extensions:
+  - markdown.extensions.codehilite:
+      guess_lang: false
+  - markdown_include.include:
+      base_path: docs
+  - admonition
+  - codehilite
+  - extra

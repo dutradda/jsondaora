@@ -8,7 +8,7 @@ class Music:
 
 @dataclass
 class Person:
-    __cast_fields__ = ('name',)
+    __cast_input__ = ('name',)
     name: str
     age: int
     music: Music

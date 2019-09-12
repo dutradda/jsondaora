@@ -8,7 +8,7 @@ class Music:
 
 @dataclass
 class Person:
-    __skip_recursion__ = ('music',)
+    __omit_output__ = ('music',)
     name: str
     age: int
     music: Music

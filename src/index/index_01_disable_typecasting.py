@@ -1,17 +1,15 @@
-from dataclasses import asdict
-
-from dataclassjson import dataclass
+from dataclassjson import asdict, dataclass
 
 
 @dataclass
 class Music:
-    __cast_fields__ = None
+    __cast_input__ = None
     name: str
 
 
 @dataclass
 class Person:
-    __cast_fields__ = None
+    __cast_input__ = None
     name: str
     age: int
     music: Music

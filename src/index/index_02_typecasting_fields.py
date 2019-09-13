@@ -1,4 +1,4 @@
-from dataclassjson import asjson, dataclass
+from dataclassesjson import asjson, dataclass
 
 
 @dataclass

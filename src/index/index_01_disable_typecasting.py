@@ -1,4 +1,4 @@
-from dataclassjson import asdict, dataclass
+from dataclassesjson import asdict, dataclass
 
 
 @dataclass

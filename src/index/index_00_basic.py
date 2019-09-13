@@ -1,4 +1,6 @@
-from dataclassjson import asjson, dataclass
+from dataclasses import dataclass
+
+from dataclassesjson import asdataclass, asjson
 
 
 @dataclass
@@ -13,6 +15,7 @@ class Person:
     music: Music
 
 
-person = Person(b'John', age='40', music=dict(name='Imagine'))
+jsondict = dict(name=b'John', age='40', music=dict(name='Imagine'))
+person = asdataclass(jsondict, Person)
 
 print(asjson(person))

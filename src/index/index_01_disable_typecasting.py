@@ -15,11 +15,7 @@ class Person:
     music: Music
 
 
-person = Person(
-    b'John',
-    age='40',
-    music=dict(name=b'Imagine')
-)
+person = Person(b'John', age='40', music=dict(name=b'Imagine'))
 
 # if we use the 'asjson' function will raise error for invalid bytes type
 print(asdict(person))

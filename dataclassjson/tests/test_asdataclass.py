@@ -55,60 +55,14 @@ def tests_should_deserialize_nested_jsondict():
     assert dataclass_.fake.test == 'test'
 
 
-def tests_should_serialize_string_with_cpython_json():
-    @dataclass
-    class FakeDataclass:
-        test_union: str
-
-    dataclass_ = asdataclass({'test_union': b'test'}, FakeDataclass)
-
-    json = asjson(dataclass_, decoder=None)
-
-    assert json == b'{"test_union":"test"}'
-
-
-def tests_should_serialize_string_with_orjson():
-    @dataclassjson
-    @dataclass
-    class FakeDataclass:
-        test_union: str
-
-    dataclass_ = asdataclass({'test_union': b'test'}, FakeDataclass)
-
-    json = asjson(dataclass_)
-
-    assert json == b'{"test_union":"test"}'
-
-
-def tests_should_serialize_nested_dataclasses_with_orjson():
+def tests_should_skip_field_deserialization():
     @dataclassjson
     @dataclass
     class FakeDataclass:
         test: int
 
-    @dataclassjson
-    @dataclass
-    class FakeDataclass2:
-        fake: FakeDataclass
-
-    dataclass_ = asdataclass({'fake': {'test': b'1'}}, FakeDataclass2)
-
-    json = asjson(dataclass_)
-
-    assert json == b'{"fake":{"test":1}}'
-
-
-def tests_should_serialize_nested_dataclasses_with_cpython_json():
-    @dataclass
-    class FakeDataclass:
-        test: int
-
-    @dataclass
-    class FakeDataclass2:
-        fake: FakeDataclass
-
-    dataclass_ = asdataclass({'fake': {'test': b'1'}}, FakeDataclass2)
+    dataclass_ = asdataclass({'test': '1'}, FakeDataclass)
 
     json = asjson(dataclass_, decoder=None)
 
-    assert json == b'{"fake":{"test":1}}'
+    assert json == b'{{"test":"1"}}'

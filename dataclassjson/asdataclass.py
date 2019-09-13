@@ -24,8 +24,10 @@ def _cast_jsondict_values(
             field_name = field.name
             value = jsondict.get(field_name)
 
-            if isinstance(value, dict) and not issubclass(field_type, dict):
-                jsondict[field_name] = field_type(**value)
+            if isinstance(value, dict) and dataclasses.is_dataclass(
+                field_type
+            ):
+                jsondict[field_name] = asdataclass(value, field_type)
 
             elif isinstance(field_type, _GenericAlias):
                 _set_jsondict_generic_type(

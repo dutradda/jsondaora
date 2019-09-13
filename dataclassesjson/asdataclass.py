@@ -2,6 +2,7 @@ import dataclasses
 from logging import getLogger
 from typing import Any, Dict, Type, _GenericAlias  # type: ignore
 
+from dataclassesjson.dataclassjson import DeserializeFields
 from dataclassesjson.exceptions import TypeCastingError
 
 
@@ -16,7 +17,10 @@ def asdataclass(jsondict: Dict[str, Any], cls: Type[Any]) -> Any:
 def _cast_jsondict_values(
     jsondict: Dict[str, Any], cls: Type[Any]
 ) -> Dict[str, Any]:
-    fields = dataclasses.fields(cls)
+    fields = DeserializeFields.get_fields(cls)
+
+    if not fields:
+        fields = dataclasses.fields(cls)
 
     try:
         for field in fields:

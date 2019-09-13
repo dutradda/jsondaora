@@ -1,11 +1,10 @@
 """Interoperates @dataclass with json objects"""
 
-from dataclassjson._asjson import _asjson
-from dataclassjson.dataclass import dataclass
+from dataclassjson.asdataclass import asdataclass
+from dataclassjson.asjson import asjson
 
 
 __version__ = '0.0.1'
 
-asjson = _asjson
 
-__all__ = [dataclass.__name__, asjson.__name__]
+__all__ = [asdataclass.__name__, asjson.__name__]

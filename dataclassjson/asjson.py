@@ -1,7 +1,7 @@
 import json
 from typing import Any
 
-from ._asdict import _asdict
+from .asdict import asdict
 
 
 try:
@@ -10,7 +10,7 @@ except ImportError:
     orjson = None  # type: ignore
 
 
-def _asjson(instance: Any, decoder: Any = orjson) -> bytes:
+def asjson(instance: Any, decoder: Any = orjson) -> bytes:
     if decoder is None:
         return _aspythonjson(instance)
 
@@ -22,4 +22,4 @@ def _asorjson(instance: Any) -> bytes:
 
 
 def _aspythonjson(instance: Any) -> bytes:
-    return json.dumps(_asdict(instance), separators=(',', ':')).encode()
+    return json.dumps(asdict(instance), separators=(',', ':')).encode()

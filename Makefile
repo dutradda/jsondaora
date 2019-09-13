@@ -33,4 +33,4 @@ dependencies:
 	@flit install --deps develop --extras all
 
 tests:  ## Run tests
-	@pytest -xvv --cov dataclassjson --no-cov-on-fail --cov-report=term-missing tests
+	@pytest -xvv --cov dataclassjson --no-cov-on-fail --cov-report=term-missing dataclassjson/tests

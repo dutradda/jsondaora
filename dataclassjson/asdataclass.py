@@ -59,10 +59,7 @@ def _set_jsondict_generic_type(
 ) -> None:
     if 'Union' in str(generic):
         for arg in generic.__args__:
-            if issubclass(arg, str) and isinstance(value, bytes):
-                jsondict[field] = value.decode()
-
-            elif not isinstance(arg, type(None)):
+            if not isinstance(arg, type(None)):
                 try:
                     jsondict[field] = arg(value)
                 except TypeError:

@@ -2,7 +2,7 @@
 
 <p align="center" style="margin: 3em">
   <a href="https://github.com/dutradda/dataclassesjson">
-    <img src="dataclassesjson.svg" alt="dataclassesjson" width="300"/>
+    <img src="https://dutradda.github.io/dataclassesjson/dataclassesjson.svg" alt="dataclassesjson" width="300"/>
   </a>
 </p>
 

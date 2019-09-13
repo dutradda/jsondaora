@@ -25,6 +25,7 @@ Documentation = 'https://dutradda.github.io/dataclassjson/'
 [tool.flit.metadata.requires-extra]
 test = [
     'black',
+    'flake8',
     'isort',
     'ipython',
     'mypy',
@@ -38,3 +39,72 @@ doc = [
     'mkdocs-material',
     'markdown-include'
 ]
+orjson = [
+    'orjson==2.0.7'
+]
+
+[tool.isort]
+case_sensitive= '1'
+use_parentheses = '1'
+line_length = '79'
+order_by_type = '1'
+multi_line_output = '3'
+include_trailing_comma = '1'
+lines_after_imports = '2'
+atomic = '1'
+
+[tool.black]
+exclude = '''
+    \.pyi
+'''
+target-version = ['py38']
+line-length = '79'
+skip-string-normalization = '1'
+
+[tool.towncrier]
+    package = 'bobby'
+    package_dir = ''
+    filename = 'CHANGELOG.md'
+    title_format =  '{version} ({project_date})'
+    directory = 'changelog.d'
+    template = 'towncrier_template.rst'
+
+    [[tool.towncrier.type]]
+        directory = "feature"
+        name = "Features"
+        showcontent = true
+
+    [[tool.towncrier.type]]
+        directory = "bugfix"
+        name = "Bugfixes"
+        showcontent = true
+
+    [[tool.towncrier.type]]
+        directory = "doc"
+        name = "Improved Documentation"
+        showcontent = true
+
+    [[tool.towncrier.type]]
+        directory = "removal"
+        name = "Deprecations and Removals"
+        showcontent = true
+
+    [[tool.towncrier.type]]
+        directory = "misc"
+        name = "Misc"
+        showcontent = true
+
+    [[tool.towncrier.type]]
+        directory = "health"
+        name = "Health"
+        showcontent = true
+
+    [[tool.towncrier.type]]
+        directory = "refactor"
+        name = "Refactoring"
+        showcontent = true
+
+    [[tool.towncrier.type]]
+        directory = "improve"
+        name = "Improvement"
+        showcontent = true

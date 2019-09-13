@@ -21,21 +21,21 @@
 
 ## Key Features
 
-- Full compatibility with all functions of [dataclasses]() module
+- Full compatibility with all functions of [dataclasses](https://docs.python.org/3/library/dataclasses.html) module
 - Optional input typecasting
-- Direct json serialization with [orjson]() (don't convert to dict before serialization)
+- Direct json serialization with [orjson](https://github.com/ijl/orjson) (don't convert to dict before serialization)
 - Supports custom serialization
 
 
 ## Requirements
 
  - Python 3.7+
- - [orjson]()
+ - [orjson](https://github.com/ijl/orjson) for json serialization
 
 
 ## Instalation
 ```
-$ pip install dataclassjson 
+$ pip install dataclassjson[orjson]
 ```
 
 
@@ -72,12 +72,12 @@ $ pip install dataclassjson
 ```
 
 
-## Example for skip fields to recurse
+## Example for omit output fields
 
 ```python
-{!./src/index/index_03_skip_recursive_fields.py!}
+{!./src/index/index_03_omit_output_fields.py!}
 ```
 
 ```
-{!./src/index/index_03_skip_recursive_fields.result!}
+{!./src/index/index_03_omit_output_fields.result!}
 ```

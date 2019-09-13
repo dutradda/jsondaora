@@ -13,10 +13,6 @@ class Person:
     music: Music
 
 
-person = Person(
-    b'John',
-    age='40',
-    music=dict(name='Imagine')
-)
+person = Person(b'John', age='40', music=dict(name='Imagine'))
 
 print(asjson(person))

@@ -21,21 +21,21 @@
 
 ## Key Features
 
-- Full compatibility with all functions of [dataclasses]() module
+- Full compatibility with all functions of [dataclasses](https://docs.python.org/3/library/dataclasses.html) module
 - Optional input typecasting
-- Direct json serialization with [orjson]() (don't convert to dict before serialization)
+- Direct json serialization with [orjson](https://github.com/ijl/orjson) (don't convert to dict before serialization)
 - Supports custom serialization
 
 
 ## Requirements
 
  - Python 3.7+
- - [orjson]()
+ - [orjson](https://github.com/ijl/orjson) for json serialization
 
 
 ## Instalation
 ```
-$ pip install dataclassjson 
+$ pip install dataclassjson[orjson]
 ```
 
 
@@ -57,11 +57,7 @@ class Person:
     music: Music
 
 
-person = Person(
-    b'John',
-    age='40',
-    music=dict(name='Imagine')
-)
+person = Person(b'John', age='40', music=dict(name='Imagine'))
 
 print(asjson(person))
 
@@ -76,30 +72,24 @@ print(asjson(person))
 ## Example for disable typecasting
 
 ```python
-from dataclasses import asdict
-
-from dataclassjson import dataclass
+from dataclassjson import asdict, dataclass
 
 
 @dataclass
 class Music:
-    __cast_fields__ = None
+    __cast_input__ = None
     name: str
 
 
 @dataclass
 class Person:
-    __cast_fields__ = None
+    __cast_input__ = None
     name: str
     age: int
     music: Music
 
 
-person = Person(
-    b'John',
-    age='40',
-    music=dict(name=b'Imagine')
-)
+person = Person(b'John', age='40', music=dict(name=b'Imagine'))
 
 # if we use the 'asjson' function will raise error for invalid bytes type
 print(asdict(person))
@@ -131,17 +121,13 @@ class Music:
 
 @dataclass
 class Person:
-    __cast_fields__ = ('name',)
+    __cast_input__ = ('name',)
     name: str
     age: int
     music: Music
 
 
-person = Person(
-    b'John',
-    age='40',
-    music=dict(name='Imagine')
-)
+person = Person(b'John', age='40', music=dict(name='Imagine'))
 
 print(asjson(person))
 
@@ -153,7 +139,7 @@ print(asjson(person))
 ```
 
 
-## Example for skip fields to recurse
+## Example for omit output fields
 
 ```python
 from dataclassjson import asjson, dataclass
@@ -166,17 +152,13 @@ class Music:
 
 @dataclass
 class Person:
-    __skip_recursion__ = ('music',)
+    __omit_output__ = ('music',)
     name: str
     age: int
     music: Music
 
 
-person = Person(
-    'John',
-    age=40,
-    music=dict(name='Imagine')
-)
+person = Person('John', age=40, music=dict(name='Imagine'))
 
 print(person)
 print(asjson(person))

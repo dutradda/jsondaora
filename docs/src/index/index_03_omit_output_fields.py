@@ -8,17 +8,13 @@ class Music:
 
 @dataclass
 class Person:
-    __skip_recursion__ = ('music',)
+    __omit_output__ = ('music',)
     name: str
     age: int
     music: Music
 
 
-person = Person(
-    'John',
-    age=40,
-    music=dict(name='Imagine')
-)
+person = Person('John', age=40, music=dict(name='Imagine'))
 
 print(person)
 print(asjson(person))

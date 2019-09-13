@@ -8,16 +8,12 @@ class Music:
 
 @dataclass
 class Person:
-    __cast_fields__ = ('name',)
+    __cast_input__ = ('name',)
     name: str
     age: int
     music: Music
 
 
-person = Person(
-    b'John',
-    age='40',
-    music=dict(name='Imagine')
-)
+person = Person(b'John', age='40', music=dict(name='Imagine'))
 
 print(asjson(person))

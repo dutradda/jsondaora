@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import Optional, Union
 
-from dataclassjson import asdataclass, asjson, dataclassjson
+from dataclassesjson import asdataclass, asjson, dataclassesjson
 
 
 def tests_should_deserialize_optional_args():
@@ -56,7 +56,7 @@ def tests_should_deserialize_nested_jsondict():
 
 
 def tests_should_skip_field_deserialization():
-    @dataclassjson
+    @dataclassesjson
     @dataclass
     class FakeDataclass:
         test: int

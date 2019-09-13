@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from dataclassjson import asdataclass, asjson
+from dataclassesjson import asdataclass, asjson
 
 
 @dataclass

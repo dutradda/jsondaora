@@ -2,7 +2,7 @@ import dataclasses
 from logging import getLogger
 from typing import Any, Dict, Type, _GenericAlias  # type: ignore
 
-from dataclassjson.exceptions import TypeCastingError
+from dataclassesjson.exceptions import TypeCastingError
 
 
 logger = getLogger(__name__)

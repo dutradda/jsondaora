@@ -2,11 +2,11 @@
 
 from dataclasses import dataclass
 
-from dataclassjson import asdataclass, asjson, dataclassjson
+from dataclassesjson import asdataclass, asjson, dataclassesjson
 
 
 def tests_should_serialize_string_with_orjson():
-    @dataclassjson
+    @dataclassesjson
     @dataclass
     class FakeDataclass:
         test_union: str
@@ -19,12 +19,12 @@ def tests_should_serialize_string_with_orjson():
 
 
 def tests_should_serialize_nested_dataclasses_with_orjson():
-    @dataclassjson
+    @dataclassesjson
     @dataclass
     class FakeDataclass:
         test: int
 
-    @dataclassjson
+    @dataclassesjson
     @dataclass
     class FakeDataclass2:
         fake: FakeDataclass

@@ -5,7 +5,7 @@
 ### Installs
 
 ```
-$ pip install dataclassjson[orjson]
+$ pip install dataclassesjson[orjson]
 ```
 
 ### Starts coding

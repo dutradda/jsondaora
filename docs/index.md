@@ -1,8 +1,8 @@
-# dataclassjson
+# dataclassesjson
 
 <p align="center" style="margin: 3em">
-  <a href="https://github.com/dutradda/dataclassjson">
-    <img src="dataclassjson.svg" alt="dataclassjson" width="300"/>
+  <a href="https://github.com/dutradda/dataclassesjson">
+    <img src="dataclassesjson.svg" alt="dataclassesjson" width="300"/>
   </a>
 </p>
 
@@ -12,9 +12,9 @@
 
 ---
 
-**Documentation**: <a href="https://dutradda.github.io/dataclassjson" target="_blank">https://dutradda.github.io/dataclassjson</a>
+**Documentation**: <a href="https://dutradda.github.io/dataclassesjson" target="_blank">https://dutradda.github.io/dataclassesjson</a>
 
-**Source Code**: <a href="https://github.com/dutradda/dataclassjson" target="_blank">https://github.com/dutradda/dataclassjson</a>
+**Source Code**: <a href="https://github.com/dutradda/dataclassesjson" target="_blank">https://github.com/dutradda/dataclassesjson</a>
 
 ---
 
@@ -35,7 +35,7 @@
 
 ## Instalation
 ```
-$ pip install dataclassjson[orjson]
+$ pip install dataclassesjson[orjson]
 ```
 
 

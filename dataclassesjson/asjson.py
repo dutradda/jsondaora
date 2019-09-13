@@ -47,6 +47,6 @@ def _aspythonjson(instance: Any) -> bytes:
     return json.dumps(asdict(instance), separators=(',', ':')).encode()
 
 
-def dataclassjson(type_: Type[Any]) -> Type[Any]:
+def dataclassesjson(type_: Type[Any]) -> Type[Any]:
     OrjsonDefaultTypes.set_type(type_)
     return type_

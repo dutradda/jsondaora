@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from dataclassjson import asdataclass, asjson
+from dataclassesjson import asdataclass, asjson
 
 
 def tests_should_serialize_string_with_cpython_json():

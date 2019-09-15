@@ -16,17 +16,23 @@ from dataclassesjson.exceptions import DeserializationError
 _ERROR_MSG = 'Invalid type={generic} for field={field}'
 
 
-def set_deserialized_jsondict_fields(
+def deserialize_jsondict_fields(
     jsondict: Dict[str, Any], cls: Type[Any]
-) -> None:
-    fields = DeserializeFields.get_fields(cls)
-
-    if not fields:
-        fields = dataclasses.fields(cls)
+) -> Dict[str, Any]:
+    custom_fields = DeserializeFields.get_fields(cls)
+    all_fields = dataclasses.fields(cls)
+    dataclasses_kwargs = {}
+    fields = custom_fields if custom_fields else all_fields
 
     for field in fields:
         value = jsondict.get(field.name)
-        jsondict[field.name] = _deserialize_field(field, value)
+        dataclasses_kwargs[field.name] = _deserialize_field(field, value)
+
+    if custom_fields:
+        for field in set(all_fields) - set(custom_fields):
+            dataclasses_kwargs[field.name] = jsondict[field.name]
+
+    return dataclasses_kwargs
 
 
 if TYPE_CHECKING:
@@ -40,7 +46,7 @@ def _deserialize_field(field: _Field, value: Any) -> Any:
 
     try:
         if isinstance(value, dict) and dataclasses.is_dataclass(field_type):
-            set_deserialized_jsondict_fields(value, field_type)
+            value = deserialize_jsondict_fields(value, field_type)
             return field_type(**value)
 
         elif isinstance(field_type, _GenericAlias):

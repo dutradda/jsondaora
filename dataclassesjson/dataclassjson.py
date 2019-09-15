@@ -22,12 +22,10 @@ class OrjsonDefaultTypes:
             return
 
         cls.types_default_map[type_] = _asdict_for_orjson
-        # cls.types_default_map[type_] = asdict
 
         for field in dataclasses.fields(type_):
             if dataclasses.is_dataclass(field.type):
                 cls.types_default_map[field.type] = _asdict_for_orjson
-                # cls.types_default_map[field.type] = asdict
 
     @classmethod
     def default_function(cls, instance: Any) -> Any:

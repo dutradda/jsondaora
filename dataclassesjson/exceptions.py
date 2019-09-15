@@ -2,5 +2,5 @@ class DataclassJsonError(Exception):
     ...
 
 
-class TypeCastingError(DataclassJsonError):
+class DeserializationError(DataclassJsonError):
     ...

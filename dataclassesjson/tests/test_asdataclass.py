@@ -1,7 +1,7 @@
 # type: ignore
 
 from dataclasses import dataclass
-from typing import Optional, Union
+from typing import List, Optional, Union
 
 from dataclassesjson import asdataclass, dataclassjson
 
@@ -30,7 +30,36 @@ def tests_should_deserialize_union_args():
     assert dataclass_.test_union == 1
 
 
-def tests_should_deserialize_bytes_to_string_on_union():
+def tests_should_deserialize_list_args():
+    @dataclass
+    class FakeDataclass:
+        test_list: List[int]
+
+    dataclass_ = asdataclass({'test_list': [b'1', '2', 3]}, FakeDataclass)
+
+    assert dataclass_.test_list == [1, 2, 3]
+
+
+def tests_should_deserialize_list_args_nested():
+    @dataclass
+    class FakeDataclass:
+        test: str
+
+    @dataclass
+    class FakeDataclass2:
+        fakes: List[FakeDataclass]
+
+    fakes_data = [{'test': 'fake11'}, {'test': 'fake12'}, {'test': 'fake13'}]
+    dataclass_ = asdataclass({'fakes': fakes_data}, FakeDataclass2)
+
+    assert dataclass_.fakes == [
+        FakeDataclass('fake11'),
+        FakeDataclass('fake12'),
+        FakeDataclass('fake13'),
+    ]
+
+
+def tests_should_deserialize_bytes_to_string():
     @dataclass
     class FakeDataclass:
         test_union: str

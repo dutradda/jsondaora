@@ -6,7 +6,7 @@ from dataclassesjson.asjson import asjson
 from dataclassesjson.dataclassjson import dataclassjson
 
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 
 
 __all__ = [

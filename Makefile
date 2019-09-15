@@ -20,6 +20,9 @@ serve-docs:
 deploy-docs: build-docs
 	@python -m mkdocs gh-deploy
 
+deploy: deploy-docs
+	@make release-pypi
+
 release-pypi:
 	@flit publish
 

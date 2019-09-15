@@ -1,5 +1,5 @@
 import dataclasses
-from logging import getLogger
+from datetime import datetime
 from typing import (  # type: ignore
     TYPE_CHECKING,
     Any,
@@ -12,8 +12,6 @@ from typing import (  # type: ignore
 from dataclassesjson.dataclassjson import DeserializeFields
 from dataclassesjson.exceptions import DeserializationError
 
-
-logger = getLogger(__name__)
 
 _ERROR_MSG = 'Invalid type={generic} for field={field}'
 
@@ -28,9 +26,7 @@ def set_deserialized_jsondict_fields(
 
     for field in fields:
         value = jsondict.get(field.name)
-
-        if value is not None:
-            jsondict[field.name] = _deserialize_field(field, value)
+        jsondict[field.name] = _deserialize_field(field, value)
 
 
 if TYPE_CHECKING:
@@ -67,11 +63,23 @@ def _deserialize_field(field: _Field, value: Any) -> Any:
         ):
             return value.encode()
 
-        else:
+        elif field_type is datetime:
+            return datetime.strptime(value, '%Y-%m-%dT%H:%M:%S')
+
+        elif value is None and field.default is None:
+            return None
+
+        elif field.default is not dataclasses.MISSING and value is None:
+            return field_type(field.default)
+
+        if value is not None:
             return field_type(value)
 
-    except TypeError as error:
-        logger.exception(error)
+        raise DeserializationError(
+            f'Required field not found error: {field.name}'
+        )
+
+    except (TypeError, ValueError) as error:
         raise DeserializationError(field.name, *error.args) from error
 
 
@@ -79,26 +87,27 @@ def _deserialize_generic_type(generic: Any, field: str, value: Any) -> Any:
     try:
         return _DESERIALIZERS_MAP[generic.__origin__](generic, field, value)
     except KeyError:
-        error = DeserializationError(
+        raise DeserializationError(
             _ERROR_MSG.format(generic=generic, field=field)
         )
-        logger.exception(error)
-        raise error
 
 
 def _deserialize_union(generic: Any, field: str, value: Any) -> Any:
+    nullable = False
+
     for arg in generic.__args__:
         if not isinstance(arg, type(None)):
             try:
                 return arg(value)
             except TypeError:
-                message = (
-                    'Attempt Union deserialization for '
-                    f'type={arg.__name__} and field={field} '
-                    'was failed'
-                )
-                logger.warning(message)
                 continue
+        else:
+            nullable = True
+
+    if nullable:
+        return None
+
+    raise DeserializationError(_ERROR_MSG.format(generic=generic, field=field))
 
 
 def _deserialize_list(generic: Any, field_name: str, values: Any) -> Any:
@@ -109,11 +118,9 @@ def _deserialize_list(generic: Any, field_name: str, values: Any) -> Any:
     try:
         return [_deserialize_field(field, value) for value in values]
     except TypeError as err:
-        error = DeserializationError(
+        raise DeserializationError(
             _ERROR_MSG.format(generic=generic, field=field)
-        )
-        logger.exception(error)
-        raise error from err
+        ) from err
 
 
 _DESERIALIZERS_MAP = {Union: _deserialize_union, list: _deserialize_list}

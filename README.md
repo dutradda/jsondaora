@@ -21,16 +21,21 @@
 
 ## Key Features
 
-- Full compatibility with all functions of [dataclasses](https://docs.python.org/3/library/dataclasses.html) module
-- Optional input typecasting
+- Full compatibility with [dataclasses](https://docs.python.org/3/library/dataclasses.html) module*
+- Deserialize values from dict
+- Deserialize values from bytes*
+- Deserialization/serialization of choosen fields
+- Dict serialization*
 - Direct json serialization with [orjson](https://github.com/ijl/orjson) (don't convert to dict before serialization)
-- Supports custom serialization
+- Optional validation according with the [json-schema](https://json-schema.org/) specification*
+
+*\* feature in development.*
 
 
 ## Requirements
 
  - Python 3.7+
- - [orjson](https://github.com/ijl/orjson) for json serialization
+ - [orjson](https://github.com/ijl/orjson) for json serialization (optional, but recommended)
 
 
 ## Instalation
@@ -43,8 +48,9 @@ $ pip install dataclassesjson[orjson]
 
 ```python
 from dataclasses import dataclass
+from typing import List
 
-from dataclassesjson import asdataclass, asjson
+from dataclassesjson import asdataclass, asjson, dataclassjson
 
 
 @dataclass
@@ -52,116 +58,16 @@ class Music:
     name: str
 
 
+@dataclassjson
 @dataclass
 class Person:
     name: str
     age: int
-    music: Music
+    musics: List[Music]
 
 
-jsondict = dict(name=b'John', age='40', music=dict(name='Imagine'))
+jsondict = dict(name=b'John', age='40', musics=[dict(name='Imagine')])
 person = asdataclass(jsondict, Person)
-
-print(asjson(person))
-
-```
-
-```
-'{"name":"John","age":40,"music":{"name":"Imagine"}}'
-
-```
-
-
-## Example for disable typecasting
-
-```python
-from dataclassesjson import asdict, dataclass
-
-
-@dataclass
-class Music:
-    __cast_input__ = None
-    name: str
-
-
-@dataclass
-class Person:
-    __cast_input__ = None
-    name: str
-    age: int
-    music: Music
-
-
-person = Person(b'John', age='40', music=dict(name=b'Imagine'))
-
-# if we use the 'asjson' function will raise error for invalid bytes type
-print(asdict(person))
-
-```
-
-```
-{
-    'name':b'John',
-    'age':'40',
-    'music':{
-        'name':b'Imagine'
-    }
-}
-
-```
-
-
-## Example for choose fields to typecasting
-
-```python
-from dataclassesjson import asjson, dataclass
-
-
-@dataclass
-class Music:
-    name: str
-
-
-@dataclass
-class Person:
-    __cast_input__ = ('name',)
-    name: str
-    age: int
-    music: Music
-
-
-person = Person(b'John', age='40', music=dict(name='Imagine'))
-
-print(asjson(person))
-
-```
-
-```
-'{"name":"John","age":"40","music":{"name":"Imagine"}}'
-
-```
-
-
-## Example for omit output fields
-
-```python
-from dataclassesjson import asjson, dataclass
-
-
-@dataclass
-class Music:
-    name: str
-
-
-@dataclass
-class Person:
-    __omit_output__ = ('music',)
-    name: str
-    age: int
-    music: Music
-
-
-person = Person('John', age=40, music=dict(name='Imagine'))
 
 print(person)
 print(asjson(person))
@@ -169,12 +75,88 @@ print(asjson(person))
 ```
 
 ```
-Person(
-    'John',
-    age=40,
-    music=Music(name='Imagine')
-)
-
-'{"name":"John","age":40}'
+Person(name='John', age=40, musics=[Music(name='Imagine')])
+b'{"name":"John","age":40,"musics":[{"name":"Imagine"}]}'
 
 ```
+
+
+## Example for choose fields to deserialize
+
+```python
+from dataclasses import dataclass
+from typing import List
+
+from dataclassesjson import asdataclass, asjson, dataclassjson
+
+
+@dataclass
+class Music:
+    name: str
+
+
+@dataclassjson(deserialize_fields=('name', 'age'))
+@dataclass
+class Person:
+    name: str
+    age: int
+    musics: List[Music]
+
+
+jsondict = dict(name=b'John', age='40', musics=[dict(name='Imagine')])
+person = asdataclass(jsondict, Person)
+
+print(person)
+print(asjson(person))
+
+```
+
+```
+Person(name='John', age=40, musics=[{'name': 'Imagine'}])
+b'{"name":"John","age":40,"musics":[{"name":"Imagine"}]}'
+
+```
+
+
+## Example for choose fields to serialize
+
+```python
+from dataclasses import dataclass
+from typing import List
+
+from dataclassesjson import asdataclass, asjson, dataclassjson
+
+
+@dataclass
+class Music:
+    name: str
+
+
+@dataclassjson(serialize_fields=('name', 'age'))
+@dataclass
+class Person:
+    name: str
+    age: int
+    musics: List[Music]
+
+
+jsondict = dict(name='John', age=40, musics=[dict(name='Imagine')])
+person = asdataclass(jsondict, Person)
+
+print(person)
+print(asjson(person))
+
+```
+
+```
+Person(name='John', age=40, musics=[Music(name='Imagine')])
+b'{"age":40,"name":"John"}'
+
+```
+
+
+## Wins [Pydantic](https://github.com/samuelcolvin/pydantic) Benchmark
+
+`dataclassesjson` is *2.5 times* faster than pydantic on it's benchmark
+
+![pydantic benchmark](benchmark.png "Pydantic Benchmark")

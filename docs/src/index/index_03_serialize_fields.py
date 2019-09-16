@@ -9,7 +9,7 @@ class Music:
     name: str
 
 
-@dataclassjson
+@dataclassjson(serialize_fields=('name', 'age'))
 @dataclass
 class Person:
     name: str
@@ -17,7 +17,7 @@ class Person:
     musics: List[Music]
 
 
-jsondict = dict(name=b'John', age='40', musics=[dict(name='Imagine')])
+jsondict = dict(name='John', age=40, musics=[dict(name='Imagine')])
 person = asdataclass(jsondict, Person)
 
 print(person)

@@ -30,6 +30,9 @@ class OrjsonDefaultTypes:
     @classmethod
     def default_function(cls, instance: Any) -> Any:
         def wrap(v: Any) -> Any:
+            if isinstance(v, bytes):
+                return v.decode()
+
             return cls.types_default_map[type(v)](v)
 
         return wrap
@@ -66,13 +69,23 @@ class _Fields:
     def get_fields(cls, type_: Type[Any]) -> Any:
         return cls.types_fields_map.get(type_)
 
+    @classmethod
+    def clean_fields(cls, type_: Type[Any]) -> Any:
+        return cls.types_fields_map.pop(type_, None)
+
 
 class DeserializeFields(_Fields):
-    ...
+    if TYPE_CHECKING:
+        types_fields_map: Dict[Type[Any], Set[dataclasses.Field[Any]]] = {}
+    else:
+        types_fields_map: Dict[Type[Any], Set[dataclasses.Field]] = {}
 
 
 class SerializeFields(_Fields):
-    ...
+    if TYPE_CHECKING:
+        types_fields_map: Dict[Type[Any], Set[dataclasses.Field[Any]]] = {}
+    else:
+        types_fields_map: Dict[Type[Any], Set[dataclasses.Field]] = {}
 
 
 def dataclassjson(
@@ -85,9 +98,13 @@ def dataclassjson(
 
         if deserialize_fields is not None:
             DeserializeFields.set_type(type__, deserialize_fields)
+        else:
+            DeserializeFields.clean_fields(type__)
 
         if serialize_fields is not None:
             SerializeFields.set_type(type__, serialize_fields)
+        else:
+            SerializeFields.clean_fields(type__)
 
         return type__
 

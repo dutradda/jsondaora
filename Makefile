@@ -9,7 +9,7 @@ build-virtualenv:
 	@virtualenv venv --python python3.7 --prompt 'dataclassesjson-> '
 
 build-docs:
-	@python -m mkdocs build
+	@mkdocs build
 	@cp ./docs/changelog.md ./CHANGELOG.md
 	@cd ./docs && \
 	../scripts/replace-placeholders.py index.md ../README.md
@@ -18,7 +18,7 @@ serve-docs:
 	@mkdocs serve
 
 deploy-docs: build-docs
-	@python -m mkdocs gh-deploy
+	@mkdocs gh-deploy
 
 deploy: deploy-docs
 	@make release-pypi
@@ -37,3 +37,8 @@ dependencies:
 
 tests:  ## Run tests
 	@pytest -xvv --cov dataclassesjson --no-cov-on-fail --cov-report=term-missing dataclassesjson/tests
+	@docs/src/test.sh
+
+integration:
+	@make check-code
+	@make tests

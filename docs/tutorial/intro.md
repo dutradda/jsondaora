@@ -16,5 +16,5 @@ $ pip install dataclassesjson[orjson]
 ```
 
 ```
-{!./src/index/index_00_basic.result!}
+{!./src/index/index_00_basic.output!}
 ```

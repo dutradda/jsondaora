@@ -1,0 +1,2 @@
+Person(name='John', age=40, musics=[Music(name='Imagine')])
+b'{"name":"John","age":40,"musics":[{"name":"Imagine"}]}'

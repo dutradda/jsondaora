@@ -9,7 +9,7 @@ class Music:
     name: str
 
 
-@dataclassjson
+@dataclassjson(deserialize_fields=('name', 'age'))
 @dataclass
 class Person:
     name: str

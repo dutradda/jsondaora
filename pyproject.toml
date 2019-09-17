@@ -57,12 +57,12 @@ atomic = '1'
 exclude = '''
     \.pyi
 '''
-target-version = ['py38']
+target-version = ['py37']
 line-length = '79'
 skip-string-normalization = '1'
 
 [tool.towncrier]
-    package = 'bobby'
+    package = 'dataclassesjson'
     package_dir = ''
     filename = 'CHANGELOG.md'
     title_format =  '{version} ({project_date})'
@@ -92,11 +92,6 @@ skip-string-normalization = '1'
     [[tool.towncrier.type]]
         directory = "misc"
         name = "Misc"
-        showcontent = true
-
-    [[tool.towncrier.type]]
-        directory = "health"
-        name = "Health"
         showcontent = true
 
     [[tool.towncrier.type]]

@@ -1,7 +1,0 @@
-{
-    'name':b'John',
-    'age':'40',
-    'music':{
-        'name':b'Imagine'
-    }
-}

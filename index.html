@@ -297,22 +297,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-for-disable-typecasting" class="md-nav__link">
-    Example for disable typecasting
+  <a href="#example-for-choose-fields-to-deserialize" class="md-nav__link">
+    Example for choose fields to deserialize
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-for-choose-fields-to-typecasting" class="md-nav__link">
-    Example for choose fields to typecasting
+  <a href="#example-for-choose-fields-to-serialize" class="md-nav__link">
+    Example for choose fields to serialize
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-for-omit-output-fields" class="md-nav__link">
-    Example for omit output fields
+  <a href="#wins-pydantic-benchmark" class="md-nav__link">
+    Wins Pydantic Benchmark
   </a>
   
 </li>
@@ -569,22 +569,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-for-disable-typecasting" class="md-nav__link">
-    Example for disable typecasting
+  <a href="#example-for-choose-fields-to-deserialize" class="md-nav__link">
+    Example for choose fields to deserialize
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-for-choose-fields-to-typecasting" class="md-nav__link">
-    Example for choose fields to typecasting
+  <a href="#example-for-choose-fields-to-serialize" class="md-nav__link">
+    Example for choose fields to serialize
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-for-omit-output-fields" class="md-nav__link">
-    Example for omit output fields
+  <a href="#wins-pydantic-benchmark" class="md-nav__link">
+    Wins Pydantic Benchmark
   </a>
   
 </li>
@@ -623,15 +623,19 @@
 <hr />
 <h2 id="key-features">Key Features</h2>
 <ul>
-<li>Full compatibility with all functions of <a href="https://docs.python.org/3/library/dataclasses.html">dataclasses</a> module</li>
-<li>Optional input typecasting</li>
+<li>Full compatibility with <a href="https://docs.python.org/3/library/dataclasses.html">dataclasses</a> module*</li>
+<li>Deserialize values from dict</li>
+<li>Deserialize values from bytes*</li>
+<li>Deserialization/serialization of choosen fields</li>
+<li>Dict serialization*</li>
 <li>Direct json serialization with <a href="https://github.com/ijl/orjson">orjson</a> (don't convert to dict before serialization)</li>
-<li>Supports custom serialization</li>
+<li>Optional validation according with the <a href="https://json-schema.org/">json-schema</a> specification*</li>
 </ul>
+<p><em>* feature in development.</em></p>
 <h2 id="requirements">Requirements</h2>
 <ul>
 <li>Python 3.7+</li>
-<li><a href="https://github.com/ijl/orjson">orjson</a> for json serialization</li>
+<li><a href="https://github.com/ijl/orjson">orjson</a> for json serialization (optional, but recommended)</li>
 </ul>
 <h2 id="instalation">Instalation</h2>
 <div class="codehilite"><pre><span></span>$ pip install dataclassesjson[orjson]
@@ -640,8 +644,9 @@
 
 <h2 id="basic-example">Basic example</h2>
 <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">dataclassesjson</span> <span class="kn">import</span> <span class="n">asdataclass</span><span class="p">,</span> <span class="n">asjson</span>
+<span class="kn">from</span> <span class="nn">dataclassesjson</span> <span class="kn">import</span> <span class="n">asdataclass</span><span class="p">,</span> <span class="n">asjson</span><span class="p">,</span> <span class="n">dataclassjson</span>
 
 
 <span class="nd">@dataclass</span>
@@ -649,118 +654,96 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
 
 
+<span class="nd">@dataclassjson</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">music</span><span class="p">:</span> <span class="n">Music</span>
+    <span class="n">musics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Music</span><span class="p">]</span>
 
 
-<span class="n">jsondict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="n">music</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">))</span>
+<span class="n">jsondict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="n">musics</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">)])</span>
 <span class="n">person</span> <span class="o">=</span> <span class="n">asdataclass</span><span class="p">(</span><span class="n">jsondict</span><span class="p">,</span> <span class="n">Person</span><span class="p">)</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">asjson</span><span class="p">(</span><span class="n">person</span><span class="p">))</span>
-</pre></div>
-
-
-<div class="codehilite"><pre><span></span>&#39;{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:40,&quot;music&quot;:{&quot;name&quot;:&quot;Imagine&quot;}}&#39;
-</pre></div>
-
-
-<h2 id="example-for-disable-typecasting">Example for disable typecasting</h2>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">dataclassesjson</span> <span class="kn">import</span> <span class="n">asdict</span><span class="p">,</span> <span class="n">dataclass</span>
-
-
-<span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Music</span><span class="p">:</span>
-    <span class="n">__cast_input__</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-
-
-<span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
-    <span class="n">__cast_input__</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">music</span><span class="p">:</span> <span class="n">Music</span>
-
-
-<span class="n">person</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="n">music</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;Imagine&#39;</span><span class="p">))</span>
-
-<span class="c1"># if we use the &#39;asjson&#39; function will raise error for invalid bytes type</span>
-<span class="k">print</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">person</span><span class="p">))</span>
-</pre></div>
-
-
-<div class="codehilite"><pre><span></span>{
-    &#39;name&#39;:b&#39;John&#39;,
-    &#39;age&#39;:&#39;40&#39;,
-    &#39;music&#39;:{
-        &#39;name&#39;:b&#39;Imagine&#39;
-    }
-}
-</pre></div>
-
-
-<h2 id="example-for-choose-fields-to-typecasting">Example for choose fields to typecasting</h2>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">dataclassesjson</span> <span class="kn">import</span> <span class="n">asjson</span><span class="p">,</span> <span class="n">dataclass</span>
-
-
-<span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Music</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-
-
-<span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
-    <span class="n">__cast_input__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,)</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">music</span><span class="p">:</span> <span class="n">Music</span>
-
-
-<span class="n">person</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="n">music</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">))</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">asjson</span><span class="p">(</span><span class="n">person</span><span class="p">))</span>
-</pre></div>
-
-
-<div class="codehilite"><pre><span></span>&#39;{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:&quot;40&quot;,&quot;music&quot;:{&quot;name&quot;:&quot;Imagine&quot;}}&#39;
-</pre></div>
-
-
-<h2 id="example-for-omit-output-fields">Example for omit output fields</h2>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">dataclassesjson</span> <span class="kn">import</span> <span class="n">asjson</span><span class="p">,</span> <span class="n">dataclass</span>
-
-
-<span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Music</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-
-
-<span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
-    <span class="n">__omit_output__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;music&#39;</span><span class="p">,)</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">music</span><span class="p">:</span> <span class="n">Music</span>
-
-
-<span class="n">person</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">music</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">))</span>
 
 <span class="k">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">asjson</span><span class="p">(</span><span class="n">person</span><span class="p">))</span>
 </pre></div>
 
 
-<div class="codehilite"><pre><span></span>Person(
-    &#39;John&#39;,
-    age=40,
-    music=Music(name=&#39;Imagine&#39;)
-)
-
-&#39;{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:40}&#39;
+<div class="codehilite"><pre><span></span>Person(name=&#39;John&#39;, age=40, musics=[Music(name=&#39;Imagine&#39;)])
+b&#39;{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:40,&quot;musics&quot;:[{&quot;name&quot;:&quot;Imagine&quot;}]}&#39;
 </pre></div>
+
+
+<h2 id="example-for-choose-fields-to-deserialize">Example for choose fields to deserialize</h2>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">dataclassesjson</span> <span class="kn">import</span> <span class="n">asdataclass</span><span class="p">,</span> <span class="n">asjson</span><span class="p">,</span> <span class="n">dataclassjson</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Music</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="nd">@dataclassjson</span><span class="p">(</span><span class="n">deserialize_fields</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">))</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">musics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Music</span><span class="p">]</span>
+
+
+<span class="n">jsondict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="n">musics</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">)])</span>
+<span class="n">person</span> <span class="o">=</span> <span class="n">asdataclass</span><span class="p">(</span><span class="n">jsondict</span><span class="p">,</span> <span class="n">Person</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">asjson</span><span class="p">(</span><span class="n">person</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>Person(name=&#39;John&#39;, age=40, musics=[{&#39;name&#39;: &#39;Imagine&#39;}])
+b&#39;{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:40,&quot;musics&quot;:[{&quot;name&quot;:&quot;Imagine&quot;}]}&#39;
+</pre></div>
+
+
+<h2 id="example-for-choose-fields-to-serialize">Example for choose fields to serialize</h2>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">dataclassesjson</span> <span class="kn">import</span> <span class="n">asdataclass</span><span class="p">,</span> <span class="n">asjson</span><span class="p">,</span> <span class="n">dataclassjson</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Music</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="nd">@dataclassjson</span><span class="p">(</span><span class="n">serialize_fields</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">))</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">musics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Music</span><span class="p">]</span>
+
+
+<span class="n">jsondict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">musics</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">)])</span>
+<span class="n">person</span> <span class="o">=</span> <span class="n">asdataclass</span><span class="p">(</span><span class="n">jsondict</span><span class="p">,</span> <span class="n">Person</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">asjson</span><span class="p">(</span><span class="n">person</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>Person(name=&#39;John&#39;, age=40, musics=[Music(name=&#39;Imagine&#39;)])
+b&#39;{&quot;age&quot;:40,&quot;name&quot;:&quot;John&quot;}&#39;
+</pre></div>
+
+
+<h2 id="wins-pydantic-benchmark">Wins <a href="https://github.com/samuelcolvin/pydantic">Pydantic</a> Benchmark</h2>
+<p><code>dataclassesjson</code> is <em>2.5 times</em> faster than pydantic on it's benchmark</p>
+<p><img alt="pydantic benchmark" src="benchmark.png" title="Pydantic Benchmark" /></p>
                 
                   
                 

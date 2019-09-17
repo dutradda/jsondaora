@@ -7,7 +7,7 @@ from dataclassesjson.dataclassjson import dataclassjson
 from dataclassesjson.schema import integer, string
 
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 
 __all__ = [

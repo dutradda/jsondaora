@@ -159,4 +159,4 @@ b'{"age":40,"name":"John"}'
 
 `dataclassesjson` is *2.5 times* faster than pydantic on it's benchmark
 
-![pydantic benchmark](benchmark.png "Pydantic Benchmark")
+![pydantic benchmark](https://dutradda.github.io/dataclassesjson/benchmark.png "Pydantic Benchmark")

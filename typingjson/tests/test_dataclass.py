@@ -16,8 +16,7 @@ def tests_should_deserialize_optional_args():
         {'test': 'test', 'test_default': '1'}, FakeDataclass
     )
 
-    assert dataclass_.test == 'test'
-    assert dataclass_.test_default == 1
+    assert dataclass_ == FakeDataclass('test', 1)
 
 
 def tests_should_deserialize_union_args():
@@ -27,7 +26,7 @@ def tests_should_deserialize_union_args():
 
     dataclass_ = asdataclass({'test_union': b'1'}, FakeDataclass)
 
-    assert dataclass_.test_union == 1
+    assert dataclass_ == FakeDataclass(1)
 
 
 def tests_should_deserialize_list_args():
@@ -37,7 +36,7 @@ def tests_should_deserialize_list_args():
 
     dataclass_ = asdataclass({'test_list': [b'1', '2', 3]}, FakeDataclass)
 
-    assert dataclass_.test_list == [1, 2, 3]
+    assert dataclass_ == FakeDataclass([1, 2, 3])
 
 
 def tests_should_deserialize_list_args_nested():
@@ -55,12 +54,14 @@ def tests_should_deserialize_list_args_nested():
         {'fakes': fakes_data, 'fakeint': '1'}, FakeDataclass2
     )
 
-    assert dataclass_.fakes == [
-        FakeDataclass('fake11'),
-        FakeDataclass('fake12'),
-        FakeDataclass('fake13'),
-    ]
-    assert dataclass_.fakeint == 1
+    assert dataclass_ == FakeDataclass2(
+        [
+            FakeDataclass('fake11'),
+            FakeDataclass('fake12'),
+            FakeDataclass('fake13'),
+        ],
+        1,
+    )
 
 
 def tests_should_deserialize_bytes_to_string():
@@ -70,7 +71,7 @@ def tests_should_deserialize_bytes_to_string():
 
     dataclass_ = asdataclass({'test_union': b'test'}, FakeDataclass)
 
-    assert dataclass_.test_union == 'test'
+    assert dataclass_ == FakeDataclass('test')
 
 
 def tests_should_deserialize_nested_jsondict():
@@ -84,8 +85,7 @@ def tests_should_deserialize_nested_jsondict():
 
     dataclass_ = asdataclass({'fake': {'test': b'test'}}, FakeDataclass2)
 
-    assert isinstance(dataclass_.fake, FakeDataclass)
-    assert dataclass_.fake.test == 'test'
+    assert dataclass_ == FakeDataclass2(FakeDataclass('test'))
 
 
 def tests_should_choose_fields_to_deserialize():
@@ -97,8 +97,7 @@ def tests_should_choose_fields_to_deserialize():
 
     dataclass_ = asdataclass({'test': '1', 'test2': 2}, FakeDataclass)
 
-    assert dataclass_.test == '1'
-    assert dataclass_.test2 == '2'
+    assert dataclass_ == FakeDataclass('1', '2')
 
 
 def tests_should_serialize_all_fields_with_choosen_deserialize_fields():

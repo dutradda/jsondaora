@@ -1,5 +1,5 @@
-## dataclassesjson features
+## typingjson features
 
-**dataclassesjson** gives you the following:
+**typingjson** gives you the following:
 
 ### Same interface as dataclasses module, plus extensions 

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List
 
-from dataclassesjson import asdataclass, asjson, dataclassjson
+from typingjson import asdataclass, asjson, typingjson
 
 
 @dataclass
@@ -9,7 +9,7 @@ class Music:
     name: str
 
 
-@dataclassjson(deserialize_fields=('name', 'age'))
+@typingjson(deserialize_fields=('name', 'age'))
 @dataclass
 class Person:
     name: str

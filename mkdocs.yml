@@ -1,4 +1,4 @@
-site_name: dataclassesjson
+site_name: typingjson
 site_description: Interoperates @dataclass with json objects
 
 
@@ -7,18 +7,18 @@ theme:
     palette:
       primary: 'black'
       accent: 'grey'
-    logo: 'dataclassesjson-white.svg'
+    logo: 'typingjson-white.svg'
     favicon: 'favicon.png'
 
-repo_name: dutradda/dataclassesjson
-repo_url: https://github.com/dutradda/dataclassesjson
+repo_name: dutradda/typingjson
+repo_url: https://github.com/dutradda/typingjson
 edit_uri: ''
 google_analytics:
     - ''
     - 'auto'
 
 nav:
-    - dataclassesjson: 'index.md'
+    - typingjson: 'index.md'
     - Features: 'features.md'
     - Python dataclass intro: 'python-dataclass.md'
     - Json intro: 'json.md'
@@ -31,7 +31,7 @@ nav:
         - Custom Json Serializer: 'tutorial/custom-json-serializer.md'
     - Alternatives, Inspiration and Comparisons: 'alternatives.md'
     - Benchmarks: 'benchmarks.md'
-    - Help dataclassesjson - Get Help: 'help.md'
+    - Help typingjson - Get Help: 'help.md'
     - Development - Contributing: 'contributing.md'
     - Changelog: changelog.md
 

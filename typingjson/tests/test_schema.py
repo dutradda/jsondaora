@@ -1,7 +1,7 @@
 import pytest
 
-from dataclassesjson.exceptions import DeserializationError
-from dataclassesjson.schema import integer, string
+from typingjson.exceptions import DeserializationError
+from typingjson.schema import integer, string
 
 
 def test_should_validate_minimum_integer():

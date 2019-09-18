@@ -6,7 +6,7 @@ help:  ## This help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
 
 build-virtualenv:
-	@virtualenv venv --python python3.7 --prompt 'dataclassesjson-> '
+	@virtualenv venv --python python3.7 --prompt 'typingjson-> '
 
 build-docs:
 	@mkdocs build
@@ -29,22 +29,22 @@ release-pypi:
 check-code: isort black flake8 mypy
 
 isort:
-	@isort --recursive --apply dataclassesjson docs/src
+	@isort --recursive --apply typingjson docs/src
 
 black:
-	@black dataclassesjson docs/src
+	@black typingjson docs/src
 
 flake8:
-	@flake8 dataclassesjson docs/src
+	@flake8 typingjson docs/src
 
 mypy:
-	@mypy --strict dataclassesjson # docs/src/index
+	@mypy --strict typingjson # docs/src/index
 
 dependencies:
 	@flit install --deps develop --extras all
 
 tests:  ## Run tests
-	@pytest -xvv --cov dataclassesjson --no-cov-on-fail --cov-report=term-missing dataclassesjson/tests
+	@pytest -xvv --cov typingjson --no-cov-on-fail --cov-report=term-missing typingjson/tests
 	@docs/src/test.sh
 
 integration:

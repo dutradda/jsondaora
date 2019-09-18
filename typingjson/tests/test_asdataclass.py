@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import List, Optional, Union
 
-from dataclassesjson import asdataclass, asjson, dataclassjson
+from typingjson import asdataclass, asjson, typingjson
 
 
 def tests_should_deserialize_optional_args():
@@ -89,7 +89,7 @@ def tests_should_deserialize_nested_jsondict():
 
 
 def tests_should_choose_fields_to_deserialize():
-    @dataclassjson(deserialize_fields=('test2',))
+    @typingjson(deserialize_fields=('test2',))
     @dataclass
     class FakeDataclass:
         test: int
@@ -102,7 +102,7 @@ def tests_should_choose_fields_to_deserialize():
 
 
 def tests_should_serialize_all_fields_with_choosen_deserialize_fields():
-    @dataclassjson(deserialize_fields=('test2',))
+    @typingjson(deserialize_fields=('test2',))
     @dataclass
     class FakeDataclass:
         test: int

@@ -1,8 +1,8 @@
-# dataclassesjson
+# typingjson
 
 <p align="center" style="margin: 3em">
-  <a href="https://github.com/dutradda/dataclassesjson">
-    <img src="https://dutradda.github.io/dataclassesjson/dataclassesjson.svg" alt="dataclassesjson" width="300"/>
+  <a href="https://github.com/dutradda/typingjson">
+    <img src="https://dutradda.github.io/typingjson/typingjson.svg" alt="typingjson" width="300"/>
   </a>
 </p>
 
@@ -12,9 +12,9 @@
 
 ---
 
-**Documentation**: <a href="https://dutradda.github.io/dataclassesjson" target="_blank">https://dutradda.github.io/dataclassesjson</a>
+**Documentation**: <a href="https://dutradda.github.io/typingjson" target="_blank">https://dutradda.github.io/typingjson</a>
 
-**Source Code**: <a href="https://github.com/dutradda/dataclassesjson" target="_blank">https://github.com/dutradda/dataclassesjson</a>
+**Source Code**: <a href="https://github.com/dutradda/typingjson" target="_blank">https://github.com/dutradda/typingjson</a>
 
 ---
 
@@ -40,7 +40,7 @@
 
 ## Instalation
 ```
-$ pip install dataclassesjson[orjson]
+$ pip install typingjson[orjson]
 ```
 
 
@@ -50,7 +50,7 @@ $ pip install dataclassesjson[orjson]
 from dataclasses import dataclass
 from typing import List
 
-from dataclassesjson import asdataclass, asjson, dataclassjson
+from typingjson import asdataclass, asjson, typingjson
 
 
 @dataclass
@@ -58,7 +58,7 @@ class Music:
     name: str
 
 
-@dataclassjson
+@typingjson
 @dataclass
 class Person:
     name: str
@@ -87,7 +87,7 @@ b'{"name":"John","age":40,"musics":[{"name":"Imagine"}]}'
 from dataclasses import dataclass
 from typing import List
 
-from dataclassesjson import asdataclass, asjson, dataclassjson
+from typingjson import asdataclass, asjson, typingjson
 
 
 @dataclass
@@ -95,7 +95,7 @@ class Music:
     name: str
 
 
-@dataclassjson(deserialize_fields=('name', 'age'))
+@typingjson(deserialize_fields=('name', 'age'))
 @dataclass
 class Person:
     name: str
@@ -124,7 +124,7 @@ b'{"name":"John","age":40,"musics":[{"name":"Imagine"}]}'
 from dataclasses import dataclass
 from typing import List
 
-from dataclassesjson import asdataclass, asjson, dataclassjson
+from typingjson import asdataclass, asjson, typingjson
 
 
 @dataclass
@@ -132,7 +132,7 @@ class Music:
     name: str
 
 
-@dataclassjson(serialize_fields=('name', 'age'))
+@typingjson(serialize_fields=('name', 'age'))
 @dataclass
 class Person:
     name: str
@@ -157,6 +157,6 @@ b'{"age":40,"name":"John"}'
 
 ## Wins [Pydantic](https://github.com/samuelcolvin/pydantic) Benchmark
 
-`dataclassesjson` is *2.5 times* faster than pydantic on it's benchmark
+`typingjson` is *2.5 times* faster than pydantic on it's benchmark
 
-![pydantic benchmark](https://dutradda.github.io/dataclassesjson/benchmark.png "Pydantic Benchmark")
+![pydantic benchmark](https://dutradda.github.io/typingjson/benchmark.png "Pydantic Benchmark")

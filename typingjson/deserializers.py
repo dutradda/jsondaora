@@ -10,8 +10,8 @@ from typing import (  # type: ignore
     _GenericAlias,
 )
 
-from dataclassesjson.dataclassjson import DeserializeFields
-from dataclassesjson.exceptions import DeserializationError
+from .exceptions import DeserializationError
+from .fields import DeserializeFields
 
 
 logger = getLogger(__name__)

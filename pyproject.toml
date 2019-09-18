@@ -3,10 +3,10 @@ requires = ['flit']
 build-backend = 'flit.buildapi'
 
 [tool.flit.metadata]
-module = 'dataclassesjson'
+module = 'typingjson'
 author = 'Diogo Dutra'
 author-email = 'diogodutradamata@gmail.com'
-home-page = 'https://github.com/dutradda/dataclassesjson'
+home-page = 'https://github.com/dutradda/typingjson'
 classifiers = [
     'License :: OSI Approved :: MIT License',
     'Development Status :: 1 - Planning',
@@ -17,10 +17,10 @@ classifiers = [
 ]
 requires = []
 description-file = 'README.md'
-requires-python = '>=3.7'
+requires-python = '>=3.8'
 
 [tool.flit.metadata.urls]
-Documentation = 'https://dutradda.github.io/dataclassesjson/'
+Documentation = 'https://dutradda.github.io/typingjson/'
 
 [tool.flit.metadata.requires-extra]
 test = [
@@ -57,49 +57,19 @@ atomic = '1'
 exclude = '''
     \.pyi
 '''
-target-version = ['py37']
+target-version = ['py38']
 line-length = '79'
 skip-string-normalization = '1'
 
 [tool.towncrier]
-    package = 'dataclassesjson'
+    package = 'typingjson'
     package_dir = ''
-    filename = 'CHANGELOG.md'
+    filename = 'docs/CHANGELOG.md'
     title_format =  '{version} ({project_date})'
     directory = 'changelog.d'
     template = 'towncrier_template.rst'
 
     [[tool.towncrier.type]]
-        directory = "feature"
-        name = "Features"
-        showcontent = true
-
-    [[tool.towncrier.type]]
-        directory = "bugfix"
-        name = "Bugfixes"
-        showcontent = true
-
-    [[tool.towncrier.type]]
-        directory = "doc"
-        name = "Improved Documentation"
-        showcontent = true
-
-    [[tool.towncrier.type]]
-        directory = "removal"
-        name = "Deprecations and Removals"
-        showcontent = true
-
-    [[tool.towncrier.type]]
-        directory = "misc"
-        name = "Misc"
-        showcontent = true
-
-    [[tool.towncrier.type]]
-        directory = "refactor"
-        name = "Refactoring"
-        showcontent = true
-
-    [[tool.towncrier.type]]
-        directory = "improve"
-        name = "Improvement"
+        directory = "change"
+        name = "Changes"
         showcontent = true

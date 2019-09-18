@@ -1,7 +1,7 @@
 from types import MethodType
 from typing import Any, Callable, Dict, Optional, Sequence, Type
 
-from dataclassesjson.exceptions import DeserializationError
+from .exceptions import DeserializationError
 
 
 def string(

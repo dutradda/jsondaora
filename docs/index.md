@@ -1,8 +1,8 @@
-# dataclassesjson
+# typingjson
 
 <p align="center" style="margin: 3em">
-  <a href="https://github.com/dutradda/dataclassesjson">
-    <img src="https://dutradda.github.io/dataclassesjson/dataclassesjson.svg" alt="dataclassesjson" width="300"/>
+  <a href="https://github.com/dutradda/typingjson">
+    <img src="https://dutradda.github.io/typingjson/typingjson.svg" alt="typingjson" width="300"/>
   </a>
 </p>
 
@@ -12,9 +12,9 @@
 
 ---
 
-**Documentation**: <a href="https://dutradda.github.io/dataclassesjson" target="_blank">https://dutradda.github.io/dataclassesjson</a>
+**Documentation**: <a href="https://dutradda.github.io/typingjson" target="_blank">https://dutradda.github.io/typingjson</a>
 
-**Source Code**: <a href="https://github.com/dutradda/dataclassesjson" target="_blank">https://github.com/dutradda/dataclassesjson</a>
+**Source Code**: <a href="https://github.com/dutradda/typingjson" target="_blank">https://github.com/dutradda/typingjson</a>
 
 ---
 
@@ -40,7 +40,7 @@
 
 ## Instalation
 ```
-$ pip install dataclassesjson[orjson]
+$ pip install typingjson[orjson]
 ```
 
 
@@ -79,6 +79,6 @@ $ pip install dataclassesjson[orjson]
 
 ## Wins [Pydantic](https://github.com/samuelcolvin/pydantic) Benchmark
 
-`dataclassesjson` is *2.5 times* faster than pydantic on it's benchmark
+`typingjson` is *2.5 times* faster than pydantic on it's benchmark
 
-![pydantic benchmark](https://dutradda.github.io/dataclassesjson/benchmark.png "Pydantic Benchmark")
+![pydantic benchmark](https://dutradda.github.io/typingjson/benchmark.png "Pydantic Benchmark")

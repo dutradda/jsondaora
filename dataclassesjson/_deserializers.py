@@ -1,5 +1,6 @@
 import dataclasses
 from datetime import datetime
+from logging import getLogger
 from typing import (  # type: ignore
     TYPE_CHECKING,
     Any,
@@ -12,6 +13,8 @@ from typing import (  # type: ignore
 from dataclassesjson.dataclassjson import DeserializeFields
 from dataclassesjson.exceptions import DeserializationError
 
+
+logger = getLogger(__name__)
 
 _ERROR_MSG = 'Invalid type={generic} for field={field}'
 
@@ -81,12 +84,10 @@ def _deserialize_field(field: _Field, value: Any) -> Any:
         if value is not None:
             return field_type(value)
 
-        raise DeserializationError(
-            f'Required field not found error: {field.name}'
-        )
+        raise DeserializationError(field, value)
 
     except (TypeError, ValueError) as error:
-        raise DeserializationError(field.name, *error.args) from error
+        raise DeserializationError(field, value, error) from error
 
 
 def _deserialize_generic_type(generic: Any, field: str, value: Any) -> Any:
@@ -102,7 +103,7 @@ def _deserialize_union(generic: Any, field: str, value: Any) -> Any:
     nullable = False
 
     for arg in generic.__args__:
-        if not isinstance(arg, type(None)):
+        if arg is not type(None):  # noqa
             try:
                 return arg(value)
             except TypeError:

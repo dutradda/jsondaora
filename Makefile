@@ -26,10 +26,18 @@ deploy: deploy-docs
 release-pypi:
 	@flit publish
 
-check-code:
+check-code: isort black flake8 mypy
+
+isort:
 	@isort --recursive --apply dataclassesjson docs/src
+
+black:
 	@black dataclassesjson docs/src
+
+flake8:
 	@flake8 dataclassesjson docs/src
+
+mypy:
 	@mypy --strict dataclassesjson # docs/src/index
 
 dependencies:

@@ -18,9 +18,6 @@ class OrjsonDefaultTypes:
 
     @classmethod
     def set_type(cls, type_: Type[Any]) -> None:
-        if not dataclasses.is_dataclass(type_):
-            return
-
         if type_ in cls.types_default_map:
             return
 

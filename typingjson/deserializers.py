@@ -24,18 +24,18 @@ def deserialize_jsondict_fields(
 ) -> Dict[str, Any]:
     custom_fields = DeserializeFields.get_fields(cls)
     all_fields = dataclasses.fields(cls)
-    dataclasses_kwargs = {}
+    deserialized = {}
     fields = custom_fields if custom_fields else all_fields
 
     for field in fields:
         value = jsondict.get(field.name)
-        dataclasses_kwargs[field.name] = _deserialize_field(field, value)
+        deserialized[field.name] = _deserialize_field(field, value)
 
     if custom_fields:
         for field in set(all_fields) - set(custom_fields):
-            dataclasses_kwargs[field.name] = jsondict[field.name]
+            deserialized[field.name] = jsondict[field.name]
 
-    return dataclasses_kwargs
+    return deserialized
 
 
 if TYPE_CHECKING:

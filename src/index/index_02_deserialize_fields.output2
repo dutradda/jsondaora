@@ -1,2 +1,7 @@
-Person(name='John', age=40, musics=[{'name': 'Imagine'}])
-b'{"age":40,"name":"John","musics":[{"name":"Imagine"}]}'
+dataclass:
+Person(name='John', age='40', musics=[{'name': 'Imagine'}])
+b'{"name":"John","age":"40","musics":[{"name":"Imagine"}]}'
+
+TypedDict:
+{'name': 'John', 'age': '40', 'musics': [{'name': 'Imagine'}]}
+b'{"name":"John","age":"40","musics":[{"name":"Imagine"}]}'

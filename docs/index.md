@@ -2,7 +2,7 @@
 
 <p align="center" style="margin: 3em">
   <a href="https://github.com/dutradda/typingjson">
-    <img src="typingjson.svg" alt="typingjson" width="300"/>
+    <img src="https://dutradda.github.io/typingjson/typingjson.svg" alt="typingjson" width="300"/>
   </a>
 </p>
 
@@ -81,4 +81,4 @@ $ pip install typingjson
 
 `typingjson` is up to *5.6 times* faster than pydantic on it's benchmark
 
-![pydantic benchmark](benchmark.png "Pydantic Benchmark")
+![pydantic benchmark](https://dutradda.github.io/typingjson/benchmark.png "Pydantic Benchmark")

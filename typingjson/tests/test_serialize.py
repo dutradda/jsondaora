@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from typingjson import asdataclass, asjson, typingjson
+from typingjson import asdataclass, dataclass_asjson, typingjson
 
 
 def tests_should_serialize_string_with_orjson():
@@ -13,7 +13,7 @@ def tests_should_serialize_string_with_orjson():
 
     dataclass_ = asdataclass({'test_union': b'test'}, FakeDataclass)
 
-    json = asjson(dataclass_)
+    json = dataclass_asjson(dataclass_)
 
     assert json == b'{"test_union":"test"}'
 
@@ -31,7 +31,7 @@ def tests_should_serialize_nested_dataclasses_with_orjson():
 
     dataclass_ = asdataclass({'fake': {'test': b'1'}}, FakeDataclass2)
 
-    json = asjson(dataclass_)
+    json = dataclass_asjson(dataclass_)
 
     assert json == b'{"fake":{"test":1}}'
 
@@ -45,7 +45,7 @@ def tests_should_choose_fields_to_serialize():
 
     dataclass_ = asdataclass({'test': 1, 'test2': 2}, FakeDataclass)
 
-    json = asjson(dataclass_)
+    json = dataclass_asjson(dataclass_)
 
     assert json == b'{"test2":"2"}'
     assert dataclass_.test == 1

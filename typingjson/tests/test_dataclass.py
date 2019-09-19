@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import List, Optional, Union
 
-from typingjson import asdataclass, asjson, typingjson
+from typingjson import asdataclass, dataclass_asjson, typingjson
 
 
 def tests_should_deserialize_optional_args():
@@ -109,4 +109,4 @@ def tests_should_serialize_all_fields_with_choosen_deserialize_fields():
 
     dataclass_ = asdataclass({'test': '1', 'test2': 2}, FakeDataclass)
 
-    assert asjson(dataclass_) == b'{"test":"1","test2":"2"}'
+    assert dataclass_asjson(dataclass_) == b'{"test":"1","test2":"2"}'

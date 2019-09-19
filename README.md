@@ -2,12 +2,12 @@
 
 <p align="center" style="margin: 3em">
   <a href="https://github.com/dutradda/typingjson">
-    <img src="https://dutradda.github.io/typingjson/typingjson.svg" alt="typingjson" width="300"/>
+    <img src="typingjson.svg" alt="typingjson" width="300"/>
   </a>
 </p>
 
 <p align="center">
-    <em>Interoperates <b>@dataclass</b> with <b>json objects</b></em>
+    <em>Interoperates <b>dataclasses</b> and <b>TypedDict</b> with <b>json objects</b></em>
 </p>
 
 ---
@@ -21,11 +21,11 @@
 
 ## Key Features
 
-- Full compatibility with [dataclasses](https://docs.python.org/3/library/dataclasses.html) module*
+- Full compatibility with [dataclasses](https://docs.python.org/3/library/dataclasses.html) module and [TypedDict](https://www.python.org/dev/peps/pep-0589/) annotation
 - Deserialize values from dict
 - Deserialize values from bytes*
 - Deserialization/serialization of choosen fields
-- Dict serialization*
+- Dict serialization
 - Direct json serialization with [orjson](https://github.com/ijl/orjson) (don't convert to dict before serialization)
 - Optional validation according with the [json-schema](https://json-schema.org/) specification*
 
@@ -34,13 +34,13 @@
 
 ## Requirements
 
- - Python 3.7+
- - [orjson](https://github.com/ijl/orjson) for json serialization (optional, but recommended)
+ - Python 3.8+
+ - [orjson](https://github.com/ijl/orjson) for json serialization
 
 
 ## Instalation
 ```
-$ pip install typingjson[orjson]
+$ pip install typingjson
 ```
 
 
@@ -48,9 +48,18 @@ $ pip install typingjson[orjson]
 
 ```python
 from dataclasses import dataclass
-from typing import List
+from typing import List, TypedDict
 
-from typingjson import asdataclass, asjson, typingjson
+from typingjson import (
+    as_typed_dict,
+    asdataclass,
+    dataclass_asjson,
+    typed_dict_asjson,
+    typingjson,
+)
+
+
+# dataclass
 
 
 @dataclass
@@ -58,8 +67,10 @@ class Music:
     name: str
 
 
+# if 'Person' is not a dataclass the
+# 'typingjson' decorator will call the
+# 'dataclass' decorator
 @typingjson
-@dataclass
 class Person:
     name: str
     age: int
@@ -69,13 +80,45 @@ class Person:
 jsondict = dict(name=b'John', age='40', musics=[dict(name='Imagine')])
 person = asdataclass(jsondict, Person)
 
+print('dataclass:')
 print(person)
-print(asjson(person))
+print(dataclass_asjson(person))
+print()
+
+
+# TypedDict
+
+
+@typingjson
+class Music(TypedDict):
+    name: str
+
+
+# This decorator is required because
+# we need to track the annotations
+@typingjson
+class Person(TypedDict):
+    name: str
+    age: int
+    musics: List[Music]
+
+
+jsondict = dict(name=b'John', age='40', musics=[dict(name='Imagine')])
+person = as_typed_dict(jsondict, Person)
+
+print('TypedDict:')
+print(person)
+print(typed_dict_asjson(person, Person))
 
 ```
 
 ```
+dataclass:
 Person(name='John', age=40, musics=[Music(name='Imagine')])
+b'{"name":"John","age":40,"musics":[{"name":"Imagine"}]}'
+
+TypedDict:
+{'name': 'John', 'age': 40, 'musics': [{'name': 'Imagine'}]}
 b'{"name":"John","age":40,"musics":[{"name":"Imagine"}]}'
 
 ```
@@ -85,9 +128,15 @@ b'{"name":"John","age":40,"musics":[{"name":"Imagine"}]}'
 
 ```python
 from dataclasses import dataclass
-from typing import List
+from typing import List, TypedDict
 
-from typingjson import asdataclass, asjson, typingjson
+from typingjson import (
+    as_typed_dict,
+    asdataclass,
+    dataclass_asjson,
+    typed_dict_asjson,
+    typingjson,
+)
 
 
 @dataclass
@@ -95,8 +144,7 @@ class Music:
     name: str
 
 
-@typingjson(deserialize_fields=('name', 'age'))
-@dataclass
+@typingjson(deserialize_fields=('name'))
 class Person:
     name: str
     age: int
@@ -106,14 +154,44 @@ class Person:
 jsondict = dict(name=b'John', age='40', musics=[dict(name='Imagine')])
 person = asdataclass(jsondict, Person)
 
+print('dataclass:')
 print(person)
-print(asjson(person))
+print(dataclass_asjson(person))
+print()
+
+
+# TypedDict
+
+
+@typingjson
+class Music(TypedDict):
+    name: str
+
+
+@typingjson(deserialize_fields=('name'))
+class Person(TypedDict):
+    name: str
+    age: int
+    musics: List[Music]
+
+
+jsondict = dict(name=b'John', age='40', musics=[dict(name='Imagine')])
+person = as_typed_dict(jsondict, Person)
+
+print('TypedDict:')
+print(person)
+print(typed_dict_asjson(person, Person))
 
 ```
 
 ```
-Person(name='John', age=40, musics=[{'name': 'Imagine'}])
-b'{"name":"John","age":40,"musics":[{"name":"Imagine"}]}'
+dataclass:
+Person(name='John', age='40', musics=[{'name': 'Imagine'}])
+b'{"name":"John","age":"40","musics":[{"name":"Imagine"}]}'
+
+TypedDict:
+{'name': 'John', 'musics': [{'name': 'Imagine'}], 'age': '40'}
+b'{"name":"John","musics":[{"name":"Imagine"}],"age":"40"}'
 
 ```
 
@@ -122,9 +200,15 @@ b'{"name":"John","age":40,"musics":[{"name":"Imagine"}]}'
 
 ```python
 from dataclasses import dataclass
-from typing import List
+from typing import List, TypedDict
 
-from typingjson import asdataclass, asjson, typingjson
+from typingjson import (
+    as_typed_dict,
+    asdataclass,
+    dataclass_asjson,
+    typed_dict_asjson,
+    typingjson,
+)
 
 
 @dataclass
@@ -143,20 +227,50 @@ class Person:
 jsondict = dict(name='John', age=40, musics=[dict(name='Imagine')])
 person = asdataclass(jsondict, Person)
 
+print('dataclass:')
 print(person)
-print(asjson(person))
+print(dataclass_asjson(person))
+print()
+
+
+# TypedDict
+
+
+@typingjson
+class Music(TypedDict):
+    name: str
+
+
+@typingjson(serialize_fields=('age'))
+class Person(TypedDict):
+    name: str
+    age: int
+    musics: List[Music]
+
+
+jsondict = dict(name=b'John', age='40', musics=[dict(name='Imagine')])
+person = as_typed_dict(jsondict, Person)
+
+print('TypedDict:')
+print(person)
+print(typed_dict_asjson(person, Person))
 
 ```
 
 ```
+dataclass:
 Person(name='John', age=40, musics=[Music(name='Imagine')])
 b'{"age":40,"name":"John"}'
+
+TypedDict:
+{'name': 'John', 'age': 40, 'musics': [{'name': 'Imagine'}]}
+b'{"age":40}'
 
 ```
 
 
 ## Wins [Pydantic](https://github.com/samuelcolvin/pydantic) Benchmark
 
-`typingjson` is *2.5 times* faster than pydantic on it's benchmark
+`typingjson` is up to *5.6 times* faster than pydantic on it's benchmark
 
-![pydantic benchmark](https://dutradda.github.io/typingjson/benchmark.png "Pydantic Benchmark")
+![pydantic benchmark](benchmark.png "Pydantic Benchmark")

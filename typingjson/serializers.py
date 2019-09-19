@@ -1,5 +1,5 @@
 import dataclasses
-from typing import Any, Callable, Dict, Type
+from typing import Any, Callable, Dict, Type, _TypedDictMeta  # type: ignore
 
 import orjson
 
@@ -7,10 +7,34 @@ from .dataclasses import asdict
 from .fields import SerializeFields
 
 
-def asjson(instance: Any, decoder: Any = orjson) -> bytes:
+def dataclass_asjson(instance: Any) -> bytes:
     return orjson.dumps(
         instance, default=OrjsonDefaultTypes.default_function(instance)
     )
+
+
+def typed_dict_asjson(
+    typed_dict: Dict[str, Any], typed_dict_type: _TypedDictMeta
+) -> bytes:
+    return orjson.dumps(_choose_typed_dict_fields(typed_dict, typed_dict_type))
+
+
+def _choose_typed_dict_fields(
+    typed_dict: Dict[str, Any], typed_dict_type: _TypedDictMeta
+) -> Dict[str, Any]:
+    fields = SerializeFields.get_fields(typed_dict_type)
+
+    if not fields:
+        return typed_dict
+
+    return {
+        f.name: (
+            _choose_typed_dict_fields(typed_dict[f.name], f.type)
+            if isinstance(typed_dict[f.name], dict)
+            else typed_dict[f.name]
+        )
+        for f in fields
+    }
 
 
 class OrjsonDefaultTypes:

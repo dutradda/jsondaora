@@ -2,7 +2,7 @@
 
 from typing import List, Optional, TypedDict, Union
 
-from typingjson import as_typed_dict, asjson, typingjson
+from typingjson import as_typed_dict, typed_dict_asjson, typingjson
 
 
 def tests_should_deserialize_optional_args():
@@ -99,7 +99,7 @@ def tests_should_serialize_all_fields_with_choosen_deserialize_fields():
 
     typed_dict = as_typed_dict({'test': '1', 'test2': 2}, FakeTypedDict)
 
-    assert asjson(typed_dict) in [
+    assert typed_dict_asjson(typed_dict, FakeTypedDict) in [
         b'{"test":"1","test2":"2"}',
         b'{"test2":"2","test":"1"}',
     ]

@@ -1,4 +1,5 @@
 import dataclasses
+from logging import getLogger
 from typing import (  # type: ignore
     Any,
     Iterable,
@@ -11,19 +12,20 @@ from .fields import DeserializeFields, SerializeFields
 from .serializers import OrjsonDefaultTypes
 
 
+logger = getLogger(__name__)
+
+
 def typingjson(
     type_: Optional[Type[Any]] = None,
     deserialize_fields: Optional[Iterable[str]] = None,
     serialize_fields: Optional[Iterable[str]] = None,
 ) -> Any:
-    def wrap(type__: Type[Any]) -> Type[Any]:
+    def wrap(type__: Type[Any]) -> Any:
         if isinstance(type__, _TypedDictMeta):
             set_typed_dict_fields(type__)
 
         else:
-            if not dataclasses.is_dataclass(type__):
-                type__ = dataclasses.dataclass(type__)
-
+            type__ = dataclasses.dataclass(type__)
             OrjsonDefaultTypes.set_type(type__)
 
         if deserialize_fields is not None:

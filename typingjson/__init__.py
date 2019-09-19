@@ -7,7 +7,7 @@ from typingjson.serializers import dataclass_asjson, typed_dict_asjson
 from typingjson.typed_dict import as_typed_dict
 
 
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 
 
 __all__ = [

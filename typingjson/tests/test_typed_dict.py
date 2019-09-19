@@ -1,5 +1,6 @@
 # type: ignore
 
+import dataclasses
 from typing import List, Optional, TypedDict, Union
 
 from typingjson import as_typed_dict, typed_dict_asjson, typingjson
@@ -103,3 +104,38 @@ def tests_should_serialize_all_fields_with_choosen_deserialize_fields():
         b'{"test":"1","test2":"2"}',
         b'{"test2":"2","test":"1"}',
     ]
+
+
+def tests_should_set_dataclass_fields_on_typed_dict():
+    @typingjson
+    class FakeTypedDict(TypedDict):
+        test: int
+        test2: str
+
+    fields = dataclasses.fields(FakeTypedDict)
+
+    assert len(fields) == 2
+    assert fields[0].type == int
+    assert fields[1].type == str
+
+
+def tests_should_set_dataclass_fields_on_typed_dict_with_inheritance():
+    @typingjson
+    class FakeTypedDict2(TypedDict):
+        test: float
+
+    @typingjson
+    class FakeTypedDict(FakeTypedDict2):
+        test2: int
+        test3: str
+
+    @typingjson
+    class Fake:
+        fake: FakeTypedDict
+
+    fake = Fake(FakeTypedDict2())
+
+    fake_field = type(fake).__dataclass_fields__[  # type: ignore
+        'fake'
+    ]
+    assert fake_field.type is FakeTypedDict

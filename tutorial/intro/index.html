@@ -38,7 +38,7 @@
     
     
       
-        <title>Introduciton - dataclassesjson</title>
+        <title>Introduciton - typingjson</title>
       
     
     
@@ -121,9 +121,9 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="../.." title="dataclassesjson" class="md-header-nav__button md-logo">
+        <a href="../.." title="typingjson" class="md-header-nav__button md-logo">
           
-            <img src="../../dataclassesjson-white.svg" width="24" height="24">
+            <img src="../../typingjson-white.svg" width="24" height="24">
           
         </a>
       </div>
@@ -134,7 +134,7 @@
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
           
             <span class="md-header-nav__topic">
-              dataclassesjson
+              typingjson
             </span>
             <span class="md-header-nav__topic">
               
@@ -180,7 +180,7 @@
 
   
 
-<a href="https://github.com/dutradda/dataclassesjson" title="Go to repository" class="md-source" data-md-source="github">
+<a href="https://github.com/dutradda/typingjson" title="Go to repository" class="md-source" data-md-source="github">
   
     <div class="md-source__icon">
       <svg viewBox="0 0 24 24" width="24" height="24">
@@ -189,7 +189,7 @@
     </div>
   
   <div class="md-source__repository">
-    dutradda/dataclassesjson
+    dutradda/typingjson
   </div>
 </a>
           </div>
@@ -213,12 +213,12 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="../.." title="dataclassesjson" class="md-nav__button md-logo">
+    <a href="../.." title="typingjson" class="md-nav__button md-logo">
       
-        <img src="../../dataclassesjson-white.svg" width="48" height="48">
+        <img src="../../typingjson-white.svg" width="48" height="48">
       
     </a>
-    dataclassesjson
+    typingjson
   </label>
   
     <div class="md-nav__source">
@@ -227,7 +227,7 @@
 
   
 
-<a href="https://github.com/dutradda/dataclassesjson" title="Go to repository" class="md-source" data-md-source="github">
+<a href="https://github.com/dutradda/typingjson" title="Go to repository" class="md-source" data-md-source="github">
   
     <div class="md-source__icon">
       <svg viewBox="0 0 24 24" width="24" height="24">
@@ -236,7 +236,7 @@
     </div>
   
   <div class="md-source__repository">
-    dutradda/dataclassesjson
+    dutradda/typingjson
   </div>
 </a>
     </div>
@@ -249,8 +249,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../.." title="dataclassesjson" class="md-nav__link">
-      dataclassesjson
+    <a href="../.." title="typingjson" class="md-nav__link">
+      typingjson
     </a>
   </li>
 
@@ -477,8 +477,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../help.md" title="Help dataclassesjson - Get Help" class="md-nav__link">
-      Help dataclassesjson - Get Help
+    <a href="../../help.md" title="Help typingjson - Get Help" class="md-nav__link">
+      Help typingjson - Get Help
     </a>
   </li>
 
@@ -574,15 +574,24 @@
                 <h1 id="tutorial-user-guide-intro">Tutorial - User Guide - Intro</h1>
 <h2 id="getting-started">Getting Started</h2>
 <h3 id="installs">Installs</h3>
-<div class="codehilite"><pre><span></span>$ pip install dataclassesjson[orjson]
+<div class="codehilite"><pre><span></span>$ pip install typingjson[orjson]
 </pre></div>
 
 
 <h3 id="starts-coding">Starts coding</h3>
 <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">TypedDict</span>
 
-<span class="kn">from</span> <span class="nn">dataclassesjson</span> <span class="kn">import</span> <span class="n">asdataclass</span><span class="p">,</span> <span class="n">asjson</span><span class="p">,</span> <span class="n">dataclassjson</span>
+<span class="kn">from</span> <span class="nn">typingjson</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">as_typed_dict</span><span class="p">,</span>
+    <span class="n">asdataclass</span><span class="p">,</span>
+    <span class="n">dataclass_asjson</span><span class="p">,</span>
+    <span class="n">typed_dict_asjson</span><span class="p">,</span>
+    <span class="n">typingjson</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="c1"># dataclass</span>
 
 
 <span class="nd">@dataclass</span>
@@ -590,8 +599,10 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
 
 
-<span class="nd">@dataclassjson</span>
-<span class="nd">@dataclass</span>
+<span class="c1"># if &#39;Person&#39; is not a dataclass the</span>
+<span class="c1"># &#39;typingjson&#39; decorator will call the</span>
+<span class="c1"># &#39;dataclass&#39; decorator</span>
+<span class="nd">@typingjson</span>
 <span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
@@ -601,12 +612,44 @@
 <span class="n">jsondict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="n">musics</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">)])</span>
 <span class="n">person</span> <span class="o">=</span> <span class="n">asdataclass</span><span class="p">(</span><span class="n">jsondict</span><span class="p">,</span> <span class="n">Person</span><span class="p">)</span>
 
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;dataclass:&#39;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">asjson</span><span class="p">(</span><span class="n">person</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">dataclass_asjson</span><span class="p">(</span><span class="n">person</span><span class="p">))</span>
+<span class="k">print</span><span class="p">()</span>
+
+
+<span class="c1"># TypedDict</span>
+
+
+<span class="nd">@typingjson</span>
+<span class="k">class</span> <span class="nc">Music</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="c1"># This decorator is required because</span>
+<span class="c1"># we need to track the annotations</span>
+<span class="nd">@typingjson</span>
+<span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">musics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Music</span><span class="p">]</span>
+
+
+<span class="n">jsondict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="n">musics</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">)])</span>
+<span class="n">person</span> <span class="o">=</span> <span class="n">as_typed_dict</span><span class="p">(</span><span class="n">jsondict</span><span class="p">,</span> <span class="n">Person</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;TypedDict:&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">typed_dict_asjson</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">Person</span><span class="p">))</span>
 </pre></div>
 
 
-<div class="codehilite"><pre><span></span>Person(name=&#39;John&#39;, age=40, musics=[Music(name=&#39;Imagine&#39;)])
+<div class="codehilite"><pre><span></span>dataclass:
+Person(name=&#39;John&#39;, age=40, musics=[Music(name=&#39;Imagine&#39;)])
+b&#39;{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:40,&quot;musics&quot;:[{&quot;name&quot;:&quot;Imagine&quot;}]}&#39;
+
+TypedDict:
+{&#39;name&#39;: &#39;John&#39;, &#39;age&#39;: 40, &#39;musics&#39;: [{&#39;name&#39;: &#39;Imagine&#39;}]}
 b&#39;{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:40,&quot;musics&quot;:[{&quot;name&quot;:&quot;Imagine&quot;}]}&#39;
 </pre></div>
                 

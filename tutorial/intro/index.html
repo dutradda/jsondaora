@@ -38,7 +38,7 @@
     
     
       
-        <title>Introduciton - typingjson</title>
+        <title>Introduciton - jsondaora</title>
       
     
     
@@ -121,9 +121,9 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="../.." title="typingjson" class="md-header-nav__button md-logo">
+        <a href="../.." title="jsondaora" class="md-header-nav__button md-logo">
           
-            <img src="../../typingjson-white.svg" width="24" height="24">
+            <img src="../../jsondaora-white.svg" width="24" height="24">
           
         </a>
       </div>
@@ -134,7 +134,7 @@
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
           
             <span class="md-header-nav__topic">
-              typingjson
+              jsondaora
             </span>
             <span class="md-header-nav__topic">
               
@@ -180,7 +180,7 @@
 
   
 
-<a href="https://github.com/dutradda/typingjson" title="Go to repository" class="md-source" data-md-source="github">
+<a href="https://github.com/dutradda/jsondaora" title="Go to repository" class="md-source" data-md-source="github">
   
     <div class="md-source__icon">
       <svg viewBox="0 0 24 24" width="24" height="24">
@@ -189,7 +189,7 @@
     </div>
   
   <div class="md-source__repository">
-    dutradda/typingjson
+    dutradda/jsondaora
   </div>
 </a>
           </div>
@@ -213,12 +213,12 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="../.." title="typingjson" class="md-nav__button md-logo">
+    <a href="../.." title="jsondaora" class="md-nav__button md-logo">
       
-        <img src="../../typingjson-white.svg" width="48" height="48">
+        <img src="../../jsondaora-white.svg" width="48" height="48">
       
     </a>
-    typingjson
+    jsondaora
   </label>
   
     <div class="md-nav__source">
@@ -227,7 +227,7 @@
 
   
 
-<a href="https://github.com/dutradda/typingjson" title="Go to repository" class="md-source" data-md-source="github">
+<a href="https://github.com/dutradda/jsondaora" title="Go to repository" class="md-source" data-md-source="github">
   
     <div class="md-source__icon">
       <svg viewBox="0 0 24 24" width="24" height="24">
@@ -236,7 +236,7 @@
     </div>
   
   <div class="md-source__repository">
-    dutradda/typingjson
+    dutradda/jsondaora
   </div>
 </a>
     </div>
@@ -249,8 +249,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../.." title="typingjson" class="md-nav__link">
-      typingjson
+    <a href="../.." title="jsondaora" class="md-nav__link">
+      jsondaora
     </a>
   </li>
 
@@ -477,8 +477,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../help.md" title="Help typingjson - Get Help" class="md-nav__link">
-      Help typingjson - Get Help
+    <a href="../../help.md" title="Help jsondaora - Get Help" class="md-nav__link">
+      Help jsondaora - Get Help
     </a>
   </li>
 
@@ -574,7 +574,7 @@
                 <h1 id="tutorial-user-guide-intro">Tutorial - User Guide - Intro</h1>
 <h2 id="getting-started">Getting Started</h2>
 <h3 id="installs">Installs</h3>
-<div class="codehilite"><pre><span></span>$ pip install typingjson[orjson]
+<div class="codehilite"><pre><span></span>$ pip install jsondaora[orjson]
 </pre></div>
 
 
@@ -582,12 +582,12 @@
 <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">TypedDict</span>
 
-<span class="kn">from</span> <span class="nn">typingjson</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">jsondaora</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">as_typed_dict</span><span class="p">,</span>
     <span class="n">asdataclass</span><span class="p">,</span>
     <span class="n">dataclass_asjson</span><span class="p">,</span>
+    <span class="n">jsondaora</span><span class="p">,</span>
     <span class="n">typed_dict_asjson</span><span class="p">,</span>
-    <span class="n">typingjson</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -600,9 +600,9 @@
 
 
 <span class="c1"># if &#39;Person&#39; is not a dataclass the</span>
-<span class="c1"># &#39;typingjson&#39; decorator will call the</span>
+<span class="c1"># &#39;jsondaora&#39; decorator will call the</span>
 <span class="c1"># &#39;dataclass&#39; decorator</span>
-<span class="nd">@typingjson</span>
+<span class="nd">@jsondaora</span>
 <span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
@@ -621,14 +621,14 @@
 <span class="c1"># TypedDict</span>
 
 
-<span class="nd">@typingjson</span>
+<span class="nd">@jsondaora</span>
 <span class="k">class</span> <span class="nc">Music</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
 
 
 <span class="c1"># This decorator is required because</span>
 <span class="c1"># we need to track the annotations</span>
-<span class="nd">@typingjson</span>
+<span class="nd">@jsondaora</span>
 <span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>

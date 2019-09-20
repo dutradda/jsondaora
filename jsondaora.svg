@@ -16,8 +16,8 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="typingjson-white.svg"
-   inkscape:export-filename="/home/diogo/Desenvolvimento/typingjson/docs/favicon.png"
+   sodipodi:docname="jsondaora.svg"
+   inkscape:export-filename="/home/diogo/Desenvolvimento/jsondaora/docs/favicon.png"
    inkscape:export-xdpi="256"
    inkscape:export-ydpi="256">
   <defs
@@ -75,7 +75,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="11.2"
-     inkscape:cx="6.6649931"
+     inkscape:cx="9.0310646"
      inkscape:cy="15.018209"
      inkscape:document-units="mm"
      inkscape:current-layer="g4614"
@@ -122,16 +122,16 @@
       <g
          aria-label="{ }"
          transform="matrix(0.82863619,0,0,0.92585339,-0.05271122,13.844131)"
-         style="font-style:normal;font-weight:normal;font-size:14.00207996px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.350052"
+         style="font-style:normal;font-weight:normal;font-size:14.00207996px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#333333;fill-opacity:1;stroke:none;stroke-width:0.350052"
          id="text963">
         <path
            d="m 54.290301,54.954165 v 0.984521 H 53.86641 q -1.702401,0 -2.283542,-0.505934 -0.574304,-0.505935 -0.574304,-2.016902 v -1.634031 q 0,-1.03238 -0.369196,-1.428924 -0.369195,-0.396543 -1.340042,-0.396543 h -0.417055 v -0.977684 h 0.417055 q 0.977684,0 1.340042,-0.389707 0.369196,-0.396543 0.369196,-1.415249 v -1.640869 q 0,-1.510966 0.574304,-2.010064 0.581141,-0.505934 2.283542,-0.505934 h 0.423891 v 0.977684 h -0.464912 q -0.964011,0 -1.258,0.300826 -0.293989,0.300826 -0.293989,1.264836 v 1.695565 q 0,1.073401 -0.3145,1.558825 -0.307663,0.485424 -1.059727,0.656347 0.758901,0.184598 1.066564,0.670022 0.307663,0.485424 0.307663,1.551988 v 1.695565 q 0,0.96401 0.293989,1.264836 0.293989,0.300826 1.258,0.300826 z"
-           style="fill:#ffffff;fill-opacity:1;stroke-width:0.350052"
+           style="fill:#333333;fill-opacity:1;stroke-width:0.350052"
            id="path969"
            inkscape:connector-curvature="0" />
         <path
            d="m 62.255353,54.954165 h 0.478586 q 0.957174,0 1.244326,-0.293989 0.293989,-0.293989 0.293989,-1.271673 v -1.695565 q 0,-1.066564 0.307663,-1.551988 0.307663,-0.485424 1.066564,-0.670022 -0.758901,-0.170923 -1.066564,-0.656347 -0.307663,-0.485424 -0.307663,-1.558825 v -1.695565 q 0,-0.970847 -0.293989,-1.264836 -0.287152,-0.300826 -1.244326,-0.300826 h -0.478586 v -0.977684 h 0.430728 q 1.702401,0 2.269868,0.505934 0.574304,0.499098 0.574304,2.010064 v 1.640869 q 0,1.018706 0.369196,1.415249 0.369195,0.389707 1.340042,0.389707 h 0.423892 v 0.977684 h -0.423892 q -0.970847,0 -1.340042,0.396543 -0.369196,0.396544 -0.369196,1.428924 v 1.634031 q 0,1.510967 -0.574304,2.016902 -0.567467,0.505934 -2.269868,0.505934 h -0.430728 z"
-           style="fill:#ffffff;fill-opacity:1;stroke-width:0.350052"
+           style="fill:#333333;fill-opacity:1;stroke-width:0.350052"
            id="path971"
            inkscape:connector-curvature="0" />
       </g>

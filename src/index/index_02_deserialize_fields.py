@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from typing import List, TypedDict
 
-from typingjson import (
+from jsondaora import (
     as_typed_dict,
     asdataclass,
     dataclass_asjson,
+    jsondaora,
     typed_dict_asjson,
-    typingjson,
 )
 
 
@@ -15,7 +15,7 @@ class Music:
     name: str
 
 
-@typingjson(deserialize_fields=('name'))
+@jsondaora(deserialize_fields=('name'))
 class Person:
     name: str
     age: int
@@ -34,12 +34,12 @@ print()
 # TypedDict
 
 
-@typingjson
+@jsondaora
 class Music(TypedDict):
     name: str
 
 
-@typingjson(deserialize_fields=('name'))
+@jsondaora(deserialize_fields=('name'))
 class Person(TypedDict):
     name: str
     age: int

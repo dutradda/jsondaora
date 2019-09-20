@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-    <em>Interoperates <b>dataclasses</b> and <b>TypedDict</b> with <b>json objects</b></em>
+    <em>Interoperates <b>dataclasses</b> and <b>TypedDict</b> annotations with <b>json objects for python</b></em>
 </p>
 
 ---
@@ -26,7 +26,7 @@
 - Deserialize values from bytes*
 - Deserialization/serialization of choosen fields
 - Dict serialization
-- Direct json serialization with [orjson](https://github.com/ijl/orjson) (don't convert to dict before serialization)
+- Direct json serialization with [orjson](https://github.com/ijl/orjson) (don't convert to dict recursively before serialization)
 - Optional validation according with the [json-schema](https://json-schema.org/) specification*
 
 *\* feature in development.*

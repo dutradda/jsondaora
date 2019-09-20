@@ -1,4 +1,4 @@
-site_name: typingjson
+site_name: jsondaora
 site_description: Interoperates @dataclass with json objects
 
 
@@ -7,18 +7,18 @@ theme:
     palette:
       primary: 'black'
       accent: 'grey'
-    logo: 'typingjson-white.svg'
+    logo: 'jsondaora-white.svg'
     favicon: 'favicon.png'
 
-repo_name: dutradda/typingjson
-repo_url: https://github.com/dutradda/typingjson
+repo_name: dutradda/jsondaora
+repo_url: https://github.com/dutradda/jsondaora
 edit_uri: ''
 google_analytics:
     - ''
     - 'auto'
 
 nav:
-    - typingjson: 'index.md'
+    - jsondaora: 'index.md'
     - Features: 'features.md'
     - Python dataclass intro: 'python-dataclass.md'
     - Json intro: 'json.md'
@@ -31,7 +31,7 @@ nav:
         - Custom Json Serializer: 'tutorial/custom-json-serializer.md'
     - Alternatives, Inspiration and Comparisons: 'alternatives.md'
     - Benchmarks: 'benchmarks.md'
-    - Help typingjson - Get Help: 'help.md'
+    - Help jsondaora - Get Help: 'help.md'
     - Development - Contributing: 'contributing.md'
     - Changelog: changelog.md
 

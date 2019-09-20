@@ -1,8 +1,8 @@
-# typingjson
+# jsondaora
 
 <p align="center" style="margin: 3em">
-  <a href="https://github.com/dutradda/typingjson">
-    <img src="https://dutradda.github.io/typingjson/typingjson.svg" alt="typingjson" width="300"/>
+  <a href="https://github.com/dutradda/jsondaora">
+    <img src="https://dutradda.github.io/jsondaora/jsondaora.svg" alt="jsondaora" width="300"/>
   </a>
 </p>
 
@@ -12,9 +12,9 @@
 
 ---
 
-**Documentation**: <a href="https://dutradda.github.io/typingjson" target="_blank">https://dutradda.github.io/typingjson</a>
+**Documentation**: <a href="https://dutradda.github.io/jsondaora" target="_blank">https://dutradda.github.io/jsondaora</a>
 
-**Source Code**: <a href="https://github.com/dutradda/typingjson" target="_blank">https://github.com/dutradda/typingjson</a>
+**Source Code**: <a href="https://github.com/dutradda/jsondaora" target="_blank">https://github.com/dutradda/jsondaora</a>
 
 ---
 
@@ -40,7 +40,7 @@
 
 ## Instalation
 ```
-$ pip install typingjson
+$ pip install jsondaora
 ```
 
 
@@ -50,12 +50,12 @@ $ pip install typingjson
 from dataclasses import dataclass
 from typing import List, TypedDict
 
-from typingjson import (
+from jsondaora import (
     as_typed_dict,
     asdataclass,
     dataclass_asjson,
+    jsondaora,
     typed_dict_asjson,
-    typingjson,
 )
 
 
@@ -68,9 +68,9 @@ class Music:
 
 
 # if 'Person' is not a dataclass the
-# 'typingjson' decorator will call the
+# 'jsondaora' decorator will call the
 # 'dataclass' decorator
-@typingjson
+@jsondaora
 class Person:
     name: str
     age: int
@@ -89,14 +89,14 @@ print()
 # TypedDict
 
 
-@typingjson
+@jsondaora
 class Music(TypedDict):
     name: str
 
 
 # This decorator is required because
 # we need to track the annotations
-@typingjson
+@jsondaora
 class Person(TypedDict):
     name: str
     age: int
@@ -130,12 +130,12 @@ b'{"name":"John","age":40,"musics":[{"name":"Imagine"}]}'
 from dataclasses import dataclass
 from typing import List, TypedDict
 
-from typingjson import (
+from jsondaora import (
     as_typed_dict,
     asdataclass,
     dataclass_asjson,
+    jsondaora,
     typed_dict_asjson,
-    typingjson,
 )
 
 
@@ -144,7 +144,7 @@ class Music:
     name: str
 
 
-@typingjson(deserialize_fields=('name'))
+@jsondaora(deserialize_fields=('name'))
 class Person:
     name: str
     age: int
@@ -163,12 +163,12 @@ print()
 # TypedDict
 
 
-@typingjson
+@jsondaora
 class Music(TypedDict):
     name: str
 
 
-@typingjson(deserialize_fields=('name'))
+@jsondaora(deserialize_fields=('name'))
 class Person(TypedDict):
     name: str
     age: int
@@ -202,12 +202,12 @@ b'{"name":"John","musics":[{"name":"Imagine"}],"age":"40"}'
 from dataclasses import dataclass
 from typing import List, TypedDict
 
-from typingjson import (
+from jsondaora import (
     as_typed_dict,
     asdataclass,
     dataclass_asjson,
+    jsondaora,
     typed_dict_asjson,
-    typingjson,
 )
 
 
@@ -216,7 +216,7 @@ class Music:
     name: str
 
 
-@typingjson(serialize_fields=('name', 'age'))
+@jsondaora(serialize_fields=('name', 'age'))
 @dataclass
 class Person:
     name: str
@@ -236,12 +236,12 @@ print()
 # TypedDict
 
 
-@typingjson
+@jsondaora
 class Music(TypedDict):
     name: str
 
 
-@typingjson(serialize_fields=('age'))
+@jsondaora(serialize_fields=('age'))
 class Person(TypedDict):
     name: str
     age: int
@@ -271,6 +271,6 @@ b'{"age":40}'
 
 ## Wins [Pydantic](https://github.com/samuelcolvin/pydantic) Benchmark
 
-`typingjson` is up to *5.6 times* faster than pydantic on it's benchmark
+`jsondaora` is up to *5.6 times* faster than pydantic on it's benchmark
 
-![pydantic benchmark](https://dutradda.github.io/typingjson/benchmark.png "Pydantic Benchmark")
+![pydantic benchmark](https://dutradda.github.io/jsondaora/benchmark.png "Pydantic Benchmark")

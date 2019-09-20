@@ -2,15 +2,15 @@
 
 from typing import List, TypedDict
 
-from typingjson import as_typed_dict, asdataclass, typingjson
+from jsondaora import as_typed_dict, asdataclass, jsondaora
 
 
 def tests_should_deserialize_nested_dataclass_typed_dict():
-    @typingjson
+    @jsondaora
     class FakeTypedDict(TypedDict):
         test: str
 
-    @typingjson
+    @jsondaora
     class FakeDataclass:
         fake: FakeTypedDict
 
@@ -20,11 +20,11 @@ def tests_should_deserialize_nested_dataclass_typed_dict():
 
 
 def tests_should_deserialize_nested_typed_dict_dataclass():
-    @typingjson
+    @jsondaora
     class FakeDataclass:
         test: str
 
-    @typingjson
+    @jsondaora
     class FakeTypedDict(TypedDict):
         fake: FakeDataclass
 
@@ -34,11 +34,11 @@ def tests_should_deserialize_nested_typed_dict_dataclass():
 
 
 def tests_should_deserialize_list_args_nested_dataclass_typed_dict():
-    @typingjson
+    @jsondaora
     class FakeTypedDict(TypedDict):
         fakeint: int
 
-    @typingjson
+    @jsondaora
     class FakeDataclass:
         fakes: List[FakeTypedDict]
         fakefloat: float
@@ -54,11 +54,11 @@ def tests_should_deserialize_list_args_nested_dataclass_typed_dict():
 
 
 def tests_should_deserialize_list_args_nested_typed_dict_dataclass():
-    @typingjson
+    @jsondaora
     class FakeDataclass:
         fakeint: int
 
-    @typingjson
+    @jsondaora
     class FakeTypedDict(TypedDict):
         fakes: List[FakeDataclass]
         fakefloat: float
@@ -75,21 +75,21 @@ def tests_should_deserialize_list_args_nested_typed_dict_dataclass():
 
 
 def tests_should_deserialize_list_args_deep_nested_typed_dict_dataclass():
-    @typingjson
+    @jsondaora
     class FakeDataclass2:
         fakeint: int
 
-    @typingjson
+    @jsondaora
     class FakeTypedDict2(TypedDict):
         fakes: List[FakeDataclass2]
         fakefloat: float
 
-    @typingjson
+    @jsondaora
     class FakeDataclass:
         fakeint: int
         fake: FakeTypedDict2
 
-    @typingjson
+    @jsondaora
     class FakeTypedDict(TypedDict):
         fakes: List[FakeDataclass]
         fakefloat: float

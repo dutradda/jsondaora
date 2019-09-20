@@ -3,10 +3,10 @@ requires = ['flit']
 build-backend = 'flit.buildapi'
 
 [tool.flit.metadata]
-module = 'typingjson'
+module = 'jsondaora'
 author = 'Diogo Dutra'
 author-email = 'diogodutradamata@gmail.com'
-home-page = 'https://github.com/dutradda/typingjson'
+home-page = 'https://github.com/dutradda/jsondaora'
 classifiers = [
     'License :: OSI Approved :: MIT License',
     'Development Status :: 1 - Planning',
@@ -20,7 +20,7 @@ description-file = 'README.md'
 requires-python = '>=3.8'
 
 [tool.flit.metadata.urls]
-Documentation = 'https://dutradda.github.io/typingjson/'
+Documentation = 'https://dutradda.github.io/jsondaora/'
 
 [tool.flit.metadata.requires-extra]
 test = [
@@ -59,7 +59,7 @@ line-length = '79'
 skip-string-normalization = '1'
 
 [tool.towncrier]
-    package = 'typingjson'
+    package = 'jsondaora'
     package_dir = ''
     filename = 'docs/CHANGELOG.md'
     title_format =  '{version} ({project_date})'

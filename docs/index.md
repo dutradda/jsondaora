@@ -1,8 +1,8 @@
-# typingjson
+# jsondaora
 
 <p align="center" style="margin: 3em">
-  <a href="https://github.com/dutradda/typingjson">
-    <img src="https://dutradda.github.io/typingjson/typingjson.svg" alt="typingjson" width="300"/>
+  <a href="https://github.com/dutradda/jsondaora">
+    <img src="https://dutradda.github.io/jsondaora/jsondaora.svg" alt="jsondaora" width="300"/>
   </a>
 </p>
 
@@ -12,9 +12,9 @@
 
 ---
 
-**Documentation**: <a href="https://dutradda.github.io/typingjson" target="_blank">https://dutradda.github.io/typingjson</a>
+**Documentation**: <a href="https://dutradda.github.io/jsondaora" target="_blank">https://dutradda.github.io/jsondaora</a>
 
-**Source Code**: <a href="https://github.com/dutradda/typingjson" target="_blank">https://github.com/dutradda/typingjson</a>
+**Source Code**: <a href="https://github.com/dutradda/jsondaora" target="_blank">https://github.com/dutradda/jsondaora</a>
 
 ---
 
@@ -40,7 +40,7 @@
 
 ## Instalation
 ```
-$ pip install typingjson
+$ pip install jsondaora
 ```
 
 
@@ -79,6 +79,6 @@ $ pip install typingjson
 
 ## Wins [Pydantic](https://github.com/samuelcolvin/pydantic) Benchmark
 
-`typingjson` is up to *5.6 times* faster than pydantic on it's benchmark
+`jsondaora` is up to *5.6 times* faster than pydantic on it's benchmark
 
-![pydantic benchmark](https://dutradda.github.io/typingjson/benchmark.png "Pydantic Benchmark")
+![pydantic benchmark](https://dutradda.github.io/jsondaora/benchmark.png "Pydantic Benchmark")

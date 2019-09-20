@@ -2,11 +2,11 @@
 
 from dataclasses import dataclass
 
-from typingjson import asdataclass, dataclass_asjson, typingjson
+from jsondaora import asdataclass, dataclass_asjson, jsondaora
 
 
 def tests_should_serialize_string_with_orjson():
-    @typingjson
+    @jsondaora
     @dataclass
     class FakeDataclass:
         test_union: str
@@ -19,12 +19,12 @@ def tests_should_serialize_string_with_orjson():
 
 
 def tests_should_serialize_nested_dataclasses_with_orjson():
-    @typingjson
+    @jsondaora
     @dataclass
     class FakeDataclass:
         test: int
 
-    @typingjson
+    @jsondaora
     @dataclass
     class FakeDataclass2:
         fake: FakeDataclass
@@ -37,7 +37,7 @@ def tests_should_serialize_nested_dataclasses_with_orjson():
 
 
 def tests_should_choose_fields_to_serialize():
-    @typingjson(serialize_fields=('test2',))
+    @jsondaora(serialize_fields=('test2',))
     @dataclass
     class FakeDataclass:
         test: int

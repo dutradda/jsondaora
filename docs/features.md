@@ -1,5 +1,5 @@
-## typingjson features
+## jsondaora features
 
-**typingjson** gives you the following:
+**jsondaora** gives you the following:
 
 ### Same interface as dataclasses module, plus extensions 

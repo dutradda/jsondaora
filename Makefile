@@ -6,7 +6,7 @@ help:  ## This help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
 
 build-virtualenv:
-	@virtualenv venv --python python3.7 --prompt 'typingjson-> '
+	@virtualenv venv --python python3.7 --prompt 'jsondaora-> '
 
 build-docs:
 	@mkdocs build
@@ -29,22 +29,22 @@ release-pypi:
 check-code: isort black flake8 mypy
 
 isort:
-	@isort --recursive --apply typingjson docs/src
+	@isort --recursive --apply jsondaora docs/src
 
 black:
-	@black typingjson docs/src
+	@black jsondaora docs/src
 
 flake8:
-	@flake8 typingjson docs/src
+	@flake8 jsondaora docs/src
 
 mypy:
-	@mypy --strict typingjson # docs/src/index
+	@mypy --strict jsondaora # docs/src/index
 
 dependencies:
 	@flit install --deps develop --extras all
 
 tests:  ## Run tests
-	@pytest -xvv --cov typingjson --no-cov-on-fail --cov-report=term-missing typingjson/tests
+	@pytest -xvv --cov jsondaora --no-cov-on-fail --cov-report=term-missing jsondaora/tests
 	@docs/src/test.sh
 
 integration:

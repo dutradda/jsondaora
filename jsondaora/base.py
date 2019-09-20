@@ -15,7 +15,7 @@ from .serializers import OrjsonDefaultTypes
 logger = getLogger(__name__)
 
 
-def typingjson(
+def jsondaora(
     type_: Optional[Type[Any]] = None,
     deserialize_fields: Optional[Iterable[str]] = None,
     serialize_fields: Optional[Iterable[str]] = None,

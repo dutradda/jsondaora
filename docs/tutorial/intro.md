@@ -5,7 +5,7 @@
 ### Installs
 
 ```
-$ pip install typingjson[orjson]
+$ pip install jsondaora[orjson]
 ```
 
 ### Starts coding

@@ -3,11 +3,11 @@
 import dataclasses
 from typing import List, Optional, TypedDict, Union
 
-from typingjson import as_typed_dict, typed_dict_asjson, typingjson
+from jsondaora import as_typed_dict, jsondaora, typed_dict_asjson
 
 
 def tests_should_deserialize_optional_args():
-    @typingjson
+    @jsondaora
     class FakeTypedDict(TypedDict):
         test: str
         test_default: Optional[int] = None
@@ -20,7 +20,7 @@ def tests_should_deserialize_optional_args():
 
 
 def tests_should_deserialize_union_args():
-    @typingjson
+    @jsondaora
     class FakeTypedDict(TypedDict):
         test_union: Union[int, str]
 
@@ -30,7 +30,7 @@ def tests_should_deserialize_union_args():
 
 
 def tests_should_deserialize_list_args():
-    @typingjson
+    @jsondaora
     class FakeTypedDict(TypedDict):
         test_list: List[int]
 
@@ -40,11 +40,11 @@ def tests_should_deserialize_list_args():
 
 
 def tests_should_deserialize_list_args_nested():
-    @typingjson
+    @jsondaora
     class FakeTypedDict(TypedDict):
         test: str
 
-    @typingjson
+    @jsondaora
     class FakeTypedDict2(TypedDict):
         fakes: List[FakeTypedDict]
         fakeint: int
@@ -58,7 +58,7 @@ def tests_should_deserialize_list_args_nested():
 
 
 def tests_should_deserialize_bytes_to_string():
-    @typingjson
+    @jsondaora
     class FakeTypedDict(TypedDict):
         test_union: str
 
@@ -68,11 +68,11 @@ def tests_should_deserialize_bytes_to_string():
 
 
 def tests_should_deserialize_nested_jsondict():
-    @typingjson
+    @jsondaora
     class FakeTypedDict(TypedDict):
         test: str
 
-    @typingjson
+    @jsondaora
     class FakeTypedDict2(TypedDict):
         fake: FakeTypedDict
 
@@ -82,7 +82,7 @@ def tests_should_deserialize_nested_jsondict():
 
 
 def tests_should_choose_fields_to_deserialize():
-    @typingjson(deserialize_fields=('test2',))
+    @jsondaora(deserialize_fields=('test2',))
     class FakeTypedDict(TypedDict):
         test: int
         test2: str
@@ -93,7 +93,7 @@ def tests_should_choose_fields_to_deserialize():
 
 
 def tests_should_serialize_all_fields_with_choosen_deserialize_fields():
-    @typingjson(deserialize_fields=('test2',))
+    @jsondaora(deserialize_fields=('test2',))
     class FakeTypedDict(TypedDict):
         test: int
         test2: str
@@ -107,7 +107,7 @@ def tests_should_serialize_all_fields_with_choosen_deserialize_fields():
 
 
 def tests_should_set_dataclass_fields_on_typed_dict():
-    @typingjson
+    @jsondaora
     class FakeTypedDict(TypedDict):
         test: int
         test2: str
@@ -120,16 +120,16 @@ def tests_should_set_dataclass_fields_on_typed_dict():
 
 
 def tests_should_set_dataclass_fields_on_typed_dict_with_inheritance():
-    @typingjson
+    @jsondaora
     class FakeTypedDict2(TypedDict):
         test: float
 
-    @typingjson
+    @jsondaora
     class FakeTypedDict(FakeTypedDict2):
         test2: int
         test3: str
 
-    @typingjson
+    @jsondaora
     class Fake:
         fake: FakeTypedDict
 

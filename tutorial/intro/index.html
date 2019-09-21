@@ -579,8 +579,7 @@
 
 
 <h3 id="starts-coding">Starts coding</h3>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">TypedDict</span>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">TypedDict</span>
 
 <span class="kn">from</span> <span class="nn">jsondaora</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">as_typed_dict</span><span class="p">,</span>
@@ -591,21 +590,14 @@
 <span class="p">)</span>
 
 
-<span class="c1"># dataclass</span>
-
-
-<span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Music</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-
-
-<span class="c1"># if &#39;Person&#39; is not a dataclass the</span>
-<span class="c1"># &#39;jsondaora&#39; decorator will call the</span>
-<span class="c1"># &#39;dataclass&#39; decorator</span>
 <span class="nd">@jsondaora</span>
 <span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="k">class</span> <span class="nc">Music</span><span class="p">:</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
     <span class="n">musics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Music</span><span class="p">]</span>
 
 
@@ -622,16 +614,13 @@
 
 
 <span class="nd">@jsondaora</span>
-<span class="k">class</span> <span class="nc">Music</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-
-
-<span class="c1"># This decorator is required because</span>
-<span class="c1"># we need to track the annotations</span>
-<span class="nd">@jsondaora</span>
 <span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="k">class</span> <span class="nc">Music</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
     <span class="n">musics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Music</span><span class="p">]</span>
 
 
@@ -645,7 +634,7 @@
 
 
 <div class="codehilite"><pre><span></span>dataclass:
-Person(name=&#39;John&#39;, age=40, musics=[Music(name=&#39;Imagine&#39;)])
+Person(name=&#39;John&#39;, age=40, musics=[Person.Music(name=&#39;Imagine&#39;)])
 b&#39;{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:40,&quot;musics&quot;:[{&quot;name&quot;:&quot;Imagine&quot;}]}&#39;
 
 TypedDict:

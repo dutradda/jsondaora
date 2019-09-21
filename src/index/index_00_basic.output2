@@ -1,5 +1,5 @@
 dataclass:
-Person(name='John', age=40, musics=[Music(name='Imagine')])
+Person(name='John', age=40, musics=[Person.Music(name='Imagine')])
 b'{"name":"John","age":40,"musics":[{"name":"Imagine"}]}'
 
 TypedDict:

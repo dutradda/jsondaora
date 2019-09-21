@@ -79,6 +79,6 @@ $ pip install jsondaora
 
 ## Wins [Pydantic](https://github.com/samuelcolvin/pydantic) Benchmark
 
-`jsondaora` is up to *5.6 times* faster than pydantic on it's benchmark
+`jsondaora` is up to *3.2 times* faster than pydantic on it's benchmark
 
 ![pydantic benchmark](https://dutradda.github.io/jsondaora/benchmark.png "Pydantic Benchmark")

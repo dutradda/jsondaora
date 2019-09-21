@@ -3,7 +3,12 @@
 import dataclasses
 from typing import List, Optional, TypedDict, Union
 
-from jsondaora import as_typed_dict, jsondaora, typed_dict_asjson
+from jsondaora import (
+    as_typed_dict,
+    as_typed_dict_field,
+    jsondaora,
+    typed_dict_asjson,
+)
 
 
 def tests_should_deserialize_optional_args():
@@ -139,3 +144,21 @@ def tests_should_set_dataclass_fields_on_typed_dict_with_inheritance():
         'fake'
     ]
     assert fake_field.type is FakeTypedDict
+
+
+def tests_should_deserialize_list_args_nested_as_list():
+    @jsondaora
+    class FakeTypedDict(TypedDict):
+        test: str
+
+    @jsondaora
+    class FakeTypedDict2(TypedDict):
+        fakes: List[FakeTypedDict]
+        fakeint: int
+
+    fakes_data = [{'test': 'fake11'}, {'test': 'fake12'}, {'test': 'fake13'}]
+    typed_dict_list = as_typed_dict_field(
+        [{'fakes': fakes_data, 'fakeint': '1'}], 'list', List[FakeTypedDict2]
+    )
+
+    assert typed_dict_list == [{'fakes': fakes_data, 'fakeint': 1}]

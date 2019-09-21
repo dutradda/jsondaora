@@ -44,6 +44,16 @@ else:
     _Field = dataclasses.Field
 
 
+def deserialize_field(
+    field_name: str, field_type: Type[Any], value: Any
+) -> Any:
+    field = dataclasses.field()
+    field.name = field_name
+    field.type = field_type
+
+    return _deserialize_field(field, value)
+
+
 def _deserialize_field(field: _Field, value: Any) -> Any:
     field_type = field.type
 

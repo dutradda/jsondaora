@@ -47,7 +47,6 @@ $ pip install jsondaora
 ## Basic example
 
 ```python
-from dataclasses import dataclass
 from typing import List, TypedDict
 
 from jsondaora import (
@@ -59,21 +58,14 @@ from jsondaora import (
 )
 
 
-# dataclass
-
-
-@dataclass
-class Music:
-    name: str
-
-
-# if 'Person' is not a dataclass the
-# 'jsondaora' decorator will call the
-# 'dataclass' decorator
 @jsondaora
 class Person:
     name: str
     age: int
+
+    class Music:
+        name: str
+
     musics: List[Music]
 
 
@@ -90,16 +82,13 @@ print()
 
 
 @jsondaora
-class Music(TypedDict):
-    name: str
-
-
-# This decorator is required because
-# we need to track the annotations
-@jsondaora
 class Person(TypedDict):
     name: str
     age: int
+
+    class Music(TypedDict):
+        name: str
+
     musics: List[Music]
 
 
@@ -114,7 +103,7 @@ print(typed_dict_asjson(person, Person))
 
 ```
 dataclass:
-Person(name='John', age=40, musics=[Music(name='Imagine')])
+Person(name='John', age=40, musics=[Person.Music(name='Imagine')])
 b'{"name":"John","age":40,"musics":[{"name":"Imagine"}]}'
 
 TypedDict:
@@ -127,7 +116,6 @@ b'{"name":"John","age":40,"musics":[{"name":"Imagine"}]}'
 ## Example for choose fields to deserialize
 
 ```python
-from dataclasses import dataclass
 from typing import List, TypedDict
 
 from jsondaora import (
@@ -139,15 +127,14 @@ from jsondaora import (
 )
 
 
-@dataclass
-class Music:
-    name: str
-
-
 @jsondaora(deserialize_fields=('name'))
 class Person:
     name: str
     age: int
+
+    class Music:
+        name: str
+
     musics: List[Music]
 
 
@@ -163,15 +150,14 @@ print()
 # TypedDict
 
 
-@jsondaora
-class Music(TypedDict):
-    name: str
-
-
 @jsondaora(deserialize_fields=('name'))
 class Person(TypedDict):
     name: str
     age: int
+
+    class Music(TypedDict):
+        name: str
+
     musics: List[Music]
 
 
@@ -199,7 +185,6 @@ b'{"name":"John","musics":[{"name":"Imagine"}],"age":"40"}'
 ## Example for choose fields to serialize
 
 ```python
-from dataclasses import dataclass
 from typing import List, TypedDict
 
 from jsondaora import (
@@ -211,16 +196,14 @@ from jsondaora import (
 )
 
 
-@dataclass
-class Music:
-    name: str
-
-
 @jsondaora(serialize_fields=('name', 'age'))
-@dataclass
 class Person:
     name: str
     age: int
+
+    class Music:
+        name: str
+
     musics: List[Music]
 
 
@@ -236,15 +219,14 @@ print()
 # TypedDict
 
 
-@jsondaora
-class Music(TypedDict):
-    name: str
-
-
 @jsondaora(serialize_fields=('age'))
 class Person(TypedDict):
     name: str
     age: int
+
+    class Music(TypedDict):
+        name: str
+
     musics: List[Music]
 
 
@@ -259,7 +241,7 @@ print(typed_dict_asjson(person, Person))
 
 ```
 dataclass:
-Person(name='John', age=40, musics=[Music(name='Imagine')])
+Person(name='John', age=40, musics=[Person.Music(name='Imagine')])
 b'{"age":40,"name":"John"}'
 
 TypedDict:

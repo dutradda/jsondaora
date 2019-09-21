@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import List, TypedDict
 
 from jsondaora import (
@@ -10,21 +9,14 @@ from jsondaora import (
 )
 
 
-# dataclass
-
-
-@dataclass
-class Music:
-    name: str
-
-
-# if 'Person' is not a dataclass the
-# 'jsondaora' decorator will call the
-# 'dataclass' decorator
 @jsondaora
 class Person:
     name: str
     age: int
+
+    class Music:
+        name: str
+
     musics: List[Music]
 
 
@@ -41,16 +33,13 @@ print()
 
 
 @jsondaora
-class Music(TypedDict):
-    name: str
-
-
-# This decorator is required because
-# we need to track the annotations
-@jsondaora
 class Person(TypedDict):
     name: str
     age: int
+
+    class Music(TypedDict):
+        name: str
+
     musics: List[Music]
 
 

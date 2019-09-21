@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import List, TypedDict
 
 from jsondaora import (
@@ -10,16 +9,14 @@ from jsondaora import (
 )
 
 
-@dataclass
-class Music:
-    name: str
-
-
 @jsondaora(serialize_fields=('name', 'age'))
-@dataclass
 class Person:
     name: str
     age: int
+
+    class Music:
+        name: str
+
     musics: List[Music]
 
 
@@ -35,15 +32,14 @@ print()
 # TypedDict
 
 
-@jsondaora
-class Music(TypedDict):
-    name: str
-
-
 @jsondaora(serialize_fields=('age'))
 class Person(TypedDict):
     name: str
     age: int
+
+    class Music(TypedDict):
+        name: str
+
     musics: List[Music]
 
 

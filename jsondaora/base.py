@@ -1,4 +1,5 @@
 import dataclasses
+import inspect
 from logging import getLogger
 from typing import (  # type: ignore
     Any,
@@ -37,6 +38,13 @@ def jsondaora(
             SerializeFields.set_type(type__, serialize_fields)
         else:
             SerializeFields.clean_fields(type__)
+
+        internal_classes = inspect.getmembers(
+            type__, lambda a: inspect.isclass(a) and not issubclass(a, type)
+        )
+
+        for _, cls in internal_classes:
+            wrap(cls)
 
         return type__
 

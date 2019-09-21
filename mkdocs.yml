@@ -5,7 +5,7 @@ site_description: Interoperates @dataclass with json objects
 theme:
     name: 'material'
     palette:
-      primary: 'black'
+      primary: 'purple'
       accent: 'grey'
     logo: 'jsondaora-white.svg'
     favicon: 'favicon.png'

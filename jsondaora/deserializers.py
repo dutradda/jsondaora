@@ -5,12 +5,13 @@ from typing import (  # type: ignore
     TYPE_CHECKING,
     Any,
     Dict,
+    Set,
     Type,
     Union,
     _GenericAlias,
 )
 
-from .exceptions import DeserializationError
+from .exceptions import DeserializationError, ParameterNotFoundError
 from .fields import DeserializeFields
 
 
@@ -20,19 +21,31 @@ _ERROR_MSG = 'Invalid type={generic} for field={field}'
 
 
 def deserialize_jsondict_fields(
-    jsondict: Dict[str, Any], cls: Type[Any]
+    jsondict: Dict[str, Any], cls: Type[Any], skip_fields: Set[str] = set()
 ) -> Dict[str, Any]:
     custom_fields = DeserializeFields.get_fields(cls)
     all_fields = dataclasses.fields(cls)
     deserialized = {}
     fields = custom_fields if custom_fields else all_fields
+    skipped_fields = set()
+
+    if skip_fields:
+        new_fields = set()
+        for f in fields:
+            if f.name in skip_fields:
+                skipped_fields.add(f)
+            else:
+                new_fields.add(f)
+        fields = new_fields
 
     for field in fields:
         value = jsondict.get(field.name)
-        deserialized[field.name] = _deserialize_field(field, value)
+        deserialized[field.name] = _deserialize_field(field, value, cls)
 
-    if custom_fields:
-        for field in set(all_fields) - set(custom_fields):
+    if custom_fields or skipped_fields:
+        for field in (
+            set(all_fields) - custom_fields if custom_fields else set()
+        ).union(skipped_fields):
             deserialized[field.name] = jsondict[field.name]
 
     return deserialized
@@ -51,10 +64,10 @@ def deserialize_field(
     field.name = field_name
     field.type = field_type
 
-    return _deserialize_field(field, value)
+    return _deserialize_field(field, value, field_type)
 
 
-def _deserialize_field(field: _Field, value: Any) -> Any:
+def _deserialize_field(field: _Field, value: Any, cls: Type[Any]) -> Any:
     field_type = field.type
 
     try:
@@ -94,10 +107,12 @@ def _deserialize_field(field: _Field, value: Any) -> Any:
         if value is not None:
             return field_type(value)
 
-        raise DeserializationError(field, value)
+        raise DeserializationError(
+            field, value, ParameterNotFoundError(field), cls
+        )
 
     except (TypeError, ValueError) as error:
-        raise DeserializationError(field, value, error) from error
+        raise DeserializationError(field, value, error, cls) from error
 
 
 def _deserialize_generic_type(generic: Any, field: str, value: Any) -> Any:
@@ -113,10 +128,10 @@ def _deserialize_union(generic: Any, field: str, value: Any) -> Any:
     nullable = False
 
     for arg in generic.__args__:
-        if arg is not type(None):  # noqa
+        if arg is not None and arg is not type(None):  # noqa
             try:
                 return arg(value)
-            except TypeError:
+            except (TypeError, ValueError):
                 continue
         else:
             nullable = True
@@ -133,7 +148,7 @@ def _deserialize_list(generic: Any, field_name: str, values: Any) -> Any:
     field.type = generic.__args__[0]
 
     try:
-        return [_deserialize_field(field, value) for value in values]
+        return [_deserialize_field(field, value, generic) for value in values]
     except TypeError as err:
         raise DeserializationError(
             _ERROR_MSG.format(generic=generic, field=field)

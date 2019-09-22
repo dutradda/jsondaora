@@ -47,6 +47,7 @@ class StringField(JsonField):
 class IntegerField(JsonField):
     maximum: int
     minimum: int
+    value: int
 
     def __init__(self, value: Any):
         self.value = int(value)

@@ -50,3 +50,19 @@ tests:  ## Run tests
 integration:
 	@make check-code
 	@make tests
+
+add-changelog:
+	@scripts/changelog-add-change.sh "${m}"
+
+create-release-minor:
+	@make _create-release v=minor
+
+_create-release:
+	@git checkout master && git pull && \
+	bumpversion $(v) --dry-run --no-commit --list | \
+		grep new_version= | sed -e 's/new_version=//' | \
+		scripts/changelog-add-release.sh && \
+	make build-docs && \
+	git commit -am 'Update CHANGELOG' && \
+	bumpversion $(v) && \
+	echo "\nChangelog and version updated successfully"

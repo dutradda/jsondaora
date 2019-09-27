@@ -25,6 +25,7 @@ Documentation = 'https://dutradda.github.io/jsondaora/'
 [tool.flit.metadata.requires-extra]
 test = [
     'black',
+    'bumpversion',
     'flake8',
     'isort',
     'ipython',

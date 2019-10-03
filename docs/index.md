@@ -24,7 +24,7 @@
 - Full compatibility with [dataclasses](https://docs.python.org/3/library/dataclasses.html) module and [TypedDict](https://www.python.org/dev/peps/pep-0589/) annotation
 - Deserialize values from dict
 - Deserialize values from bytes*
-- Deserialization/serialization of choosen fields
+- Deserialization/serialization of chosen fields
 - Dict serialization
 - Direct json serialization with [orjson](https://github.com/ijl/orjson) (don't convert to dict recursively before serialization)
 - Optional validation according with the [json-schema](https://json-schema.org/) specification*
@@ -38,7 +38,7 @@
  - [orjson](https://github.com/ijl/orjson) for json serialization
 
 
-## Instalation
+## Installation
 ```
 $ pip install jsondaora
 ```

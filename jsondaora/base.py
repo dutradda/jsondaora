@@ -1,13 +1,7 @@
 import dataclasses
 import inspect
 from logging import getLogger
-from typing import (  # type: ignore
-    Any,
-    Iterable,
-    Optional,
-    Type,
-    _TypedDictMeta,
-)
+from typing import Any, Dict, Iterable, Optional, Type
 
 from .fields import DeserializeFields, SerializeFields
 from .serializers import OrjsonDefaultTypes
@@ -22,7 +16,7 @@ def jsondaora(
     serialize_fields: Optional[Iterable[str]] = None,
 ) -> Any:
     def wrap(type__: Type[Any]) -> Any:
-        if isinstance(type__, _TypedDictMeta):
+        if issubclass(type__, dict):
             set_typed_dict_fields(type__)
 
         else:
@@ -54,7 +48,7 @@ def jsondaora(
     return wrap
 
 
-def set_typed_dict_fields(typed_dict_type: _TypedDictMeta) -> None:
+def set_typed_dict_fields(typed_dict_type: Type[Dict[str, Any]]) -> None:
     fields = {}
 
     for name, type_ in typed_dict_type.__annotations__.items():
@@ -69,4 +63,4 @@ def set_typed_dict_fields(typed_dict_type: _TypedDictMeta) -> None:
             fields[name].type = type_
             fields[name]._field_type = dataclasses._FIELD  # type: ignore
 
-    typed_dict_type.__dataclass_fields__ = fields
+    typed_dict_type.__dataclass_fields__ = fields  # type: ignore

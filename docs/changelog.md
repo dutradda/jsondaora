@@ -2,6 +2,10 @@
 
 ### UNRELEASED
 
+ - Pin orjson version
+
+ - Fix typo on readme
+
  - Improve jsondaora decorator
 
  - Add devtools git submodule

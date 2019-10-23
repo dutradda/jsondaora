@@ -10,14 +10,12 @@ from jsondaora import (
 
 
 @jsondaora
-class Music:
-    name: str
-
-
-@jsondaora
 class Person:
     name: str
     age: int
+
+    class Music:
+        name: str
 
     musics: List[Music]
 

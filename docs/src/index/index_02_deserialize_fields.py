@@ -33,7 +33,7 @@ print()
 
 
 @jsondaora
-class Music(TypedDict):
+class MusicT(TypedDict):
     name: str
 
 
@@ -42,7 +42,7 @@ class PersonT(TypedDict):
     name: str
     age: int
 
-    musics: List[Music]
+    musics: List[MusicT]
 
 
 jsondict = dict(name=b'John', age='40', musics=[dict(name='Imagine')])

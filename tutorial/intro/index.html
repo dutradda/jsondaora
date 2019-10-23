@@ -614,18 +614,20 @@
 
 
 <span class="nd">@jsondaora</span>
-<span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MusicT</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="nd">@jsondaora</span>
+<span class="k">class</span> <span class="nc">PersonT</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
 
-    <span class="k">class</span> <span class="nc">Music</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
-        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-
-    <span class="n">musics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Music</span><span class="p">]</span>
+    <span class="n">musics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MusicT</span><span class="p">]</span>
 
 
 <span class="n">jsondict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="n">musics</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">)])</span>
-<span class="n">person</span> <span class="o">=</span> <span class="n">as_typed_dict</span><span class="p">(</span><span class="n">jsondict</span><span class="p">,</span> <span class="n">Person</span><span class="p">)</span>
+<span class="n">person</span> <span class="o">=</span> <span class="n">as_typed_dict</span><span class="p">(</span><span class="n">jsondict</span><span class="p">,</span> <span class="n">PersonT</span><span class="p">)</span>
 
 <span class="k">print</span><span class="p">(</span><span class="s1">&#39;TypedDict:&#39;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>

@@ -11,7 +11,7 @@ for filename in ${test_files}; do
     checksum_file=/tmp/${filename}.checksum
     checksum_file2=/tmp/${filename}.checksum2
 
-    python3.8 ${test_path}/index/${filename}.py > ${output_tmpfile}
+    coverage run -p ${test_path}/index/${filename}.py > ${output_tmpfile}
     md5sum ${output_file} ${output_tmpfile} > /tmp/${filename}.checksum
     md5sum ${output_file2} ${output_tmpfile} > /tmp/${filename}.checksum2
 

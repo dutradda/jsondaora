@@ -57,16 +57,3 @@ exclude = '''
 target-version = ['py38']
 line-length = '79'
 skip-string-normalization = '1'
-
-[tool.towncrier]
-    package = 'jsondaora'
-    package_dir = ''
-    filename = 'docs/CHANGELOG.md'
-    title_format =  '{version} ({project_date})'
-    directory = 'changelog.d'
-    template = 'towncrier_template.rst'
-
-    [[tool.towncrier.type]]
-        directory = "change"
-        name = "Changes"
-        showcontent = true

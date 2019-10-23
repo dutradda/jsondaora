@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### UNRELEASED
+
+ - Add package typing support
+
 ### 0.8.0 - 2019-10-02
 
  - Pin orjson version

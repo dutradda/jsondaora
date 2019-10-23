@@ -7,7 +7,7 @@ from jsondaora.serializers import dataclass_asjson, typed_dict_asjson
 from jsondaora.typed_dict import as_typed_dict, as_typed_dict_field
 
 
-__version__ = '0.8.1'
+__version__ = '0.9.0'
 
 
 __all__ = [

@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### UNRELEASED
+
+ - Improve mypy
+
 ### 0.8.1 - 2019-10-22
 
  - Add package typing support

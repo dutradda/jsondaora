@@ -59,12 +59,14 @@ from jsondaora import (
 
 
 @jsondaora
+class Music:
+    name: str
+
+
+@jsondaora
 class Person:
     name: str
     age: int
-
-    class Music:
-        name: str
 
     musics: List[Music]
 
@@ -82,18 +84,20 @@ print()
 
 
 @jsondaora
-class Person(TypedDict):
+class MusicT(TypedDict):
+    name: str
+
+
+@jsondaora
+class PersonT(TypedDict):
     name: str
     age: int
 
-    class Music(TypedDict):
-        name: str
-
-    musics: List[Music]
+    musics: List[MusicT]
 
 
 jsondict = dict(name=b'John', age='40', musics=[dict(name='Imagine')])
-person = as_typed_dict(jsondict, Person)
+person = as_typed_dict(jsondict, PersonT)
 
 print('TypedDict:')
 print(person)
@@ -150,23 +154,25 @@ print()
 # TypedDict
 
 
-@jsondaora(deserialize_fields=('name'))
-class Person(TypedDict):
+@jsondaora
+class Music(TypedDict):
+    name: str
+
+
+@jsondaora(deserialize_fields=('name',))
+class PersonT(TypedDict):
     name: str
     age: int
-
-    class Music(TypedDict):
-        name: str
 
     musics: List[Music]
 
 
 jsondict = dict(name=b'John', age='40', musics=[dict(name='Imagine')])
-person = as_typed_dict(jsondict, Person)
+person = as_typed_dict(jsondict, PersonT)
 
 print('TypedDict:')
 print(person)
-print(typed_dict_asjson(person, Person))
+print(typed_dict_asjson(person, PersonT))
 
 ```
 
@@ -219,23 +225,24 @@ print()
 # TypedDict
 
 
-@jsondaora(serialize_fields=('age'))
-class Person(TypedDict):
+@jsondaora
+class Music(TypedDict):
+    name: str
+
+
+@jsondaora(serialize_fields=('age',))
+class PersonT(TypedDict):
     name: str
     age: int
-
-    class Music(TypedDict):
-        name: str
-
     musics: List[Music]
 
 
 jsondict = dict(name=b'John', age='40', musics=[dict(name='Imagine')])
-person = as_typed_dict(jsondict, Person)
+person = as_typed_dict(jsondict, PersonT)
 
 print('TypedDict:')
 print(person)
-print(typed_dict_asjson(person, Person))
+print(typed_dict_asjson(person, PersonT))
 
 ```
 

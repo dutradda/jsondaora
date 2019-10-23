@@ -59,14 +59,12 @@ from jsondaora import (
 
 
 @jsondaora
-class Music:
-    name: str
-
-
-@jsondaora
 class Person:
     name: str
     age: int
+
+    class Music:
+        name: str
 
     musics: List[Music]
 
@@ -155,7 +153,7 @@ print()
 
 
 @jsondaora
-class Music(TypedDict):
+class MusicT(TypedDict):
     name: str
 
 
@@ -164,7 +162,7 @@ class PersonT(TypedDict):
     name: str
     age: int
 
-    musics: List[Music]
+    musics: List[MusicT]
 
 
 jsondict = dict(name=b'John', age='40', musics=[dict(name='Imagine')])

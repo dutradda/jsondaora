@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### UNRELEASED
+### 0.9.0 - 2019-10-23
 
  - Improve string and integer schemas
 

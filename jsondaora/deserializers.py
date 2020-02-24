@@ -11,13 +11,13 @@ from typing import (  # type: ignore
     _GenericAlias,
 )
 
-from .exceptions import DeserializationError, ParameterNotFoundError
+from .exceptions import DeserializationError
 from .fields import DeserializeFields
 
 
 logger = getLogger(__name__)
 
-_ERROR_MSG = 'Invalid type={generic} for field={field}'
+_ERROR_MSG = 'Invalid type={annotation} for field={field_name}'
 
 
 def deserialize_jsondict_fields(
@@ -40,7 +40,13 @@ def deserialize_jsondict_fields(
 
     for field in fields:
         value = jsondict.get(field.name)
-        deserialized[field.name] = _deserialize_field(field, value, cls)
+        deserialized[field.name] = deserialize_field(
+            field_name=field.name,
+            field_type=field.type,
+            field_default=field.default,
+            value=value,
+            cls=cls,
+        )
 
     if custom_fields or skipped_fields:
         for field in (
@@ -58,25 +64,22 @@ else:
 
 
 def deserialize_field(
-    field_name: str, field_type: Type[Any], value: Any
+    field_name: str,
+    field_type: Any,
+    value: Any,
+    cls: Type[Any],
+    field_default: Any = dataclasses.MISSING,
 ) -> Any:
-    field = dataclasses.field()
-    field.name = field_name
-    field.type = field_type
-
-    return _deserialize_field(field, value, field_type)
-
-
-def _deserialize_field(field: _Field, value: Any, cls: Type[Any]) -> Any:
-    field_type = field.type
-
     try:
         if isinstance(value, dict) and dataclasses.is_dataclass(field_type):
             value = deserialize_jsondict_fields(value, field_type)
             return field_type(**value)
 
         elif isinstance(field_type, _GenericAlias):
-            return _deserialize_generic_type(field_type, field.name, value)
+            return _deserialize_generic_type(field_type, field_name, value)
+
+        if field_type is Any:
+            return value
 
         elif isinstance(value, field_type):
             return value
@@ -98,33 +101,39 @@ def _deserialize_field(field: _Field, value: Any, cls: Type[Any]) -> Any:
         elif field_type is datetime:
             return datetime.strptime(value, '%Y-%m-%dT%H:%M:%S')
 
-        elif value is None and field.default is None:
+        elif value is None and field_default is None:
             return None
 
-        elif field.default is not dataclasses.MISSING and value is None:
-            return field_type(field.default)
+        elif field_default is not dataclasses.MISSING and value is None:
+            return field_type(field_default)
 
         if value is not None:
             return field_type(value)
 
         raise DeserializationError(
-            field, value, ParameterNotFoundError(field), cls
+            field_name, field_type, field_default, value, cls
         )
 
     except (TypeError, ValueError) as error:
-        raise DeserializationError(field, value, error, cls) from error
+        raise DeserializationError(
+            field_name, field_type, field_default, value, cls
+        ) from error
 
 
-def _deserialize_generic_type(generic: Any, field: str, value: Any) -> Any:
+def _deserialize_generic_type(
+    generic: Any, field_name: str, value: Any
+) -> Any:
     try:
-        return _DESERIALIZERS_MAP[generic.__origin__](generic, field, value)
+        return _DESERIALIZERS_MAP[generic.__origin__](
+            generic, field_name, value
+        )
     except KeyError:
         raise DeserializationError(
-            _ERROR_MSG.format(generic=generic, field=field)
+            _ERROR_MSG.format(annotation=generic, field_name=field_name)
         )
 
 
-def _deserialize_union(generic: Any, field: str, value: Any) -> Any:
+def _deserialize_union(generic: Any, field_name: str, value: Any) -> Any:
     nullable = False
 
     for arg in generic.__args__:
@@ -139,20 +148,112 @@ def _deserialize_union(generic: Any, field: str, value: Any) -> Any:
     if nullable:
         return None
 
-    raise DeserializationError(_ERROR_MSG.format(generic=generic, field=field))
+    raise DeserializationError(
+        _ERROR_MSG.format(annotation=generic, field_name=field_name)
+    )
 
 
-def _deserialize_list(generic: Any, field_name: str, values: Any) -> Any:
-    field = dataclasses.field()
-    field.name = field_name
-    field.type = generic.__args__[0]
-
+def _deserialize_list(annotation: Any, field_name: str, values: Any) -> Any:
     try:
-        return [_deserialize_field(field, value, generic) for value in values]
+        return [
+            deserialize_field(
+                field_name=field_name,
+                field_type=annotation.__args__[0],
+                value=value,
+                cls=annotation,
+            )
+            for value in values
+        ]
     except TypeError as err:
         raise DeserializationError(
-            _ERROR_MSG.format(generic=generic, field=field)
+            _ERROR_MSG.format(annotation=annotation, field_name=field_name)
         ) from err
 
 
-_DESERIALIZERS_MAP = {Union: _deserialize_union, list: _deserialize_list}
+def _deserialize_tuple(annotation: Any, field_name: str, values: Any) -> Any:
+    try:
+        if annotation.__args__[-1] is ...:
+            return tuple(
+                deserialize_field(
+                    field_name=field_name,
+                    field_type=annotation.__args__[0],
+                    value=value,
+                    cls=annotation,
+                )
+                for value in values
+            )
+
+        elif len(annotation.__args__) == len(values):
+            return tuple(
+                deserialize_field(
+                    field_name=field_name,
+                    field_type=annotation.__args__[i],
+                    value=value,
+                    cls=annotation,
+                )
+                for i, value in enumerate(values)
+            )
+
+        else:
+            raise DeserializationError(
+                _ERROR_MSG.format(annotation=annotation, field_name=field_name)
+            )
+
+    except TypeError as err:
+        raise DeserializationError(
+            _ERROR_MSG.format(annotation=annotation, field_name=field_name)
+        ) from err
+
+
+def _deserialize_set(annotation: Any, field_name: str, values: Any) -> Any:
+    try:
+        return set(
+            deserialize_field(
+                field_name=field_name,
+                field_type=annotation.__args__[0],
+                value=value,
+                cls=annotation,
+            )
+            for value in values
+        )
+    except TypeError as err:
+        raise DeserializationError(
+            _ERROR_MSG.format(annotation=annotation, field_name=field_name)
+        ) from err
+
+
+def _deserialize_dict(annotation: Any, field_name: str, values: Any) -> Any:
+    new_dict: Dict[Any, Any] = {}
+
+    try:
+        for i, (key, value) in enumerate(values.items()):
+            new_dict[
+                deserialize_field(
+                    field_name=f'{field_name}.key{i}',
+                    field_type=annotation.__args__[0],
+                    value=key,
+                    cls=annotation,
+                )
+            ] = deserialize_field(
+                field_name=f'{field_name}.value{i}',
+                field_type=annotation.__args__[1],
+                value=value,
+                cls=annotation,
+            )
+
+    except TypeError as err:
+        raise DeserializationError(
+            _ERROR_MSG.format(annotation=annotation, field_name=field_name)
+        ) from err
+
+    else:
+        return new_dict
+
+
+_DESERIALIZERS_MAP = {
+    Union: _deserialize_union,
+    list: _deserialize_list,
+    tuple: _deserialize_tuple,
+    set: _deserialize_set,
+    dict: _deserialize_dict,
+}

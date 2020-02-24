@@ -1,7 +1,9 @@
 # type: ignore
 
 import dataclasses
-from typing import List, Optional, TypedDict, Union
+from typing import Any, Dict, List, Optional, Set, Tuple, TypedDict, Union
+
+import pytest
 
 from jsondaora import (
     as_typed_dict,
@@ -9,6 +11,7 @@ from jsondaora import (
     jsondaora,
     typed_dict_asjson,
 )
+from jsondaora.exceptions import DeserializationError
 
 
 def tests_should_deserialize_optional_args():
@@ -162,3 +165,152 @@ def tests_should_deserialize_list_args_nested_as_list():
     )
 
     assert typed_dict_list == [{'fakes': fakes_data, 'fakeint': 1}]
+
+
+def tests_should_deserialize_tuple_args_limited():
+    @jsondaora
+    class FakeTypedDict(TypedDict):
+        test_tuple: Tuple[int, str]
+
+    typed_dict_tuple = as_typed_dict({'test_tuple': [b'1', 2]}, FakeTypedDict)
+
+    assert typed_dict_tuple == {'test_tuple': (1, '2')}
+
+
+def tests_should_deserialize_tuple_args_nested_limited():
+    @jsondaora
+    class FakeTypedDict(TypedDict):
+        test: str
+
+    @jsondaora
+    class FakeTypedDict2(TypedDict):
+        fakes: Tuple[FakeTypedDict, int]
+        fakeint: int
+
+    fakes_data = [{'test': 'fake11'}, '1']
+    typed_dict = as_typed_dict(
+        {'fakes': fakes_data, 'fakeint': '1'}, FakeTypedDict2
+    )
+
+    assert typed_dict == {
+        'fakes': ({'test': 'fake11'}, 1),
+        'fakeint': 1,
+    }
+
+
+def tests_should_raise_error_when_deserializing_invalid_tuple_size():
+    @jsondaora
+    class FakeTypedDict(TypedDict):
+        test: str
+
+    @jsondaora
+    class FakeTypedDict2(TypedDict):
+        fakes: Tuple[FakeTypedDict, int]
+        fakeint: int
+
+    fakes_data = [{'test': 'fake11'}, '1', None]
+
+    with pytest.raises(DeserializationError) as exc_info:
+        as_typed_dict({'fakes': fakes_data, 'fakeint': '1'}, FakeTypedDict2)
+
+    assert exc_info.value.args == (
+        f'Invalid type={Tuple[FakeTypedDict, int]} for field=fakes',
+    )
+
+
+def tests_should_deserialize_set_args():
+    @jsondaora
+    class FakeTypedDict(TypedDict):
+        test_set: Set[int]
+
+    typed_dict = as_typed_dict({'test_set': [b'1', '2', 3]}, FakeTypedDict)
+
+    assert typed_dict == {'test_set': {1, 2, 3}}
+
+
+def tests_should_deserialize_set_args_nested():
+    @jsondaora
+    class FakeTypedDict2(TypedDict):
+        fakes: Set[Tuple[int, str, float]]
+        fakeint: int
+
+    fakes_data = [[1, 2, 3]]
+    typed_dict = as_typed_dict(
+        {'fakes': fakes_data, 'fakeint': '1'}, FakeTypedDict2
+    )
+
+    assert typed_dict == {'fakes': {(1, '2', 3.0)}, 'fakeint': 1}
+
+
+def tests_should_deserialize_dict_args():
+    @jsondaora
+    class FakeTypedDict(TypedDict):
+        test_dict: Dict[int, str]
+
+    typed_dict = as_typed_dict(
+        {'test_dict': {b'1': b'1', '2': '2', 3: 3}}, FakeTypedDict
+    )
+
+    assert typed_dict == {'test_dict': {1: '1', 2: '2', 3: '3'}}
+
+
+def tests_should_deserialize_dict_args_nested():
+    @jsondaora
+    class FakeTypedDict(TypedDict):
+        test: str
+
+    @jsondaora
+    class FakeTypedDict2(TypedDict):
+        fakes: Dict[int, List[FakeTypedDict]]
+        fakeint: int
+
+    fakes_data = {
+        b'1': [{'test': 'fake11'}, {'test': 'fake12'}, {'test': 'fake13'}]
+    }
+    typed_dict = as_typed_dict(
+        {'fakes': fakes_data, 'fakeint': '1'}, FakeTypedDict2
+    )
+
+    assert typed_dict == FakeTypedDict2(
+        {
+            'fakes': {
+                1: [{'test': 'fake11'}, {'test': 'fake12'}, {'test': 'fake13'}]
+            },
+            'fakeint': 1,
+        },
+    )
+
+
+def tests_should_deserialize_any():
+    @jsondaora
+    class FakeTypedDict(TypedDict):
+        test_any: Any
+
+    typed_dict1 = as_typed_dict({'test_any': 0.1}, FakeTypedDict)
+    any_object = object()
+    typed_dict2 = as_typed_dict({'test_any': any_object}, FakeTypedDict)
+
+    assert typed_dict1 == {'test_any': 0.1}
+    assert typed_dict2 == {'test_any': any_object}
+
+
+def tests_should_deserialize_any_nested():
+    @jsondaora
+    class FakeTypedDict(TypedDict):
+        test: str
+
+    @jsondaora
+    class FakeTypedDict2(TypedDict):
+        fakes: Set[Any]
+        fakeint: int
+
+    any_object = object()
+    fakes_data = [any_object, 0.1]
+    typed_dict = as_typed_dict(
+        {'fakes': fakes_data, 'fakeint': '1'}, FakeTypedDict2
+    )
+
+    assert typed_dict == {
+        'fakes': {any_object, 0.1},
+        'fakeint': 1,
+    }

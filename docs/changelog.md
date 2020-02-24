@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### UNRELEASED
+
+ - Add support for deserialize standard types
+
 ### 0.9.0 - 2019-10-23
 
  - Improve string and integer schemas

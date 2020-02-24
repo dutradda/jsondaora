@@ -25,6 +25,7 @@
 - Deserialize values from dict
 - Deserialize values from bytes*
 - Deserialization/serialization of chosen fields
+- Deserialize the following standard types: Dict, List, Tuple, Set, Union and Any
 - Dict serialization
 - Direct json serialization with [orjson](https://github.com/ijl/orjson) (don't convert to dict recursively before serialization)
 - Optional validation according with the [json-schema](https://json-schema.org/) specification*

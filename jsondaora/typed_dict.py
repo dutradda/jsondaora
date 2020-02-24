@@ -14,9 +14,11 @@ def as_typed_dict(
 
 
 def as_typed_dict_field(
-    json: Any, field_name: str, field_typed_dict_type: _TypedDictMeta
+    json: Any, field_name: str, annotation: _TypedDictMeta
 ) -> Any:
     try:
-        return deserialize_field(field_name, field_typed_dict_type, json)
+        return deserialize_field(
+            field_name=field_name, field_type=annotation, value=json, cls=dict,
+        )
     except TypeError as err:
-        raise DeserializationError(field_typed_dict_type, json) from err
+        raise DeserializationError(annotation, json) from err

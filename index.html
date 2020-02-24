@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.0">
     
     
       
@@ -42,7 +42,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/application.30686662.css">
+      <link rel="stylesheet" href="assets/stylesheets/application.1b62728e.css">
       
         <link rel="stylesheet" href="assets/stylesheets/application-palette.a8b3c06d.css">
       
@@ -53,12 +53,12 @@
       
     
     
-      <script src="assets/javascripts/modernizr.74668098.js"></script>
+      <script src="assets/javascripts/modernizr.268332fc.js"></script>
     
     
       
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
@@ -502,7 +502,7 @@
 
 
   <li class="md-nav__item">
-    <a href="contributing.md" title="Development - Contributing" class="md-nav__link">
+    <a href="contributing/" title="Development - Contributing" class="md-nav__link">
       Development - Contributing
     </a>
   </li>
@@ -627,6 +627,7 @@
 <li>Deserialize values from dict</li>
 <li>Deserialize values from bytes*</li>
 <li>Deserialization/serialization of chosen fields</li>
+<li>Deserialize the following standard types: Dict, List, Tuple, Set, Union and Any</li>
 <li>Dict serialization</li>
 <li>Direct json serialization with <a href="https://github.com/ijl/orjson">orjson</a> (don't convert to dict recursively before serialization)</li>
 <li>Optional validation according with the <a href="https://json-schema.org/">json-schema</a> specification*</li>
@@ -668,10 +669,10 @@
 <span class="n">jsondict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="n">musics</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">)])</span>
 <span class="n">person</span> <span class="o">=</span> <span class="n">asdataclass</span><span class="p">(</span><span class="n">jsondict</span><span class="p">,</span> <span class="n">Person</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;dataclass:&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">dataclass_asjson</span><span class="p">(</span><span class="n">person</span><span class="p">))</span>
-<span class="k">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;dataclass:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dataclass_asjson</span><span class="p">(</span><span class="n">person</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
 
 
 <span class="c1"># TypedDict</span>
@@ -693,9 +694,9 @@
 <span class="n">jsondict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="n">musics</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">)])</span>
 <span class="n">person</span> <span class="o">=</span> <span class="n">as_typed_dict</span><span class="p">(</span><span class="n">jsondict</span><span class="p">,</span> <span class="n">PersonT</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;TypedDict:&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">typed_dict_asjson</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">Person</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;TypedDict:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">typed_dict_asjson</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">Person</span><span class="p">))</span>
 </pre></div>
 
 
@@ -735,10 +736,10 @@ b&#39;{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:40,&quot;musics&quot;:[
 <span class="n">jsondict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="n">musics</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">)])</span>
 <span class="n">person</span> <span class="o">=</span> <span class="n">asdataclass</span><span class="p">(</span><span class="n">jsondict</span><span class="p">,</span> <span class="n">Person</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;dataclass:&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">dataclass_asjson</span><span class="p">(</span><span class="n">person</span><span class="p">))</span>
-<span class="k">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;dataclass:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dataclass_asjson</span><span class="p">(</span><span class="n">person</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
 
 
 <span class="c1"># TypedDict</span>
@@ -760,9 +761,9 @@ b&#39;{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:40,&quot;musics&quot;:[
 <span class="n">jsondict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="n">musics</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">)])</span>
 <span class="n">person</span> <span class="o">=</span> <span class="n">as_typed_dict</span><span class="p">(</span><span class="n">jsondict</span><span class="p">,</span> <span class="n">PersonT</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;TypedDict:&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">typed_dict_asjson</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">PersonT</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;TypedDict:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">typed_dict_asjson</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">PersonT</span><span class="p">))</span>
 </pre></div>
 
 
@@ -802,10 +803,10 @@ b&#39;{&quot;name&quot;:&quot;John&quot;,&quot;musics&quot;:[{&quot;name&quot;:&
 <span class="n">jsondict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">musics</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">)])</span>
 <span class="n">person</span> <span class="o">=</span> <span class="n">asdataclass</span><span class="p">(</span><span class="n">jsondict</span><span class="p">,</span> <span class="n">Person</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;dataclass:&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">dataclass_asjson</span><span class="p">(</span><span class="n">person</span><span class="p">))</span>
-<span class="k">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;dataclass:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dataclass_asjson</span><span class="p">(</span><span class="n">person</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
 
 
 <span class="c1"># TypedDict</span>
@@ -826,9 +827,9 @@ b&#39;{&quot;name&quot;:&quot;John&quot;,&quot;musics&quot;:[{&quot;name&quot;:&
 <span class="n">jsondict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="n">musics</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Imagine&#39;</span><span class="p">)])</span>
 <span class="n">person</span> <span class="o">=</span> <span class="n">as_typed_dict</span><span class="p">(</span><span class="n">jsondict</span><span class="p">,</span> <span class="n">PersonT</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;TypedDict:&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">typed_dict_asjson</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">PersonT</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;TypedDict:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">typed_dict_asjson</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">PersonT</span><span class="p">))</span>
 </pre></div>
 
 
@@ -847,6 +848,7 @@ b&#39;{&quot;age&quot;:40}&#39;
 <p><img alt="pydantic benchmark" src="https://dutradda.github.io/jsondaora/benchmark.png" title="Pydantic Benchmark" /></p>
                 
                   
+                
                 
               
               
@@ -900,7 +902,7 @@ b&#39;{&quot;age&quot;:40}&#39;
       
     </div>
     
-      <script src="assets/javascripts/application.ac79c3b0.js"></script>
+      <script src="assets/javascripts/application.808e90bb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
       

@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### UNRELEASED
+
+ - Fix deserialize_field function
+
 ### 0.10.0 - 2020-02-24
 
  - Add support for deserialize standard types

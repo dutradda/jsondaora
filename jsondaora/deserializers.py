@@ -5,6 +5,7 @@ from typing import (  # type: ignore
     TYPE_CHECKING,
     Any,
     Dict,
+    Optional,
     Set,
     Type,
     Union,
@@ -67,7 +68,7 @@ def deserialize_field(
     field_name: str,
     field_type: Any,
     value: Any,
-    cls: Type[Any],
+    cls: Optional[Type[Any]] = None,
     field_default: Any = dataclasses.MISSING,
 ) -> Any:
     try:

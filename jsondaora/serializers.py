@@ -14,7 +14,7 @@ def dataclass_asjson(instance: Any) -> bytes:
 
 
 def typed_dict_asjson(
-    typed_dict: Dict[str, Any], typed_dict_type: _TypedDictMeta
+    typed_dict: Any, typed_dict_type: _TypedDictMeta
 ) -> bytes:
     return orjson.dumps(_choose_typed_dict_fields(typed_dict, typed_dict_type))
 

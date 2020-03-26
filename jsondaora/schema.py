@@ -13,7 +13,7 @@ class StringField(DictDaora):
     validate: Callable[[Type['StringField'], str], None]
 
     def __init__(self, value: Any):
-        self.value = str(value)
+        self.value = value.decode() if isinstance(value, bytes) else str(value)
         type(self).validate(self.value)  # type: ignore
 
     def __init_subclass__(
@@ -112,3 +112,27 @@ def validate_min_length_max_length(cls: Type[StringField], value: str) -> None:
             f'Invalid min_length and max_length string value: '
             f'{cls.min_length} < {len(value)} < {cls.max_length}'
         )
+
+
+def string(
+    min_length: Optional[int] = None, max_length: Optional[int] = None
+) -> Type[StringField]:
+    min_length_str = '' if min_length is None else str(min_length)
+    max_length_str = '' if max_length is None else str(max_length)
+    cls_name = f'String{min_length_str}{max_length_str}'
+    return type(
+        cls_name,
+        (StringField,),
+        {'min_length': min_length, 'max_length': max_length},
+    )
+
+
+def integer(
+    minimum: Optional[int] = None, maximum: Optional[int] = None
+) -> Type[IntegerField]:
+    minimum_str = '' if minimum is None else str(minimum)
+    maximum_str = '' if maximum is None else str(maximum)
+    cls_name = f'String{minimum_str}{maximum_str}'
+    return type(
+        cls_name, (IntegerField,), {'minimum': minimum, 'maximum': maximum},
+    )

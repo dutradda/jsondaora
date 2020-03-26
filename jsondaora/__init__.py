@@ -2,7 +2,7 @@
 
 from jsondaora.base import jsondaora
 from jsondaora.dataclasses import asdataclass
-from jsondaora.schema import IntegerField, StringField
+from jsondaora.schema import IntegerField, StringField, integer, string
 from jsondaora.serializers import dataclass_asjson, typed_dict_asjson
 from jsondaora.typed_dict import as_typed_dict, as_typed_dict_field
 
@@ -19,4 +19,6 @@ __all__ = [
     'as_typed_dict_field',
     'dataclass_asjson',
     'typed_dict_asjson',
+    'integer',
+    'string',
 ]

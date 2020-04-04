@@ -72,7 +72,17 @@ def deserialize_field(
     field_default: Any = dataclasses.MISSING,
 ) -> Any:
     try:
-        if isinstance(value, dict) and dataclasses.is_dataclass(field_type):
+        if hasattr(field_type, '__get_dynamic_type__'):
+            dynamic_type = field_type.__get_dynamic_type__(value)
+            return deserialize_field(
+                field_name=field_name,
+                field_type=dynamic_type,
+                value=value,
+                cls=cls,
+                field_default=field_default,
+            )
+
+        elif isinstance(value, dict) and dataclasses.is_dataclass(field_type):
             value = deserialize_jsondict_fields(value, field_type)
             return field_type(**value)
 
@@ -101,6 +111,9 @@ def deserialize_field(
 
         elif field_type is datetime:
             return datetime.strptime(value, '%Y-%m-%dT%H:%M:%S')
+
+        if field_type is bool:
+            return value in (1, '1', 't', 'true', 'y', 'yes')
 
         elif value is None and field_default is None:
             return None
@@ -137,11 +150,16 @@ def _deserialize_generic_type(
 def _deserialize_union(generic: Any, field_name: str, value: Any) -> Any:
     nullable = False
 
-    for arg in generic.__args__:
-        if arg is not None and arg is not type(None):  # noqa
+    for type_ in generic.__args__:
+        if type_ is not None and type_ is not type(None):  # noqa
             try:
-                return arg(value)
-            except (TypeError, ValueError):
+                return deserialize_field(
+                    field_name=field_name,
+                    field_type=type_,
+                    value=value,
+                    cls=generic,
+                )
+            except DeserializationError:
                 continue
         else:
             nullable = True
@@ -242,7 +260,7 @@ def _deserialize_dict(annotation: Any, field_name: str, values: Any) -> Any:
                 cls=annotation,
             )
 
-    except TypeError as err:
+    except (TypeError, AttributeError) as err:
         raise DeserializationError(
             _ERROR_MSG.format(annotation=annotation, field_name=field_name)
         ) from err

@@ -2,6 +2,12 @@
 
 ### UNRELEASED
 
+ - Improve bool deserialization
+
+ - Fix Union deserialization
+
+ - Create support for use `__get_dynamic_type__` function on annotations types
+
  - Remove unused parameter on OrjsonDefaultTypes.default_function
 
  - Improve dataclasses.asdict function

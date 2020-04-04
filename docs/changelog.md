@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### UNRELEASED
+### 0.11.0 - 2020-04-04
 
  - Improve bool deserialization
 

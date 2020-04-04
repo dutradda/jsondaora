@@ -2,6 +2,8 @@
 
 ### UNRELEASED
 
+ - Remove unused parameter on OrjsonDefaultTypes.default_function
+
  - Improve dataclasses.asdict function
 
  - Remove dataclass recreation on decorator

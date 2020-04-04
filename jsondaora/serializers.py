@@ -1,15 +1,15 @@
 import dataclasses
+from enum import Enum
 from typing import Any, Callable, Dict, Type, _TypedDictMeta  # type: ignore
 
 import orjson
 
-from .dataclasses import asdict
 from .fields import SerializeFields
 
 
 def dataclass_asjson(instance: Any) -> bytes:
     return orjson.dumps(
-        instance, default=OrjsonDefaultTypes.default_function(instance)
+        instance, default=OrjsonDefaultTypes.default_function()
     )
 
 
@@ -52,10 +52,13 @@ class OrjsonDefaultTypes:
                 cls.types_default_map[field.type] = cls._asdict_for_orjson
 
     @classmethod
-    def default_function(cls, instance: Any) -> Any:
+    def default_function(cls) -> Any:
         def wrap(v: Any) -> Any:
             if isinstance(v, bytes):
                 return v.decode()
+
+            if isinstance(v, Enum):
+                return v.value
 
             return cls.types_default_map[type(v)](v)
 
@@ -63,7 +66,7 @@ class OrjsonDefaultTypes:
 
     @staticmethod
     def _asdict_for_orjson(instance: Any) -> Dict[str, Any]:
-        dictinst: Dict[str, Any] = asdict(instance)
+        dictinst: Dict[str, Any] = dataclasses.asdict(instance)
         fields = SerializeFields.get_fields(type(instance))
 
         if not fields:

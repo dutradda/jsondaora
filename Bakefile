@@ -3,4 +3,7 @@ include devtools/python/Bakefile devtools/common/Bakefile
 export PYTHONPATH=.
 export PROJECT_NAME=jsondaora
 
+setup-jsondaora: //check-virtualenv
+    pip install --force-reinstall git+https://github.com/pycqa/pyflakes
+
 deploy: //check-virtualenv @confirm:secure deploy-docs release-pypi

@@ -2,6 +2,8 @@
 
 ### UNRELEASED
 
+ - Improve dataclasses.asdict function
+
  - Remove dataclass recreation on decorator
 
  - Fix pyflakes

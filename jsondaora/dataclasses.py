@@ -1,8 +1,10 @@
 import dataclasses
-from typing import Any, Callable, Dict, List, Set, Tuple, Type
+from enum import Enum
+from typing import Any, Dict, Set, Type
 
 from .deserializers import deserialize_jsondict_fields
 from .exceptions import DeserializationError
+from .fields import SerializeFields
 
 
 def asdataclass(
@@ -18,7 +20,29 @@ def asdataclass(
         ) from error
 
 
-def asdict(
-    instance: Any, dict_factory: Callable[[List[Tuple[str, Any]]], Any] = dict
-) -> Any:
-    return dataclasses.asdict(instance, dict_factory=dict_factory)
+def asdict(instance: Any) -> Dict[str, Any]:
+    fields = SerializeFields.get_fields(type(instance))
+
+    if not fields:
+        fields = dataclasses.fields(instance)
+
+    return {
+        f.name: (
+            asdict(value)
+            if dataclasses.is_dataclass(
+                value := getattr(instance, f.name, f.default)  # noqa
+            )
+            else (
+                (
+                    asdict(enum_value)
+                    if dataclasses.is_dataclass(
+                        enum_value := value.value  # noqa
+                    )
+                    else enum_value
+                )
+                if isinstance(value, Enum)
+                else value
+            )
+        )
+        for f in fields
+    }

@@ -2,6 +2,8 @@
 
 ### UNRELEASED
 
+ - Remove dataclass recreation on decorator
+
  - Fix pyflakes
 
 ### 0.10.2 - 2020-02-27

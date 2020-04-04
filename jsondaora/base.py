@@ -20,7 +20,9 @@ def jsondaora(
             set_typed_dict_fields(type__)
 
         else:
-            type__ = dataclasses.dataclass(type__)
+            if not dataclasses.is_dataclass(type__):
+                type__ = dataclasses.dataclass(type__)
+
             OrjsonDefaultTypes.set_type(type__)
 
         if deserialize_fields is not None:

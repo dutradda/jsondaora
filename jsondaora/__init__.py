@@ -1,6 +1,6 @@
 """Interoperates @dataclass with json objects"""
 
-from jsondaora.base import jsondaora
+from jsondaora.decorator import jsondaora
 from jsondaora.dataclasses import asdataclass
 from jsondaora.schema import IntegerField, StringField, integer, string
 from jsondaora.serializers import dataclass_asjson, typed_dict_asjson

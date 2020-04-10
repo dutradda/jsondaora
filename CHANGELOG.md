@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### UNRELEASED
+### 0.11.1 - 2020-04-10
 
  - Fix typed dict serialization
 

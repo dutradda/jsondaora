@@ -18,7 +18,7 @@ def typed_dict_asjson(
 ) -> bytes:
     return orjson.dumps(
         _choose_typed_dict_fields(typed_dict, typed_dict_type),
-        default=OrjsonDefaultTypes.default_function()
+        default=OrjsonDefaultTypes.default_function(),
     )
 
 

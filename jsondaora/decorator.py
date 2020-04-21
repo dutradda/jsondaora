@@ -4,7 +4,6 @@ from logging import getLogger
 from typing import Any, Dict, Iterable, Optional, Type
 
 from .fields import DeserializeFields, SerializeFields
-from .serializers import OrjsonDefaultTypes
 
 
 logger = getLogger(__name__)
@@ -22,8 +21,6 @@ def jsondaora(
         else:
             if not dataclasses.is_dataclass(type__):
                 type__ = dataclasses.dataclass(type__)
-
-            OrjsonDefaultTypes.set_type(type__)
 
         if deserialize_fields is not None:
             DeserializeFields.set_type(type__, deserialize_fields)

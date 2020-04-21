@@ -12,6 +12,8 @@ from typing import (  # type: ignore
     _GenericAlias,
 )
 
+import orjson
+
 from .exceptions import DeserializationError
 from .fields import DeserializeFields
 
@@ -22,7 +24,10 @@ _ERROR_MSG = 'Invalid type={annotation} for field={field_name}'
 
 
 def deserialize_jsondict_fields(
-    jsondict: Dict[str, Any], cls: Type[Any], skip_fields: Set[str] = set()
+    jsondict: Dict[str, Any],
+    cls: Type[Any],
+    skip_fields: Set[str] = set(),
+    encode_field_name: bool = False,
 ) -> Dict[str, Any]:
     custom_fields = DeserializeFields.get_fields(cls)
     all_fields = dataclasses.fields(cls)
@@ -39,15 +44,26 @@ def deserialize_jsondict_fields(
                 new_fields.add(f)
         fields = new_fields
 
-    for field in fields:
-        value = jsondict.get(field.name)
-        deserialized[field.name] = deserialize_field(
-            field_name=field.name,
-            field_type=field.type,
-            field_default=field.default,
-            value=value,
-            cls=cls,
-        )
+    if encode_field_name:
+        for field in fields:
+            value = jsondict.get(field.name.encode())
+            deserialized[field.name] = deserialize_field(
+                field_name=field.name,
+                field_type=field.type,
+                field_default=field.default,
+                value=value,
+                cls=cls,
+            )
+    else:
+        for field in fields:
+            value = jsondict.get(field.name)
+            deserialized[field.name] = deserialize_field(
+                field_name=field.name,
+                field_type=field.type,
+                field_default=field.default,
+                value=value,
+                cls=cls,
+            )
 
     if custom_fields or skipped_fields:
         for field in (
@@ -86,6 +102,25 @@ def deserialize_field(
             value = deserialize_jsondict_fields(value, field_type)
             return field_type(**value)
 
+        elif (isinstance(value, bytes) or isinstance(value, str)) and (
+            dataclasses.is_dataclass(field_type)
+            or (
+                isinstance(field_type, _GenericAlias)
+                and (
+                    field_type.__origin__ is dict
+                    or field_type.__origin__ is list
+                    or field_type.__origin__ is tuple
+                )
+            )
+        ):
+            return deserialize_field(
+                field_name=field_name,
+                field_type=field_type,
+                value=orjson.loads(value),
+                cls=cls,
+                field_default=field_default,
+            )
+
         elif isinstance(field_type, _GenericAlias):
             return _deserialize_generic_type(field_type, field_name, value)
 
@@ -113,7 +148,7 @@ def deserialize_field(
             return datetime.strptime(value, '%Y-%m-%dT%H:%M:%S')
 
         if field_type is bool:
-            return value in (1, '1', 't', 'true', 'y', 'yes')
+            return value in (b'1', 1, '1', 't', 'true', 'y', 'yes')
 
         elif value is None and field_default is None:
             return None

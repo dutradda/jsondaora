@@ -44,31 +44,24 @@ class OrjsonDefaultTypes:
     types_default_map: Dict[Type[Any], Callable[[Any], Any]] = dict()
 
     @classmethod
-    def set_type(cls, type_: Type[Any]) -> None:
-        if type_ in cls.types_default_map:
-            return
-
-        cls.types_default_map[type_] = cls._asdict_for_orjson
-
-        for field in dataclasses.fields(type_):
-            if dataclasses.is_dataclass(field.type):
-                cls.types_default_map[field.type] = cls._asdict_for_orjson
-
-    @classmethod
     def default_function(cls) -> Any:
         def wrap(v: Any) -> Any:
             if isinstance(v, bytes):
                 return v.decode()
 
-            if isinstance(v, Enum):
+            elif isinstance(v, Enum):
                 return v.value
 
-            return cls.types_default_map[type(v)](v)
+            elif dataclasses.is_dataclass(v):
+                return cls.asdict(v)
+
+            else:
+                return v
 
         return wrap
 
     @staticmethod
-    def _asdict_for_orjson(instance: Any) -> Dict[str, Any]:
+    def asdict(instance: Any) -> Dict[str, Any]:
         dictinst: Dict[str, Any] = dataclasses.asdict(instance)
         fields = SerializeFields.get_fields(type(instance))
 

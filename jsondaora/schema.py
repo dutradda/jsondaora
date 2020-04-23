@@ -1,5 +1,6 @@
+import dataclasses
 from types import MethodType
-from typing import Any, Callable, Optional, Type
+from typing import Any, Callable, Optional, Type, Dict, List
 
 from dictdaora import DictDaora
 
@@ -136,3 +137,43 @@ def integer(
     return type(
         cls_name, (IntegerField,), {'minimum': minimum, 'maximum': maximum},
     )
+
+
+def jsonschema_asdataclass(id_: str, schema: Dict[str, Any]) -> Dict[str, Any]:
+    return dataclasses.make_dataclass(
+        id_,
+        [
+            (
+                prop_name,
+                Optional[jsonschema_asdataclass(f"{id_}_{prop_name}", prop)]
+                if prop['type'] == 'object' else (
+                    Optional[jsonschema_array(id_, prop_name, prop)]
+                    if prop['type'] == 'array'
+                    else Optional[SCALARS[prop['type']]]
+                )
+            )
+            for prop_name, prop in schema['properties'].items()
+        ]
+    )
+
+
+def jsonschema_array(id_, prop_name, prop):
+    return List[
+        jsonschema_asdataclass(
+            f"{id_}_{prop_name}", prop['items']
+        )
+        if (array_type := prop['items']['type']) == 'object'
+        else
+        jsonschema_array(id_, prop_name, prop['items'])
+        if array_type == 'array'
+        else
+        SCALARS[array_type]
+    ]
+
+
+SCALARS = {
+    'boolean': bool,
+    'string': str,
+    'integer': int,
+    'number': float,
+}

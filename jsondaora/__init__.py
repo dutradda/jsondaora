@@ -2,7 +2,13 @@
 
 from jsondaora.dataclasses import asdataclass
 from jsondaora.decorator import jsondaora
-from jsondaora.schema import IntegerField, StringField, integer, string, jsonschema_asdataclass
+from jsondaora.schema import (
+    IntegerField,
+    StringField,
+    integer,
+    jsonschema_asdataclass,
+    string,
+)
 from jsondaora.serializers import dataclass_asjson, typed_dict_asjson
 from jsondaora.typed_dict import as_typed_dict, as_typed_dict_field
 

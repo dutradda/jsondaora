@@ -1,6 +1,6 @@
 import dataclasses
 from types import MethodType
-from typing import Any, Callable, Optional, Type, Dict, List
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type
 
 from dictdaora import DictDaora
 
@@ -139,36 +139,40 @@ def integer(
     )
 
 
-def jsonschema_asdataclass(id_: str, schema: Dict[str, Any]) -> Dict[str, Any]:
+def jsonschema_asdataclass(
+    id_: str, schema: Dict[str, Any], bases: Tuple[type, ...] = ()
+) -> Type[Any]:
     return dataclasses.make_dataclass(
         id_,
         [
             (
                 prop_name,
-                Optional[jsonschema_asdataclass(f"{id_}_{prop_name}", prop)]
-                if prop['type'] == 'object' else (
+                Optional[
+                    jsonschema_asdataclass(f'{id_}_{prop_name}', prop)  # noqa
+                ]
+                if prop['type'] == 'object'
+                else (
                     Optional[jsonschema_array(id_, prop_name, prop)]
                     if prop['type'] == 'array'
                     else Optional[SCALARS[prop['type']]]
-                )
+                ),
+                dataclasses.field(default=prop.get('default')),
             )
             for prop_name, prop in schema['properties'].items()
-        ]
+        ],
+        bases=bases,
     )
 
 
-def jsonschema_array(id_, prop_name, prop):
-    return List[
-        jsonschema_asdataclass(
-            f"{id_}_{prop_name}", prop['items']
-        )
-        if (array_type := prop['items']['type']) == 'object'
-        else
-        jsonschema_array(id_, prop_name, prop['items'])
-        if array_type == 'array'
-        else
-        SCALARS[array_type]
-    ]
+def jsonschema_array(id_: str, prop_name: str, prop: Any) -> Any:
+    DynamicType = (
+        jsonschema_asdataclass(f'{id_}_{prop_name}', prop['items'])  # noqa
+        if (array_type := prop['items']['type']) == 'object'  # noqa
+        else jsonschema_array(id_, prop_name, prop['items'])  # noqa
+        if array_type == 'array'  # noqa
+        else SCALARS[array_type]
+    )
+    return List[DynamicType]  # type: ignore
 
 
 SCALARS = {

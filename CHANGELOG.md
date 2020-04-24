@@ -1,5 +1,11 @@
 ## CHANGELOG
 
+### UNRELEASED
+
+ - Improve jsonschema_asdataclass function
+
+ - Improve serialization/deserialization
+
 ### 0.11.1 - 2020-04-10
 
  - Fix typed dict serialization

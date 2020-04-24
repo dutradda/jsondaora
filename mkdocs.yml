@@ -1,9 +1,9 @@
 site_name: jsondaora
 site_description: Interoperates @dataclass with json objects
 
-
 theme:
     name: 'material'
+    custom_dir: 'theme'
     palette:
       primary: 'purple'
       accent: 'grey'
@@ -13,33 +13,30 @@ theme:
 repo_name: dutradda/jsondaora
 repo_url: https://github.com/dutradda/jsondaora
 edit_uri: ''
-google_analytics:
-    - ''
-    - 'auto'
 
 nav:
     - jsondaora: 'index.md'
     - Features: 'features.md'
     - Python dataclass intro: 'python-dataclass.md'
     - Json intro: 'json.md'
-    - Tutorial - User Guide:
-        - Introduciton: 'tutorial/intro.md'
-        - Choose Input Fields to Parse: 'tutorial/choose-fields-parse.md'
-        - Omit fields on Output: 'tutorial/omit-fields-output.md'
-        - Custom Data Types: 'tutorial/custom-data-types.md'
-        - Disable Input Parsing: 'tutorial/disable-input-parsing.md'
-        - Custom Json Serializer: 'tutorial/custom-json-serializer.md'
-    - Alternatives, Inspiration and Comparisons: 'alternatives.md'
-    - Benchmarks: 'benchmarks.md'
-    - Help jsondaora - Get Help: 'help.md'
+    # - Tutorial - User Guide:
+        # - Introduciton: 'tutorial/intro.md'
+        # - Choose Input Fields to Parse: 'tutorial/choose-fields-parse.md'
+        # - Omit fields on Output: 'tutorial/omit-fields-output.md'
+        # - Custom Data Types: 'tutorial/custom-data-types.md'
+        # - Disable Input Parsing: 'tutorial/disable-input-parsing.md'
+        # - Custom Json Serializer: 'tutorial/custom-json-serializer.md'
+    # - Alternatives, Inspiration and Comparisons: 'alternatives.md'
+    # - Benchmarks: 'benchmarks.md'
     - Development - Contributing: 'contributing.md'
     - Changelog: changelog.md
 
 markdown_extensions:
-  - markdown.extensions.codehilite:
-      guess_lang: false
-  - markdown_include.include:
-      base_path: docs
-  - admonition
-  - codehilite
-  - extra
+    - markdown_include.include:
+        base_path: docs
+    - codehilite:
+        guess_lang: false
+
+extra_css:
+  - stylesheets/dark_theme.css
+  - stylesheets/codehilite.css

@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### UNRELEASED
+### 0.12.0 - 2020-04-24
 
  - Improve jsonschema_asdataclass function
 

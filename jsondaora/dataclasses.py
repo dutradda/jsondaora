@@ -1,6 +1,6 @@
 import dataclasses
 from enum import Enum
-from typing import Any, Dict, Set, Type
+from typing import Any, Dict, Set, Type, Union
 
 from .deserializers import deserialize_jsondict_fields
 from .exceptions import DeserializationError
@@ -9,13 +9,13 @@ from .serializers import dataclass_asjson
 
 
 def asdataclass(
-    jsondict: Dict[str, Any],
+    jsondict: Union[Dict[str, Any], Dict[bytes, Any]],
     cls: Type[Any],
     skip_fields: Set[str] = set(),
-    encode_field_name: bool = False,
+    has_bytes_keys: bool = False,
 ) -> Any:
     kwargs = deserialize_jsondict_fields(
-        jsondict, cls, skip_fields, encode_field_name
+        jsondict, cls, skip_fields, has_bytes_keys
     )
 
     try:

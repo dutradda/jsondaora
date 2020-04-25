@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### UNRELEASED
+
+ - Improve typing annotations
+
 ### 0.12.0 - 2020-04-24
 
  - Improve jsonschema_asdataclass function

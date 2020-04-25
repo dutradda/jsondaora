@@ -24,10 +24,10 @@ _ERROR_MSG = 'Invalid type={annotation} for field={field_name}'
 
 
 def deserialize_jsondict_fields(
-    jsondict: Dict[str, Any],
+    jsondict: Union[Dict[str, Any], Dict[bytes, Any]],
     cls: Type[Any],
     skip_fields: Set[str] = set(),
-    encode_field_name: bool = False,
+    has_bytes_keys: bool = False,
 ) -> Dict[str, Any]:
     custom_fields = DeserializeFields.get_fields(cls)
     all_fields = dataclasses.fields(cls)
@@ -44,7 +44,7 @@ def deserialize_jsondict_fields(
                 new_fields.add(f)
         fields = new_fields
 
-    if encode_field_name:
+    if has_bytes_keys:
         for field in fields:
             value = jsondict.get(field.name.encode())
             deserialized[field.name] = deserialize_field(

@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### UNRELEASED
+### 0.12.1 - 2020-04-25
 
  - Improve typing annotations
 

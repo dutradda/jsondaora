@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### UNRELEASED
+### 0.12.2 - 2020-05-02
 
  - Improve serializer
 

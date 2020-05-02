@@ -9,7 +9,7 @@ from .fields import SerializeFields
 
 def dataclass_asjson(instance: Any) -> bytes:
     return orjson.dumps(
-        instance, default=OrjsonDefaultTypes.default_function()
+        instance, default=OrjsonDefaultTypes.default_function
     )
 
 
@@ -18,7 +18,7 @@ def typed_dict_asjson(
 ) -> bytes:
     return orjson.dumps(
         _choose_typed_dict_fields(typed_dict, typed_dict_type),
-        default=OrjsonDefaultTypes.default_function(),
+        default=OrjsonDefaultTypes.default_function,
     )
 
 
@@ -44,21 +44,20 @@ class OrjsonDefaultTypes:
     types_default_map: Dict[Type[Any], Callable[[Any], Any]] = dict()
 
     @classmethod
-    def default_function(cls) -> Any:
-        def wrap(v: Any) -> Any:
-            if isinstance(v, bytes):
-                return v.decode()
+    def default_function(cls, v: Any) -> Any:
+        if isinstance(v, bytes):
+            return v.decode()
 
-            elif isinstance(v, Enum):
-                return v.value
+        elif isinstance(v, Enum):
+            return v.value
 
-            elif dataclasses.is_dataclass(v):
-                return cls.asdict(v)
+        elif dataclasses.is_dataclass(v):
+            return cls.asdict(v)
 
-            else:
-                return v
-
-        return wrap
+        try:
+            return cls.types_default_map[type(v)](v)
+        except KeyError:
+            orjson.JSONEncodeError(v)
 
     @staticmethod
     def asdict(instance: Any) -> Dict[str, Any]:

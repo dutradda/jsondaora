@@ -187,17 +187,18 @@ def _deserialize_union(generic: Any, field_name: str, value: Any) -> Any:
     has_error = False
 
     for type_ in generic.__args__:
-        if type_ is not None and type_ is not type(None):  # noqa
-            try:
-                return deserialize_field(
-                    field_name=field_name,
-                    field_type=type_,
-                    value=value,
-                    cls=generic,
-                )
-            except DeserializationError:
-                has_error = True
-                continue
+        if type_ is not type(None):  # noqa
+            if value is not None:
+                try:
+                    return deserialize_field(
+                        field_name=field_name,
+                        field_type=type_,
+                        value=value,
+                        cls=generic,
+                    )
+                except DeserializationError:
+                    has_error = True
+                    continue
         else:
             nullable = True
 

@@ -14,7 +14,7 @@ classifiers = [
     'Programming Language :: Python :: 3.8',
     'Topic :: Software Development :: Libraries',
 ]
-requires = ['orjson>=3,<4']
+requires = ['orjson>=3,<4', 'dictdaora']
 description-file = 'README.md'
 requires-python = '>=3.8'
 

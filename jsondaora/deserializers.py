@@ -184,6 +184,7 @@ def _deserialize_generic_type(
 
 def _deserialize_union(generic: Any, field_name: str, value: Any) -> Any:
     nullable = False
+    has_error = False
 
     for type_ in generic.__args__:
         if type_ is not None and type_ is not type(None):  # noqa
@@ -195,11 +196,12 @@ def _deserialize_union(generic: Any, field_name: str, value: Any) -> Any:
                     cls=generic,
                 )
             except DeserializationError:
+                has_error = True
                 continue
         else:
             nullable = True
 
-    if nullable:
+    if nullable and not has_error:
         return None
 
     raise DeserializationError(

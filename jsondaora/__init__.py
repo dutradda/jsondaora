@@ -2,6 +2,7 @@
 
 from jsondaora.dataclasses import asdataclass
 from jsondaora.decorator import jsondaora
+from jsondaora.exceptions import DeserializationError
 from jsondaora.schema import (
     IntegerField,
     StringField,
@@ -28,4 +29,5 @@ __all__ = [
     'integer',
     'string',
     'jsonschema_asdataclass',
+    'DeserializationError',
 ]

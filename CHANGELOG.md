@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### UNRELEASED
+### 0.13.1 - 2020-07-08
 
  - Fix deserializer
 

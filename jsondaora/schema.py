@@ -142,6 +142,7 @@ def integer(
 def jsonschema_asdataclass(
     id_: str, schema: Dict[str, Any], bases: Tuple[type, ...] = ()
 ) -> Type[Any]:
+    required = schema.get('required', [])
     return dataclasses.make_dataclass(
         id_,
         [
@@ -152,9 +153,17 @@ def jsonschema_asdataclass(
                 ]
                 if prop['type'] == 'object'
                 else (
-                    Optional[jsonschema_array(id_, prop_name, prop)]
-                    if prop['type'] == 'array'
-                    else Optional[SCALARS[prop['type']]]
+                    (
+                        jsonschema_array(id_, prop_name, prop)
+                        if prop['type'] == 'array'
+                        else SCALARS[prop['type']]
+                    )
+                    if prop_name in required
+                    else (
+                        Optional[jsonschema_array(id_, prop_name, prop)]
+                        if prop['type'] == 'array'
+                        else Optional[SCALARS[prop['type']]]
+                    )
                 ),
                 dataclasses.field(default=prop.get('default')),
             )

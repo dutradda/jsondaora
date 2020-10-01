@@ -143,7 +143,7 @@ def jsonschema_asdataclass(
     id_: str, schema: Dict[str, Any], bases: Tuple[type, ...] = ()
 ) -> Type[Any]:
     required = schema.get('required', [])
-    return dataclasses.make_dataclass(
+    type_ = dataclasses.make_dataclass(
         id_,
         [
             (
@@ -172,6 +172,11 @@ def jsonschema_asdataclass(
         bases=bases,
     )
 
+    if 'additionalProperties' in schema:
+        type_.__additional_properties__ = schema['additionalProperties']
+
+    return type_
+
 
 def jsonschema_array(id_: str, prop_name: str, prop: Any) -> Any:
     DynamicType = (
@@ -181,6 +186,10 @@ def jsonschema_array(id_: str, prop_name: str, prop: Any) -> Any:
         if array_type == 'array'  # noqa
         else SCALARS[array_type]
     )
+
+    if 'additionalItems' in prop:
+        type_.__additional_items__ = schema['additionalItems']
+
     return List[DynamicType]  # type: ignore
 
 

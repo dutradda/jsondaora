@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### UNRELEASED
+
+ - Fix jsonschema_asdataclass when base classes is TypedDict
+
 ### 0.13.3 - 2020-09-17
 
  - Improve jsonschema_asdataclass function

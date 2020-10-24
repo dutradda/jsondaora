@@ -1,9 +1,19 @@
 import dataclasses
 from types import MethodType
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type
+from typing import (  # type: ignore
+    Any,
+    Callable,
+    Dict,
+    List,
+    Optional,
+    Tuple,
+    Type,
+    _TypedDictMeta,
+)
 
 from dictdaora import DictDaora
 
+from .decorator import jsondaora
 from .exceptions import DeserializationError
 
 
@@ -143,54 +153,74 @@ def jsonschema_asdataclass(
     id_: str, schema: Dict[str, Any], bases: Tuple[type, ...] = ()
 ) -> Type[Any]:
     required = schema.get('required', [])
-    type_ = dataclasses.make_dataclass(
-        id_,
-        [
-            (
-                prop_name,
-                Optional[
-                    jsonschema_asdataclass(f'{id_}_{prop_name}', prop)  # noqa
-                ]
-                if prop['type'] == 'object'
+    is_dict = any([issubclass(base, dict) for base in bases])
+    extracted_annotations = [
+        (
+            prop_name,
+            Optional[
+                jsonschema_asdataclass(f'{id_}_{prop_name}', prop)  # noqa
+            ]
+            if prop['type'] == 'object'
+            else (
+                (
+                    jsonschema_array(id_, prop_name, prop)
+                    if prop['type'] == 'array'
+                    else SCALARS[prop['type']]
+                )
+                if prop_name in required
                 else (
-                    (
-                        jsonschema_array(id_, prop_name, prop)
-                        if prop['type'] == 'array'
-                        else SCALARS[prop['type']]
-                    )
-                    if prop_name in required
-                    else (
-                        Optional[jsonschema_array(id_, prop_name, prop)]
-                        if prop['type'] == 'array'
-                        else Optional[SCALARS[prop['type']]]
-                    )
-                ),
-                dataclasses.field(default=prop.get('default')),
-            )
-            for prop_name, prop in schema['properties'].items()
-        ],
-        bases=bases,
-    )
+                    Optional[jsonschema_array(id_, prop_name, prop)]
+                    if prop['type'] == 'array'
+                    else Optional[SCALARS[prop['type']]]
+                )
+            ),
+            prop.get('default')
+            if is_dict
+            else dataclasses.field(default=prop.get('default')),
+        )
+        for prop_name, prop in schema['properties'].items()
+    ]
+
+    if is_dict:
+        type_annotations = {}
+        type_attributes = {}
+
+        for prop_name, prop_type, prop_default in extracted_annotations:
+            type_annotations[prop_name] = prop_type
+
+            if prop_default is not None:
+                type_attributes[prop_name] = prop_default
+
+        type_attributes['__annotations__'] = type_annotations
+
+        type_ = _TypedDictMeta(id_, bases, type_attributes,)
+        type_ = jsondaora(type_)
+
+    else:
+        type_ = dataclasses.make_dataclass(
+            id_, extracted_annotations, bases=bases,
+        )
 
     if 'additionalProperties' in schema:
         type_.__additional_properties__ = schema['additionalProperties']
 
-    return type_
+    return type_  # type: ignore
 
 
 def jsonschema_array(id_: str, prop_name: str, prop: Any) -> Any:
-    DynamicType = (
+    DynamicType: Type[Any] = (
         jsonschema_asdataclass(f'{id_}_{prop_name}', prop['items'])  # noqa
         if (array_type := prop['items']['type']) == 'object'  # noqa
         else jsonschema_array(id_, prop_name, prop['items'])  # noqa
         if array_type == 'array'  # noqa
         else SCALARS[array_type]
     )
+    list_type = List[DynamicType]  # type: ignore
 
     if 'additionalItems' in prop:
-        type_.__additional_items__ = schema['additionalItems']
+        list_type.__additional_items__ = prop['additionalItems']  # type: ignore
 
-    return List[DynamicType]  # type: ignore
+    return list_type
 
 
 SCALARS = {

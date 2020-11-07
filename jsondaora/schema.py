@@ -192,9 +192,8 @@ def jsonschema_asdataclass(
                 type_attributes[prop_name] = prop_default
 
         type_attributes['__annotations__'] = type_annotations
-
-        type_ = _TypedDictMeta(id_, bases, type_attributes,)
-        type_ = jsondaora(type_)
+        schema_type = type(f'_{id_}', (dict,), type_attributes)
+        type_ = jsondaora(_TypedDictMeta(id_, bases + (schema_type,), {}))
 
     else:
         type_ = dataclasses.make_dataclass(

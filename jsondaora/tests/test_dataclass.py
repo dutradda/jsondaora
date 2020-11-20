@@ -1,12 +1,13 @@
 # type: ignore
 
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Dict, List, Optional, Set, Tuple, TypedDict, Union
 
 import pytest
 
 from jsondaora import asdataclass, dataclass_asjson, jsondaora
 from jsondaora.exceptions import DeserializationError
+from jsondaora.schema import jsonschema_asdataclass
 
 
 def tests_should_deserialize_optional_args():
@@ -304,3 +305,42 @@ def tests_should_serialize_all_fields_with_choosen_deserialize_fields():
     dataclass_ = asdataclass({'test': '1', 'test2': 2}, FakeDataclass)
 
     assert dataclass_asjson(dataclass_) == b'{"test":"1","test2":"2"}'
+
+
+def test_should_build_object():
+    @jsondaora
+    class FakeItem(TypedDict):
+        id: str
+
+    values = {
+        'id': 'fake_id',
+        'title': 'fake_title',
+        'medias': ['item1', 'item2'],
+        'variations': {'qwe': ['case1', 'case2']},
+    }
+
+    schema = {
+        'type': 'object',
+        'required': ['id'],
+        'properties': {
+            'id': {'type': 'string'},
+            'title': {'type': 'string'},
+            'medias': {'type': 'array', 'items': {'type': 'string'}},
+            'variations': {
+                'type': 'object',
+                'additionalProperties': {
+                    'type': 'array',
+                    'items': {'type': 'string'},
+                },
+                'properties': {},
+            },
+        },
+    }
+
+    type_ = jsonschema_asdataclass('test_id', schema, bases=(FakeItem,))
+
+    item = asdataclass(values, type_)
+
+    assert item['id'] == values['id']
+    assert item['medias'] == values['medias']
+    assert item['variations'].qwe == values['variations']['qwe']

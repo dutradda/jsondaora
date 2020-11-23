@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### UNRELEASED
+### 0.14.0 - 2020-11-23
 
  - Improve to support schema with dynamic properties
 

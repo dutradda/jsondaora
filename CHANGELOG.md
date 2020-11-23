@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### UNRELEASED
+
+ - Improve to support schema with dynamic properties
+
+
 ### 0.13.5 - 2020-11-07
 
  - Fix jsonschema_asdataclass function

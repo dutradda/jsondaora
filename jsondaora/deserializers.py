@@ -16,6 +16,7 @@ import orjson
 
 from .exceptions import DeserializationError
 from .fields import DeserializeFields
+from .schema import jsonschema_asdataclass
 
 
 logger = getLogger(__name__)
@@ -99,6 +100,28 @@ def deserialize_field(
             )
 
         elif isinstance(value, dict) and dataclasses.is_dataclass(field_type):
+            if hasattr(field_type, '__additional_properties__') and isinstance(
+                field_type.__additional_properties__, dict
+            ):
+                value = {
+                    (f'_{k}' if k.isdigit() else k): v
+                    for k, v in value.items()
+                }
+
+                additional_properties = field_type.__additional_properties__
+                additional_type = jsonschema_asdataclass(
+                    field_name,
+                    {
+                        'type': 'object',
+                        'properties': {
+                            k: additional_properties for k in value.keys()
+                        },
+                    },
+                )
+                field_type = type(
+                    field_name, (additional_type, field_type), {}
+                )
+
             value = deserialize_jsondict_fields(value, field_type)
             return field_type(**value)
 

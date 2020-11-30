@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### UNRELEASED
+### 0.14.1 - 2020-11-30
 
  - Fix additional properties for jsonschema conversion
 

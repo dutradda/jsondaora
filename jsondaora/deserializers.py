@@ -10,13 +10,13 @@ from typing import (  # type: ignore
     Type,
     Union,
     _GenericAlias,
+    get_type_hints,
 )
 
 import orjson
 
 from .exceptions import DeserializationError
 from .fields import DeserializeFields
-from .schema import jsonschema_asdataclass
 
 
 logger = getLogger(__name__)
@@ -100,30 +100,30 @@ def deserialize_field(
             )
 
         elif isinstance(value, dict) and dataclasses.is_dataclass(field_type):
-            if hasattr(field_type, '__additional_properties__') and isinstance(
-                field_type.__additional_properties__, dict
-            ):
-                value = {
-                    (f'_{k}' if k.isdigit() else k): v
-                    for k, v in value.items()
+            deserialized_value = deserialize_jsondict_fields(value, field_type)
+            additional_properties_schema = getattr(
+                field_type,
+                '__additional_properties__',
+                issubclass(
+                    field_type, dict
+                ),  # only get additional_properties if is TypedDict
+            )
+
+            if additional_properties_schema is not False:
+                field_type_hints = get_type_hints(field_type)
+                additional_properties = {
+                    k: v for k, v in value.items() if k not in field_type_hints
                 }
 
-                additional_properties = field_type.__additional_properties__
-                additional_type = jsonschema_asdataclass(
-                    field_name,
-                    {
-                        'type': 'object',
-                        'properties': {
-                            k: additional_properties for k in value.keys()
-                        },
-                    },
-                )
-                field_type = type(
-                    field_name, (additional_type, field_type), {}
-                )
+                if isinstance(additional_properties_schema, dict):
+                    additional_properties = deserialize_jsondict_fields(
+                        {'additional_properties': additional_properties},
+                        field_type.__additional_properties__,
+                    )['additional_properties']
 
-            value = deserialize_jsondict_fields(value, field_type)
-            return field_type(**value)
+                deserialized_value.update(additional_properties)
+
+            return field_type(**deserialized_value)
 
         elif (isinstance(value, bytes) or isinstance(value, str)) and (
             dataclasses.is_dataclass(field_type)
@@ -145,7 +145,9 @@ def deserialize_field(
             )
 
         elif isinstance(field_type, _GenericAlias):
-            return _deserialize_generic_type(field_type, field_name, value)
+            return _deserialize_generic_type(
+                field_type, field_name, value, cls
+            )
 
         if field_type is Any:
             return value
@@ -193,11 +195,11 @@ def deserialize_field(
 
 
 def _deserialize_generic_type(
-    generic: Any, field_name: str, value: Any
+    generic: Any, field_name: str, value: Any, cls: Optional[Type[Any]],
 ) -> Any:
     try:
         return _DESERIALIZERS_MAP[generic.__origin__](
-            generic, field_name, value
+            generic, field_name, value, cls
         )
     except KeyError:
         raise DeserializationError(
@@ -205,7 +207,9 @@ def _deserialize_generic_type(
         )
 
 
-def _deserialize_union(generic: Any, field_name: str, value: Any) -> Any:
+def _deserialize_union(
+    generic: Any, field_name: str, value: Any, cls: Optional[Type[Any]]
+) -> Any:
     nullable = False
     has_error = False
 
@@ -217,7 +221,7 @@ def _deserialize_union(generic: Any, field_name: str, value: Any) -> Any:
                         field_name=field_name,
                         field_type=type_,
                         value=value,
-                        cls=generic,
+                        cls=cls,
                     )
                 except DeserializationError:
                     has_error = True
@@ -233,14 +237,16 @@ def _deserialize_union(generic: Any, field_name: str, value: Any) -> Any:
     )
 
 
-def _deserialize_list(annotation: Any, field_name: str, values: Any) -> Any:
+def _deserialize_list(
+    annotation: Any, field_name: str, values: Any, cls: Optional[Type[Any]]
+) -> Any:
     try:
         return [
             deserialize_field(
                 field_name=field_name,
                 field_type=annotation.__args__[0],
                 value=value,
-                cls=annotation,
+                cls=cls,
             )
             for value in values
         ]
@@ -250,7 +256,9 @@ def _deserialize_list(annotation: Any, field_name: str, values: Any) -> Any:
         ) from err
 
 
-def _deserialize_tuple(annotation: Any, field_name: str, values: Any) -> Any:
+def _deserialize_tuple(
+    annotation: Any, field_name: str, values: Any, cls: Optional[Type[Any]]
+) -> Any:
     try:
         if annotation.__args__[-1] is ...:
             return tuple(
@@ -258,7 +266,7 @@ def _deserialize_tuple(annotation: Any, field_name: str, values: Any) -> Any:
                     field_name=field_name,
                     field_type=annotation.__args__[0],
                     value=value,
-                    cls=annotation,
+                    cls=cls,
                 )
                 for value in values
             )
@@ -269,7 +277,7 @@ def _deserialize_tuple(annotation: Any, field_name: str, values: Any) -> Any:
                     field_name=field_name,
                     field_type=annotation.__args__[i],
                     value=value,
-                    cls=annotation,
+                    cls=cls,
                 )
                 for i, value in enumerate(values)
             )
@@ -285,14 +293,16 @@ def _deserialize_tuple(annotation: Any, field_name: str, values: Any) -> Any:
         ) from err
 
 
-def _deserialize_set(annotation: Any, field_name: str, values: Any) -> Any:
+def _deserialize_set(
+    annotation: Any, field_name: str, values: Any, cls: Optional[Type[Any]]
+) -> Any:
     try:
         return set(
             deserialize_field(
                 field_name=field_name,
                 field_type=annotation.__args__[0],
                 value=value,
-                cls=annotation,
+                cls=cls,
             )
             for value in values
         )
@@ -302,7 +312,9 @@ def _deserialize_set(annotation: Any, field_name: str, values: Any) -> Any:
         ) from err
 
 
-def _deserialize_dict(annotation: Any, field_name: str, values: Any) -> Any:
+def _deserialize_dict(
+    annotation: Any, field_name: str, values: Any, cls: Optional[Type[Any]]
+) -> Any:
     new_dict: Dict[Any, Any] = {}
 
     try:
@@ -312,13 +324,13 @@ def _deserialize_dict(annotation: Any, field_name: str, values: Any) -> Any:
                     field_name=f'{field_name}.key{i}',
                     field_type=annotation.__args__[0],
                     value=key,
-                    cls=annotation,
+                    cls=cls,
                 )
             ] = deserialize_field(
                 field_name=f'{field_name}.value{i}',
                 field_type=annotation.__args__[1],
                 value=value,
-                cls=annotation,
+                cls=cls,
             )
 
     except (TypeError, AttributeError) as err:

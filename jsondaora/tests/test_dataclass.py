@@ -318,7 +318,6 @@ def test_should_build_object():
         'medias': ['item1', 'item2'],
         'variations': {'qwe': ['case1', 'case2']},
     }
-
     schema = {
         'type': 'object',
         'required': ['id'],
@@ -332,15 +331,12 @@ def test_should_build_object():
                     'type': 'array',
                     'items': {'type': 'string'},
                 },
-                'properties': {},
             },
         },
     }
-
     type_ = jsonschema_asdataclass('test_id', schema, bases=(FakeItem,))
-
     item = asdataclass(values, type_)
 
     assert item['id'] == values['id']
     assert item['medias'] == values['medias']
-    assert item['variations'].qwe == values['variations']['qwe']
+    assert item['variations']['qwe'] == values['variations']['qwe']

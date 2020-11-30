@@ -152,35 +152,92 @@ def integer(
 def jsonschema_asdataclass(
     id_: str, schema: Dict[str, Any], bases: Tuple[type, ...] = ()
 ) -> Type[Any]:
-    required = schema.get('required', [])
     is_dict = any([issubclass(base, dict) for base in bases])
+    subschema_bases = (dict,) if is_dict else tuple()
     extracted_annotations = [
-        (
+        extract_annotations(
+            id_,
+            is_dict,
             prop_name,
-            Optional[
-                jsonschema_asdataclass(f'{id_}_{prop_name}', prop)  # noqa
-            ]
-            if prop['type'] == 'object'
-            else (
-                (
-                    jsonschema_array(id_, prop_name, prop)
-                    if prop['type'] == 'array'
-                    else SCALARS[prop['type']]
-                )
-                if prop_name in required
-                else (
-                    Optional[jsonschema_array(id_, prop_name, prop)]
-                    if prop['type'] == 'array'
-                    else Optional[SCALARS[prop['type']]]
-                )
-            ),
-            prop.get('default')
-            if is_dict
-            else dataclasses.field(default=prop.get('default')),
+            prop,
+            subschema_bases,
+            schema.get('required', []),
+            subschema_bases,
         )
-        for prop_name, prop in schema['properties'].items()
+        for prop_name, prop in schema.get('properties', {}).items()
     ]
 
+    type_ = make_type_from_extracted_annotations(
+        id_, is_dict, extracted_annotations, bases
+    )
+
+    if is_dict:
+        type_.__additional_properties__ = schema.get(
+            'additionalProperties', True
+        )
+
+        if isinstance(type_.__additional_properties__, dict):
+            extracted_annotations_ = extract_annotations(
+                id_,
+                is_dict,
+                'additional_properties',
+                schema['additionalProperties'],
+                subschema_bases,
+                schema['additionalProperties'].get('required', []),
+            )
+            type_.__additional_properties__ = extracted_annotations_[1]
+    else:
+        type_.__additional_properties__ = schema.get(
+            'additionalProperties', False
+        )
+
+    return type_  # type: ignore
+
+
+def extract_annotations(
+    id_: str,
+    is_dict: bool,
+    prop_name: str,
+    prop: Dict[str, Any],
+    bases: Tuple[type, ...],
+    required: List[str],
+    subschema_bases: Tuple[type, ...] = (),
+) -> Tuple[str, Type[Any], Any]:
+    return (
+        prop_name,
+        Optional[
+            jsonschema_asdataclass(
+                f'{id_}_{prop_name}', prop, subschema_bases  # noqa
+            )
+        ]
+        if prop['type'] == 'object'
+        else (
+            (
+                jsonschema_array(id_, prop_name, prop, subschema_bases)
+                if prop['type'] == 'array'
+                else SCALARS[prop['type']]
+            )
+            if prop_name in required
+            else (
+                Optional[
+                    jsonschema_array(id_, prop_name, prop, subschema_bases)
+                ]
+                if prop['type'] == 'array'
+                else Optional[SCALARS[prop['type']]]
+            )
+        ),
+        prop.get('default')
+        if is_dict
+        else dataclasses.field(default=prop.get('default')),
+    )
+
+
+def make_type_from_extracted_annotations(
+    id_: str,
+    is_dict: bool,
+    extracted_annotations: List[Tuple[str, Type[Any], Any]],
+    bases: Tuple[type, ...],
+) -> Any:
     if is_dict:
         type_annotations = {}
         type_attributes = {}
@@ -192,25 +249,24 @@ def jsonschema_asdataclass(
                 type_attributes[prop_name] = prop_default
 
         type_attributes['__annotations__'] = type_annotations
-        schema_type = type(f'_{id_}', (dict,), type_attributes)
-        type_ = jsondaora(_TypedDictMeta(id_, bases + (schema_type,), {}))
+        schema_type = type(id_, (dict,), type_attributes)
+        return jsondaora(_TypedDictMeta(id_, bases + (schema_type,), {}))
 
     else:
-        type_ = dataclasses.make_dataclass(
+        return dataclasses.make_dataclass(
             id_, extracted_annotations, bases=bases,
         )
 
-    if 'additionalProperties' in schema:
-        type_.__additional_properties__ = schema['additionalProperties']
 
-    return type_  # type: ignore
-
-
-def jsonschema_array(id_: str, prop_name: str, prop: Any) -> Any:
+def jsonschema_array(
+    id_: str, prop_name: str, prop: Any, bases: Tuple[type, ...],
+) -> Any:
     DynamicType: Type[Any] = (
-        jsonschema_asdataclass(f'{id_}_{prop_name}', prop['items'])  # noqa
+        jsonschema_asdataclass(
+            f'{id_}_{prop_name}', prop['items'], bases
+        )  # noqa
         if (array_type := prop['items']['type']) == 'object'  # noqa
-        else jsonschema_array(id_, prop_name, prop['items'])  # noqa
+        else jsonschema_array(id_, prop_name, prop['items'], bases)  # noqa
         if array_type == 'array'  # noqa
         else SCALARS[array_type]
     )
